@@ -1,0 +1,685 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>Lionstone Pro &amp; Studio v0.3.2 — Reels Kitapçığı</title>
+<link rel="stylesheet" href="handbook.css">
+</head>
+<body>
+
+<!-- 1 · KAPAK -->
+<section class="page cover">
+  <img class="bg" src="img/01-cover.jpg" alt="">
+  <div class="shade"></div>
+  <div class="inner">
+    <div class="brand">
+      <svg viewBox="-130 -130 260 260"><g stroke="#E8A33D" stroke-width="12" stroke-linecap="round"><line x1="0" y1="-95" x2="0" y2="-125"/><line x1="67" y1="-67" x2="88" y2="-88"/><line x1="95" y1="0" x2="125" y2="0"/><line x1="67" y1="67" x2="88" y2="88"/><line x1="0" y1="95" x2="0" y2="125"/><line x1="-67" y1="67" x2="-88" y2="88"/><line x1="-95" y1="0" x2="-125" y2="0"/><line x1="-67" y1="-67" x2="-88" y2="-88"/></g><polygon points="0,-78 68,-39 68,39 0,78 -68,39 -68,-39" fill="#16181d" stroke="#E8A33D" stroke-width="9"/><polygon points="-18,-30 32,0 -18,30" fill="#F5C400"/></svg>
+      LIONSTONE
+    </div>
+    <span class="badge">PRO &amp; STUDIO v0.3.2</span>
+    <h1>Reels<br>Kitapçığı</h1>
+    <p class="sub">Tüm özellikler, tüm görünümler, tüm efektler ve bunlarla adım adım bir Reels üretme rehberi.</p>
+    <div class="bottom">
+      <div>Ücretsiz · Açık kaynak · Apache-2.0<br>Yerelde çalışır · lisans anahtarı yok · filigran yok</div>
+      <div><b>Türkçe baskı</b><br>Kasım 2026</div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 · İÇİNDEKİLER -->
+<section class="page dark">
+  <div class="run"><span><b>Lionstone</b> · Reels Kitapçığı</span><span>v0.3.2</span></div>
+  <span class="kicker">Bu kitapçıkta</span>
+  <h2>İçindekiler</h2>
+  <ol class="toc mt4">
+    <li><span class="n">01</span><span class="t">v0.3.2'de neler var</span><span class="d">Paket, rakamlar, kurulum</span><span class="p" data-to="01">0</span></li>
+    <li><span class="n">02</span><span class="t">İş akışı</span><span class="d">plan.json, çapalar, önizleme = çıktı</span><span class="p" data-to="02">0</span></li>
+    <li><span class="n">03</span><span class="t">Lionstone Styles</span><span class="d">Tüm kurgunuz altı harflik bir tarif</span><span class="p" data-to="03">0</span></li>
+    <li><span class="n">04</span><span class="t">Görünümler ve renk</span><span class="d">28 renk derecelendirmesi, renk kontrolleri, kendi LUT'unuz</span><span class="p" data-to="04">0</span></li>
+    <li><span class="n">05</span><span class="t">Efektler, geçişler, hareket</span><span class="d">Son dokunuş araç kutusu</span><span class="p" data-to="05">0</span></li>
+    <li><span class="n">06</span><span class="t">Yazı ve altyazı</span><span class="d">25 animasyonlu yazı, 3 altyazı stili</span><span class="p" data-to="06">0</span></li>
+    <li><span class="n">07</span><span class="t">Reel FX Paketi</span><span class="d">Reels ve Shorts için tek komutluk 12 efekt</span><span class="p" data-to="07">0</span></li>
+    <li><span class="n">08</span><span class="t">Adım adım bir Reels</span><span class="d">30 saniyelik gerçek bir Reels, tüm komutlar</span><span class="p" data-to="08">0</span></li>
+    <li><span class="n">09</span><span class="t">İçerik türüne göre tarifler</span><span class="d">Podcast, emlak, ürün, eğitim…</span><span class="p" data-to="09">0</span></li>
+    <li><span class="n">10</span><span class="t">Reels'in ötesi</span><span class="d">Ajan, çoklu kamera, stil öğrenme, dışa aktarma, ekipler</span><span class="p" data-to="10">0</span></li>
+    <li><span class="n">11</span><span class="t">Kurallar, QA ve dürüst sınırlar</span><span class="d">Çıktınızı gönül rahatlığıyla paylaşmanın nedeni</span><span class="p" data-to="11">0</span></li>
+    <li><span class="n">12</span><span class="t">Komut özeti</span><span class="d">Her şey tek sayfada</span><span class="p" data-to="12">0</span></li>
+  </ol>
+  <div class="grid4 mt6">
+    <div class="stat"><b>145</b><span>katalogdaki preset</span></div>
+    <div class="stat"><b>104</b><span>bugün kullanıma hazır</span></div>
+    <div class="stat"><b>12</b><span>yeni Reel FX efekti</span></div>
+    <div class="stat"><b>0</b><span>anahtar, yükleme ya da filigran</span></div>
+  </div>
+  <p class="cap mt6">Nasıl okunur: 1–7. bölümler araçları tek tek anlatır; 8. bölüm hepsini kendi görüntünüzle yeniden kurabileceğiniz tek bir Reels'te birleştirir. Komutlar tam olarak yazacağınız biçimde verilmiştir. Çizimler konsept görsellerdir; “gerçek render” yazan görseller Lionstone'un gerçek çıktısıdır.</p>
+  <div class="foot"><span>Lionstone Pro &amp; Studio v0.3.2</span><span class="pn">2</span></div>
+</section>
+
+<!-- 3 · v0.3.2 -->
+<section data-ch="01" class="page">
+  <div class="run"><span><b>01</b> · v0.3.2'de neler var</span><span>Lionstone Reels Kitapçığı</span></div>
+  <div class="chapter-no">01</div>
+  <h2>v0.3.2'de neler var</h2>
+  <p class="lead">Lionstone, kendi bilgisayarınızda çalışan bir yapay zekâ kurgu ajanıdır. Pro ve Studio eskiden ücretli bir eklentiydi; v0.3'ten bu yana tüm özellikleri açık kaynak paketin içinde ücretsiz geliyor. v0.3.2 bunlara Reel FX Paketi'ni ekliyor.</p>
+  <div class="grid2">
+    <div>
+      <h3 class="mt0">Bir bakışta paket</h3>
+      <ul>
+        <li><b>Akıllı kurgu</b>: konuşmayı anlayan kesimler, gerekçesi okunabilen bir <code>plan.json</code>, metin üzerinden kurgu, tek komutla geri alma.</li>
+        <li><b>Creative Suite</b>: görünümler, efektler, geçişler, hareket ve animasyonlu yazı; dışa aktarmayla aynı kodla önizlenir.</li>
+        <li><b>Reel FX Paketi</b> <span class="pill">0.3.2'de yeni</span>: dikey video için 12 efekt ve 6,4 saniyelik vitrin videosu.</li>
+        <li><b>Shorts ve Reels</b>: kendi başına anlamlı anları bulur, yüz takipli kadrajla 9:16 render eder.</li>
+        <li><b>Pro iş akışı</b>: çoklu kamera, stil öğrenme, FCPXML/EDL dışa aktarma.</li>
+        <li><b>Ekip araçları</b>: marka kitleri, roller, kilitli presetler, toplu uygulama.</li>
+        <li><b>Teslimden önce QA</b>: her render, “teslime hazır” denmeden önce baştan sona çözülüp kontrol edilir.</li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="mt0">Türe göre katalog</h3>
+      <table>
+        <tr><th>Tür</th><th class="nowrap">Hazır</th><th>Planlı</th></tr>
+        <tr><td>Görünümler (renk)</td><td>28</td><td>2</td></tr>
+        <tr><td>Efektler</td><td>19</td><td>15</td></tr>
+        <tr><td>Reel FX</td><td>12</td><td>0</td></tr>
+        <tr><td>Geçişler</td><td>11</td><td>14</td></tr>
+        <tr><td>Hareket</td><td>6</td><td>7</td></tr>
+        <tr><td>Animasyonlu yazı</td><td>25</td><td>3</td></tr>
+        <tr><td>Altyazı stilleri</td><td>3</td><td>0</td></tr>
+        <tr><td><b>Toplam</b></td><td><b>104</b></td><td><b>41</b></td></tr>
+      </table>
+      <p class="cap">“Planlı” presetler katalogda görünür ama hiçbir zaman işe yaramayan bir düğme olarak yayınlanmaz.</p>
+    </div>
+  </div>
+  <h3>Kurulum ve kontrol</h3>
+<pre><span class="c"># her şey: yaratıcı presetler, yüz takibi, MCP sunucusu</span>
+pip install "lionstone[all] @ git+https://github.com/ismailarslantas/lionstone"
+lionstone doctor          <span class="c"># FFmpeg, konuşma tanıma, fontlar, isteğe bağlı ekler</span>
+lionstone --version       <span class="c"># Lionstone · AI editing agent · v0.3.2</span></pre>
+  <div class="note"><b>Etiket, kilit değil.</b> Presetlerde <span class="pill">pro</span> ve <span class="pill studio">studio</span> etiketlerini göreceksiniz. Bunlar eski planlardan kalan katalog etiketleridir; her şey bireyler ve ekipler için ücretsizdir. Ücretli eklentiyi kullandıysanız: <code>pip uninstall lionstone-pro</code>.</div>
+  <div class="foot"><span>Lionstone Pro &amp; Studio v0.3.2</span><span class="pn">3</span></div>
+</section>
+
+<!-- 4 · İŞ AKIŞI -->
+<section data-ch="02" class="page">
+  <div class="run"><span><b>02</b> · İş akışı</span><span>Lionstone Reels Kitapçığı</span></div>
+  <div class="chapter-no">02</div>
+  <h2>İş akışı</h2>
+  <p class="lead">Lionstone'da her kurgu önce bir plandır, sonra videodur. Siz planı değiştirirsiniz; render onu izler.</p>
+  <figure class="figure"><img src="img/02-workflow.jpg" alt=""><figcaption>Konsept çizim: tek bir kayıt; kurguya, Reels'e ve proje dosyalarına dönüşür.</figcaption></figure>
+  <div class="grid2">
+    <ol class="steps">
+      <li><b>Kurgu</b>: <code>lionstone edit talk.mp4</code> konuşmayı analiz eder, ölü boşlukları atar ve <code>talk_lionstone/plan.json</code> dosyasını yazar.</li>
+      <li><b>Son dokunuş</b>: <code>lionstone fx …</code> bu plana görünüm, efekt, yazı ve geçiş ekler.</li>
+      <li><b>Render + QA</b>: <code>lionstone fx render plan.json</code> derler, render eder ve sonucu kontrol eder.</li>
+      <li><b>Yeniden kullan</b>: <code>lionstone clips</code> dikey Reels keser; <code>lionstone export</code> FCPXML/EDL yazar.</li>
+    </ol>
+    <div>
+      <h4>Preset nereye gider: çapalar</h4>
+      <table>
+        <tr><th>Çapa</th><th>Anlamı</th></tr>
+        <tr><td><code>--global</code></td><td>videonun tamamı (görünüm, gren, altyazı)</td></tr>
+        <tr><td><code>--segment N</code></td><td>tutulan tek bir bölüm</td></tr>
+        <tr><td><code>--join N</code></td><td>N. bölümden sonraki kesme (geçişler)</td></tr>
+        <tr><td><code>--source A-B</code></td><td>orijinal kayıttaki saniyeler</td></tr>
+        <tr><td><code>--at S</code></td><td>bitmiş videodaki saniye (yazı)</td></tr>
+      </table>
+      <p class="small"><code>lionstone fx segments plan.json</code> numaralı bölümleri ve kesmeleri listeler.</p>
+    </div>
+  </div>
+  <div class="note"><b>Önizleme = çıktı.</b> <code>lionstone fx preview &lt;id&gt; --before-after --gif</code>, dışa aktarmanın kullandığı kodla gerçek bir düşük çözünürlüklü örnek üretir; onayladığınız neyse elinize geçen de odur.</div>
+  <div class="foot"><span>Lionstone Pro &amp; Studio v0.3.2</span><span class="pn">4</span></div>
+</section>
+
+<!-- 5 · STYLES -->
+<section data-ch="03" class="page">
+  <div class="run"><span><b>03</b> · Lionstone Styles</span><span>Lionstone Reels Kitapçığı</span></div>
+  <div class="chapter-no">03</div>
+  <h2>Lionstone Styles: kurgunuz bir kod</h2>
+  <p class="lead">Yedi grup, her biri tek harf. Her gruptan bir seçenek seçin; <code>lionstone styles --cmd</code> kodu birebir kurgu komutuna çevirir.</p>
+  <table>
+    <tr><th>Grup</th><th>Seçenekler</th></tr>
+    <tr><td><b>O</b> Açılış</td><td>O1 Quiet Fade · O2 Slow Rise · O3 Hairline Reveal · O4 Light Sweep · O5 Film Grain Open · <b>O6 Kinetic Hook</b> · O7 Signature Stamp</td></tr>
+    <tr><td><b>W</b> Yazı</td><td>W1 Clean Lines · W2 Bold Punch · <b>W3 Word Highlight</b> · W4 Silent Frame · W5 Sidecar Only (.srt/.vtt)</td></tr>
+    <tr><td><b>A</b> En-boy</td><td>A1 Native · A2 Wide Stage 16:9 · <b>A3 Vertical Follow 9:16</b> · A4 Vertical Centre · A5 Square Follow · A6 Portrait Feed 4:5</td></tr>
+    <tr><td><b>G</b> Renk</td><td>G1 Untouched · G2 Natural · G3 Warm Room · G4 Cool Studio · <b>G5 Punchy</b> · G6 Film</td></tr>
+    <tr><td><b>S</b> Ses</td><td>S1 YouTube −14 · S2 Podcast −16 · S3 Broadcast −23 · <b>S4 Social −14 Tight</b> · S5 Rescue</td></tr>
+    <tr><td><b>P</b> Tempo</td><td>P1 Breathing Room · P2 Tidy · <b>P3 Tight</b></td></tr>
+    <tr><td><b>L</b> Etiketler</td><td>L1 Editorial Labels · L2 Spaced Chapters · L3 Line Chapters</td></tr>
+  </table>
+  <h3>Reels kodu: O6 W3 A3 G5 S4 P3</h3>
+<pre>lionstone styles --cmd O6 W3 A3 G5 S4 P3
+<span class="c"># çıktısı:</span>
+lionstone edit video.mp4 --title-effect P05 --captions burn --caption-style social \
+  --aspect 9:16 --reframe face --color punchy --profile social \
+  --denoise light --intensity dynamic</pre>
+  <h3>Başlangıç tarifleri</h3>
+  <div class="grid2">
+    <div class="card"><h4>Konuşan kafa Reels</h4><p class="mono small gold">O6 W3 A3 G5 S4 P3</p><p class="small">Hızlı kanca, vurgulanan kelimeler, telefona uygun ses.</p></div>
+    <div class="card"><h4>Podcast kesiti</h4><p class="mono small gold">O1 W1 A2 G2 S2 P2 L1</p><p class="small">Sakin, okunaklı, ses uygulamalarına uygun ses seviyesi.</p></div>
+    <div class="card"><h4>Sinematik konuşma</h4><p class="mono small gold">O4 W4 A2 G6 S1 P1 L2</p><p class="small">Yavaş, premium, görüntüde altyazı yok.</p></div>
+    <div class="card"><h4>Kurumsal anlatım</h4><p class="mono small gold">O3 W1 A2 G4 S1 P2 L3</p><p class="small">Temiz, serin ve derli toplu.</p></div>
+  </div>
+  <p class="cap mt2"><code>lionstone styles --open</code> görsel rehberi açar. A3 ve A5 yüz takibi ister: <code>pip install "lionstone[vision]"</code>.</p>
+  <div class="foot"><span>Lionstone Pro &amp; Studio v0.3.2</span><span class="pn">5</span></div>
+</section>
+
+<!-- 6 · GÖRÜNÜMLER -->
+<section data-ch="04" class="page">
+  <div class="run"><span><b>04</b> · Görünümler ve renk</span><span>Lionstone Reels Kitapçığı</span></div>
+  <div class="chapter-no">04</div>
+  <h2>Görünümler ve renk</h2>
+  <p class="lead">Görünüm (look), videonun tamamına uygulanan tutarlı bir renk derecelendirmesidir. Her görünümün tüm ayarları birlikte ölçekleyen bir <code>intensity</code> değeri vardır ve ten rengini korumak için doygunluk sınırlanır.</p>
+  <figure class="figure short"><img src="img/03-looks.jpg" alt=""><figcaption>Konsept çizim: tek kare, altı farklı renk.</figcaption></figure>
+  <table>
+    <tr><th>Aile</th><th>Görünümler</th><th>En uygun</th></tr>
+    <tr><td>Doğal</td><td>Natural Neutral · Clean Daylight · True-to-Life · Low Saturation</td><td>röportaj, belgesel</td></tr>
+    <tr><td>Sinematik</td><td>Warm Cinema · Cool Cinema · Muted Film</td><td>hikâye, marka filmi</td></tr>
+    <tr><td>Editoryal</td><td>Soft Contrast · Matte Editorial</td><td>dergi tadında konuşmalar</td></tr>
+    <tr><td>Sıcak / soğuk</td><td>Golden Hour · Warm Interior · Steel Blue · Cool Shadow</td><td>atmosfer, teknoloji</td></tr>
+    <tr><td>Retro ve gece</td><td>Analog Soft · Vintage Fade · Night Detail · Neon Balance</td><td>nostalji, gece hayatı, müzik</td></tr>
+    <tr><td>Siyah-beyaz</td><td>Classic B&amp;W · High-Contrast Mono</td><td>alıntı, dram</td></tr>
+    <tr><td>Ürün ve emlak</td><td>Product Neutral · Detail Pop · Bright Interior · Window Balance · Natural Exterior</td><td>e-ticaret, emlak</td></tr>
+    <tr><td>Sosyal</td><td><b>Punchy Social</b> · Soft Skin-Safe</td><td>Reels, Shorts, TikTok</td></tr>
+  </table>
+<pre>lionstone fx list --kind look
+lionstone fx preview look-golden-hour --input talk.mp4 --start 20 --before-after
+lionstone fx apply plan.json look-punchy-social --global --param intensity=0.7
+lionstone fx apply plan.json color-controls --global   <span class="c"># elle: pozlama, eğriler, sıcaklık/ton, canlılık…</span>
+lionstone fx apply plan.json lut --global              <span class="c"># kendi .cube dosyanız; kaynağı/lisansı kaydedilir</span></pre>
+  <div class="note"><b>Videoya tek görünüm.</b> Görünümleri üst üste bindirmek yerine tek bir renk seçip yoğunluğunu ayarlayın; her kesmede rengi değişen bir Reels stil gibi değil, hata gibi okunur.</div>
+  <div class="foot"><span>Lionstone Pro &amp; Studio v0.3.2</span><span class="pn">6</span></div>
+</section>
+
+<!--GALLERY:looks-->
+
+<!-- 7 · EFEKTLER -->
+<section data-ch="05" class="page">
+  <div class="run"><span><b>05</b> · Efektler, geçişler, hareket</span><span>Lionstone Reels Kitapçığı</span></div>
+  <div class="chapter-no">05</div>
+  <h2>Efektler, geçişler, hareket</h2>
+  <p class="lead">Son dokunuş araç kutusu. Hepsi FFmpeg filtreleriyle üretilir: hazır stok katman ya da gömülü görüntü yoktur.</p>
+  <h3>Efektler: 19 hazır</h3>
+  <table>
+    <tr><th>Grup</th><th>Presetler ve ne yaptıkları</th></tr>
+    <tr><td>Işık</td><td><b>Soft Bloom</b> parlak alanlarda ışıma · <b>Light Leak</b> süzülen sıcak ışık · <b>Halation</b> parlak kenarlarda kırmızı film ışıması · <b>Haze</b> yumuşak pus</td></tr>
+    <tr><td>Odak ve zoom</td><td><b>Smooth Zoom</b> yumuşak, yüzü kadrajda tutan · <b>Quick Punch-In</b> önemli cümlede vurgu · <b>Focus Pull</b> netlik kaydırma · <b>Directional Blur</b> · <b>Motion Blur</b></td></tr>
+    <tr><td>Doku</td><td><b>Film Grain</b> · <b>VHS Texture</b> · <b>Film Burn</b> · <b>Subtle Glitch</b> (saniyede en fazla 3) · <b>Chromatic Shift</b></td></tr>
+    <tr><td>Kadraj</td><td><b>Soft Vignette</b> · <b>Letterbox</b> · <b>Beat Flash</b> (vuruşlarda ya da her N saniyede)</td></tr>
+    <tr><td>Temizlik</td><td><b>Exposure Balance</b> · <b>Noise Reduction</b> · <b>Stabilization</b> (kısmi: tek geçişli titreşim giderme)</td></tr>
+  </table>
+  <div class="grid2">
+    <div>
+      <h3>Geçişler: 11 hazır</h3>
+      <div class="chips"><span class="chip">hard-cut</span><span class="chip">dip-to-black</span><span class="chip">dip-to-white</span><span class="chip">fade-through-color</span><span class="chip">whip-pan</span><span class="chip">zoom-through</span><span class="chip">light-leak-flash</span><span class="chip">film-burn-flash</span><span class="chip">blur-cut</span><span class="chip">glitch-cut</span><span class="chip">rgb-shift-cut</span></div>
+      <p class="small">Geçişler bir kesmeye oturur: <code>--join N</code> ya da <code>--all-joins</code>. Reels için <code>zoom-through</code> ve <code>whip-pan</code> enerjiyi korur; <code>blur-cut</code> konu değişimini yumuşakça gizler.</p>
+    </div>
+    <div>
+      <h3>Hareket: 6 hazır</h3>
+      <div class="chips"><span class="chip">gentle-push-in</span><span class="chip">slow-pull-back</span><span class="chip">ken-burns-pan</span><span class="chip">vertical-drift</span><span class="chip">product-hero-reveal</span><span class="chip">keyframe-transform</span></div>
+      <p class="small"><code>keyframe-transform</code> ölçek, X/Y ve dönüş için kendi anahtar karelerinizi altı yumuşatma eğrisiyle alır.</p>
+    </div>
+  </div>
+<pre>lionstone fx apply plan.json quick-punch-in --source 12.4-14.0
+lionstone fx apply plan.json zoom-through --join 2
+lionstone fx apply plan.json keyframe-transform --segment 3 \
+  --keyframes '{"zoom":[{"t":0,"v":1},{"t":2,"v":1.2}]}'</pre>
+  <div class="foot"><span>Lionstone Pro &amp; Studio v0.3.2</span><span class="pn">7</span></div>
+</section>
+
+<!--GALLERY:effects-->
+
+<!-- 8 · YAZI -->
+<section data-ch="06" class="page">
+  <div class="run"><span><b>06</b> · Yazı ve altyazı</span><span>Lionstone Reels Kitapçığı</span></div>
+  <div class="chapter-no">06</div>
+  <h2>Yazı ve altyazı</h2>
+  <p class="lead">Başlık, sayı, etiket ve harekete geçirici mesaj için 25 animasyonlu yazı preseti ve 3 altyazı stili. Yazılar <code>--at</code> ile bitmiş videodaki saniyeye yerleştirilir.</p>
+  <table>
+    <tr><th>Kullanım</th><th>Presetler</th></tr>
+    <tr><td>Başlıklar</td><td>Editorial Fade · Minimal Rise · Tracking Reveal · Line Reveal · Chapter Card · Mask Reveal · Soft Light Sweep · Depth Title · Film Title</td></tr>
+    <tr><td>Kancalar</td><td><b>Word Pop</b> kelime kelime · <b>Staggered Words</b> · <b>Phrase Build</b> · <b>Type-On</b></td></tr>
+    <tr><td>Sayılar</td><td><b>Counter Up</b> · <b>Price Reveal</b> (isteğe bağlı eski fiyat) · <b>Stat Emphasis</b></td></tr>
+    <tr><td>Etiketler</td><td>Speaker Label · Pin Label · Name &amp; Role · Location Label · Minimal Info Bar</td></tr>
+    <tr><td>Marka ve CTA</td><td>Logo Reveal · Brand Lockup (marka kitini kullanır) · Signature End Card · <b>Call to Action</b></td></tr>
+  </table>
+  <h3>Altyazı stilleri</h3>
+  <div class="grid3">
+    <div class="card"><h4>Clean Captions</h4><p class="small">Beyaz, konturlu, alt güvenli alanda. Her yerde çalışır.</p></div>
+    <div class="card"><h4>Active Word</h4><p class="small">Söylenen kelime vurgu rengiyle öne çıkar. Reels için.</p></div>
+    <div class="card"><h4>Karaoke</h4><p class="small">Kelimeler söylendikçe renkle dolar.</p></div>
+  </div>
+<pre>lionstone fx text plan.json word-pop --text "Saat kazandıran 3 kurgu" --at 1.2 --duration 2.5
+lionstone fx text plan.json counter-up --text "saat kazanç" --at 14.5 --param to=12
+lionstone fx text plan.json price-reveal --text "8.450.000 TL" --at 8
+lionstone fx text plan.json cta --text "2. bölüm için takip et" --subtext "Her hafta yeni ipucu" --at 26
+lionstone fx apply plan.json caption-active-word --global</pre>
+  <div class="note"><b>Kural gereği okunaklı.</b> Her yazı preseti en az okunma süresi kadar ekranda kalır, en küçük font boyutuna uyar ve güvenli alanın içinde durur. Altyazı ayrı bir katmandır; başlıklarla çakışmaz. Yazılar <code>drawtext</code> içeren bir FFmpeg ister; yoksa Lionstone açık bir mesajla yazıları atlar.</div>
+  <div class="foot"><span>Lionstone Pro &amp; Studio v0.3.2</span><span class="pn">8</span></div>
+</section>
+
+<!--GALLERY:text-->
+
+<!-- 9 · REEL FX -->
+<section data-ch="07" class="page dark">
+  <div class="run"><span><b>07</b> · Reel FX Paketi</span><span>Lionstone Reels Kitapçığı</span></div>
+  <div class="chapter-no">07</div>
+  <h2>Reel FX Paketi <span class="sun">· 0.3.2'de yeni</span></h2>
+  <p class="lead">Dikey video için yapılmış on iki efekt. Her biri tek komut; 9:16, 1:1 ve 16:9'da çalışır, önizlemede ve çıktıda aynı FFmpeg koduyla render edilir.</p>
+  <figure class="figure"><img src="img/real-renders.png" alt=""><figcaption><b class="sun">Gerçek render.</b> Aynı klip 12 efektin hepsinden geçmiş hâliyle, doğrudan dışa aktarma kodundan.</figcaption></figure>
+  <div class="grid2">
+    <div>
+      <h3 class="mt0">İki aile</h3>
+      <ul>
+        <li><b>8 yaratıcı efekt</b> <span class="pill">pro</span>: kanca, alıntı ve öne çıkan anlar için görünüm ve katmanlar.</li>
+        <li><b>4 markaya duyarlı efekt</b> <span class="pill studio">studio</span>: renklerini marka kitinizden alan yerleşimler (varsayılan: mürekkep #14161C, altın #E8A33D).</li>
+      </ul>
+      <p class="small">Her ad, görünüm ve parametre Lionstone'a özgündür; lisans alanında <code>lionstone-original</code> yazar.</p>
+    </div>
+<pre style="margin-top:0"><span class="c"># 1 göz at</span>
+lionstone fx list --category reel-fx
+lionstone fx show stage-light
+<span class="c"># 2 gerçek önizleme</span>
+lionstone fx preview stage-light --before-after --gif
+<span class="c"># 3 uygula, sonra render et</span>
+lionstone fx apply plan.json stage-light --source 0-3.5
+lionstone fx render plan.json</pre>
+  </div>
+  <div class="note mt2"><b>Parametreler doğrulanır</b> (tür, aralık, renk biçimi). Geçersiz değerler tahmin edilmez, reddedilir. Efektler yalnızca kendi pencerelerinde çalışır; dışında klibe dokunulmaz. <code>x</code>, <code>y</code> ve <code>radius</code> karenin oranıdır (0 = sol/üst, 1 = sağ/alt).</div>
+  <div class="foot"><span>Lionstone Pro &amp; Studio v0.3.2</span><span class="pn">9</span></div>
+</section>
+
+<!--GALLERY:reelfx-->
+
+<!-- 10 · YARATICI 1-4 -->
+<section class="page">
+  <div class="run"><span><b>07</b> · Reel FX · yaratıcı efektler</span><span>Lionstone Reels Kitapçığı</span></div>
+  <span class="kicker">Yaratıcı efektler · 1 / 2</span>
+  <h2>Kancalar, alıntılar, öne çıkan anlar</h2>
+  <figure class="figure"><img src="img/04-reelfx-creative.jpg" alt=""><figcaption>Konsept çizim: stage-light, neon-outline, halo-orbit ve scan-line.</figcaption></figure>
+  <div class="grid2">
+    <div class="card"><h4><code>stage-light</code><span class="pill cost">düşük</span></h4>
+      <p class="promise">Oda kararır, siz aydınlıkta kalırsınız.</p>
+      <dl><dt>Parametre</dt><dd><code>intensity</code> 0.7 · <code>x</code> 0.5 · <code>y</code> 0.36 · <code>size</code> 0.5</dd>
+      <dt>Kullanım</dt><dd>Podcast kancası, asıl önemli cümle, bir açıklama anı.</dd>
+      <dt>Ayar</dt><dd>intensity 0.6–0.8; <code>y</code> göz hizasında (9:16'da ≈0.3–0.4).</dd>
+      <dt>İpucu</dt><dd>Yalnızca 3–5 sn'lik kanca cümlesinde. Klip boyunca süren karanlık artık bir olay değildir.</dd></dl></div>
+    <div class="card"><h4><code>press-mono</code><span class="pill cost">düşük</span></h4>
+      <p class="promise">Yarının gazetesinde siz.</p>
+      <dl><dt>Parametre</dt><dd><code>intensity</code> 0.8 · <code>grain</code> 0.4 · <code>paper</code> #F2EAD8</dd>
+      <dt>Kullanım</dt><dd>Alıntılar, kurucu hikâyeleri, “son dakika” kancaları.</dd>
+      <dt>Ayar</dt><dd>intensity 0.7–0.9, grain 0.3–0.5; daha sıcak kâğıt #EFE2C8 arşiv hissi verir.</dd>
+      <dt>İpucu</dt><dd>Damga gibi bir başlık için <code>stat-emphasis</code> ya da <code>word-pop</code> ile eşleştirin.</dd></dl></div>
+    <div class="card"><h4><code>frost-panels</code><span class="pill cost">orta</span></h4>
+      <p class="promise">Yanınızda buzlu cam kartlar süzülür.</p>
+      <dl><dt>Parametre</dt><dd><code>panels</code> 2 (1–3) · <code>frost</code> 0.6 · <code>tint</code> #FFFFFF</dd>
+      <dt>Kullanım</dt><dd>2–3 çıkarım, özellik listesi, “üç şey” eğitimleri.</dd>
+      <dt>Ayar</dt><dd>Karşılaştırma için 2, liste için 3 panel; marka rengiyle renklendirin.</dd>
+      <dt>İpucu</dt><dd>Her karta <code>pin-label</code> ya da <code>phrase-build</code> ile 2–3 kelime koyun.</dd></dl></div>
+    <div class="card"><h4><code>duotone-pop</code><span class="pill cost">düşük</span></h4>
+      <p class="promise">İki renk, sıfır gürültü.</p>
+      <dl><dt>Parametre</dt><dd><code>intensity</code> 1.0 · <code>shadow</code> #1A1238 · <code>highlight</code> #FF8A3D</dd>
+      <dt>Kullanım</dt><dd>Tanıtım, giriş, kapanış, kapak görseli, marka serileri.</dd>
+      <dt>Ayar</dt><dd>İki renk arasında güçlü parlaklık farkı; daha yumuşak ton için 0.6.</dd>
+      <dt>İpucu</dt><dd>İlk 1–2 sn kullanıp doğal görüntüye kesin. Kancayı değişimin kendisi kurar.</dd></dl></div>
+  </div>
+  <div class="foot"><span>Lionstone Pro &amp; Studio v0.3.2</span><span class="pn">10</span></div>
+</section>
+
+<!-- 11 · YARATICI 5-8 -->
+<section class="page">
+  <div class="run"><span><b>07</b> · Reel FX · yaratıcı efektler</span><span>Lionstone Reels Kitapçığı</span></div>
+  <span class="kicker">Yaratıcı efektler · 2 / 2</span>
+  <h2>Hareket, ışık ve kontur</h2>
+  <div class="grid2 mt4">
+    <div class="card"><h4><code>scan-line</code><span class="pill cost">orta</span></h4>
+      <p class="promise">Bir ışık huzmesi kareyi okur.</p>
+      <dl><dt>Parametre</dt><dd><code>intensity</code> 0.7 · <code>speed</code> 0.6 tarama/sn (0.2–2) · <code>color</code> #7CF5FF</dd>
+      <dt>Kullanım</dt><dd>Yapay zekâ ve teknoloji anlatımları, “hadi analiz edelim”, önce/sonra.</dd>
+      <dt>Ayar</dt><dd>Bir iki sakin geçiş için speed 0.5–0.8.</dd>
+      <dt>İpucu</dt><dd>Pencere süresi = 1 / speed olursa tam bir bilinçli tarama elde edersiniz.</dd></dl></div>
+    <div class="card"><h4><code>afterimage</code><span class="pill cost">orta</span></h4>
+      <p class="promise">Her hareket bir iz bırakır.</p>
+      <dl><dt>Parametre</dt><dd><code>intensity</code> 0.8 · <code>decay</code> 0.92 (0.5–0.99)</dd>
+      <dt>Kullanım</dt><dd>Enerjik kancalar, jestler, müzik, dönen ürünler.</dd>
+      <dt>Ayar</dt><dd>decay 0.88–0.95; yükseldikçe iz uzar.</dd>
+      <dt>İpucu</dt><dd>İz parlak alanlardan doğar: aydınlık özne, koyu arka plan. Durağan karede hiçbir şey görünmez.</dd></dl></div>
+    <div class="card"><h4><code>halo-orbit</code><span class="pill cost">orta</span></h4>
+      <p class="promise">Başınızın çevresinde bir ışık halkası döner.</p>
+      <dl><dt>Parametre</dt><dd><code>color</code> #FFD27A · <code>x</code> 0.5 · <code>y</code> 0.2 · <code>radius</code> 0.3 · <code>dots</code> 8 (3–12) · <code>speed</code> 0.3 tur/sn</dd>
+      <dt>Kullanım</dt><dd>“Büyük fikir” anları, düşünce liderliği, girişler.</dd>
+      <dt>Ayar</dt><dd>y 0.15–0.25, radius 0.25–0.35, dots 6–8, speed 0.2–0.4.</dd>
+      <dt>İpucu</dt><dd>Konuşmacının önüne çizilir; yakın planda gözlerin üstünde tutun.</dd></dl></div>
+    <div class="card"><h4><code>neon-outline</code><span class="pill cost">orta</span></h4>
+      <p class="promise">Neon, silüetinizin çevresini çizer.</p>
+      <dl><dt>Parametre</dt><dd><code>intensity</code> 0.75 · <code>detail</code> 0.5 · <code>color</code> #FF4FD8</dd>
+      <dt>Kullanım</dt><dd>Teknoloji, oyun, müzik, stilize tanıtımlar, bölüm geçişleri.</dd>
+      <dt>Ayar</dt><dd>Kalabalık odada detail 0.3–0.5, sade fonda 0.6+.</dd>
+      <dt>İpucu</dt><dd>Sade bir arka plan silüeti kahraman yapar.</dd></dl></div>
+  </div>
+  <h3>Tipik komutlar</h3>
+<pre>lionstone fx apply plan.json scan-line  --source 12.0-16.5 --param color=#7CF5FF
+lionstone fx apply plan.json halo-orbit --source 30-34 --param dots=6 --param y=0.18
+lionstone fx apply plan.json afterimage --source 4.0-6.0 --param decay=0.9
+lionstone fx preview halo-orbit --input talk.mp4 --start 12 --param dots=6</pre>
+  <div class="note"><b>Eşleştirin, yığmayın.</b> Bir Reel FX efekti, bir görünüm ve altyazı birlikte stil olarak okunur. Aynı saniyede üç efekt gürültüdür; efekt bütçesi buna zaten izin vermez (bkz. 11. bölüm).</div>
+  <div class="foot"><span>Lionstone Pro &amp; Studio v0.3.2</span><span class="pn">11</span></div>
+</section>
+
+<!-- 12 · MARKA -->
+<section class="page">
+  <div class="run"><span><b>07</b> · Reel FX · markaya duyarlı efektler</span><span>Lionstone Reels Kitapçığı</span></div>
+  <span class="kicker">Markaya duyarlı efektler</span>
+  <h2>Rakamlarınız, çerçeveniz, açılışınız</h2>
+  <p class="lead">Bu dört efekt renklerini parametre olarak alır; marka kiti bunları tüm ekip için bir kez ayarlar.</p>
+  <figure class="figure"><img src="img/05-reelfx-brand.jpg" alt=""><figcaption>Konsept çizim: insight-split, brand-frame ve pixel-resolve.</figcaption></figure>
+  <div class="grid2">
+    <div class="card"><h4><code>insight-split</code><span class="pill cost">orta</span></h4>
+      <p class="promise">Üstte rakamlarınız, altta siz.</p>
+      <dl><dt>Parametre</dt><dd><code>split</code> 0.38 · <code>bars</code> 5 (2–7) · <code>values</code> · <code>bg</code> · <code>accent</code></dd>
+      <dt>Kullanım</dt><dd>Sonuçlar, büyüme, pazar verisi, fiyatlar.</dd>
+      <dt>İpucu</dt><dd>Gerçek veri verin: <code>values=0.3,0.55,0.9</code>; sayı için <code>counter-up</code> ekleyin.</dd></dl></div>
+    <div class="card"><h4><code>brand-frame</code><span class="pill cost">düşük</span></h4>
+      <p class="promise">Klibiniz, markanızın çerçevesinde.</p>
+      <dl><dt>Parametre</dt><dd><code>inset</code> 0.84 (0.7–0.95) · <code>bg</code> · <code>accent</code></dd>
+      <dt>Kullanım</dt><dd>Seri formatlar, alıntılar, konuk tanıtımı, müşteri videoları.</dd>
+      <dt>İpucu</dt><dd>0.8–0.88 inset başlık ve altyazıya yer bırakır. Ekip presetine koyun.</dd></dl></div>
+    <div class="card"><h4><code>progress-rail</code><span class="pill cost">düşük</span></h4>
+      <p class="promise">Adımları saydıkça bir ray dolar.</p>
+      <dl><dt>Parametre</dt><dd><code>steps</code> 5 (2–8) · <code>side</code> left/right/top · <code>track</code> · <code>accent</code></dd>
+      <dt>Kullanım</dt><dd>Eğitimler, listeler, tarifler, kontrol listeleri.</dd>
+      <dt>İpucu</dt><dd>Adım sayısı = anlattığınız madde sayısı; altyazı alttaysa <code>side=top</code>.</dd></dl></div>
+    <div class="card"><h4><code>pixel-resolve</code><span class="pill cost">yüksek</span></h4>
+      <p class="promise">Görüntünüz piksellerden toplanır.</p>
+      <dl><dt>Parametre</dt><dd><code>duration</code> 1.2 sn (0.4–3) · <code>tone_a</code> · <code>tone_b</code></dd>
+      <dt>Kullanım</dt><dd>Açılışlar, açıklama anları, sahne geçişleri, marka girişleri.</dd>
+      <dt>İpucu</dt><dd>Bir kesmeden sonraki 1–2 sn'lik pencere (<code>--source 0-1.5</code>) her bölümü aynı şekilde başlatır.</dd></dl></div>
+  </div>
+  <div class="foot"><span>Lionstone Pro &amp; Studio v0.3.2</span><span class="pn">12</span></div>
+</section>
+
+<!-- 13 · VİTRİN -->
+<section class="page dark">
+  <div class="run"><span><b>07</b> · Reel FX · vitrin videosu</span><span>Lionstone Reels Kitapçığı</span></div>
+  <span class="kicker">FX Showcase Reel</span>
+  <h2>Tek komut, tek klip, tek efekt</h2>
+  <p class="lead"><code>lionstone fx showcase</code>, herhangi bir efekti Lionstone konsol tasarımında 6,4 saniyelik, 1080×1920, 30 fps dikey bir videoya dönüştürür. “Bunu tek komutla kurguladım” paylaşımı için hazır bir gönderidir.</p>
+<pre>lionstone fx showcase stage-light talk.mp4 -o stage-light-reel.mp4
+lionstone fx showcase halo-orbit talk.mp4 --start 12 --param dots=6</pre>
+  <!--GALLERY:showcase-->
+  <table>
+    <tr><th>Süre</th><th>İzleyicinin gördüğü</th></tr>
+    <tr><td class="mono nowrap">0.00–1.00 sn</td><td>Lionstone konsolu, bir kartta klibiniz, yanıp sönen imleç</td></tr>
+    <tr><td class="mono nowrap">1.00–2.50 sn</td><td><code>lionstone fx apply &lt;efekt&gt;</code> kendini yazar; bir kart efektin adını ve vaadini gösterir</td></tr>
+    <tr><td class="mono nowrap">2.50–3.80 sn</td><td>“Rendering… REAL RENDER” yazarken klip altın/mürekkep piksel dokusuyla erir</td></tr>
+    <tr><td class="mono nowrap">3.80–6.40 sn</td><td>Gerçek render “Edited with Lionstone” etiketiyle ekranı doldurur ve bekler</td></tr>
+  </table>
+  <h3>Seriye dönüştürün</h3>
+  <ul>
+    <li>Gönderiler arasında giriş klibini aynı tutun. Aynı “önce”, numaralı bir seriyi karşılaştırılabilir kılar.</li>
+    <li>Efekt başına bir gönderi: tek kayıttan 12 gönderi.</li>
+    <li>“Sonra” görüntüsü dışa aktarma koduyla render edilir; video asla taklit bir sonuç göstermez.</li>
+  </ul>
+  <div class="grid3 mt4">
+    <div class="stat"><b>6,4 sn</b><span>sabit süre, temiz döngü</span></div>
+    <div class="stat"><b>1080×1920</b><span>dikey, 30 fps</span></div>
+    <div class="stat"><b>1</b><span>gönderi başına komut</span></div>
+  </div>
+  <div class="foot"><span>Lionstone Pro &amp; Studio v0.3.2</span><span class="pn">13</span></div>
+</section>
+
+<!-- 14 · REELS 1 -->
+<section data-ch="08" class="page">
+  <div class="run"><span><b>08</b> · Adım adım bir Reels</span><span>Lionstone Reels Kitapçığı</span></div>
+  <div class="chapter-no">08</div>
+  <h2>Adım adım bir Reels</h2>
+  <p class="lead">Brif: tek bir konuşan kafa kaydından “Saat kazandıran 3 kurgu” başlıklı 30 saniyelik dikey bir Reels. İlk saniyede kanca, üç çıkarım, bir rakam, net bir çağrı.</p>
+  <figure class="figure"><img src="img/06-storyboard.jpg" alt=""><figcaption>Konsept storyboard: piksel açılış → stage-light kancası → üç cam kart → veri bölmesi → ilerleme rayı → harekete geçirici mesaj.</figcaption></figure>
+  <h3>Sahne akışı</h3>
+  <table class="beats">
+    <tr><th>Süre</th><th>Sahne</th><th>Araç</th><th>Neden</th></tr>
+    <tr><td>0.0–1.2</td><td>Açılış</td><td><code>pixel-resolve</code></td><td>Markalı ilk kare kaydırmayı durdurur</td></tr>
+    <tr><td>1.2–3.7</td><td>Kanca cümlesi</td><td><code>stage-light</code> + <code>word-pop</code></td><td>Işık ve kelimeler vaade odaklanır</td></tr>
+    <tr><td>3.7</td><td>İlk kesme</td><td><code>zoom-through</code></td><td>İçeriğe ivmeyle girer</td></tr>
+    <tr><td>8.1–13.4</td><td>Üç çıkarım</td><td><code>frost-panels</code> (3)</td><td>Gözün sayabileceği bir liste</td></tr>
+    <tr><td>13.5–19.8</td><td>Kanıt</td><td><code>insight-split</code> + <code>counter-up</code></td><td>Rakamlar inandırır</td></tr>
+    <tr><td>19.8</td><td>Kesme</td><td><code>glitch-cut</code></td><td>Adımlardan önce bir vuruş</td></tr>
+    <tr><td>19.8–25.1</td><td>Adımlar</td><td><code>progress-rail</code> (3, üstte)</td><td>İlerlemeyi gösterir, sonuna kadar izletir</td></tr>
+    <tr><td>26.0–29.8</td><td>Kapanış</td><td><code>cta</code></td><td>Tek ve net bir sonraki adım</td></tr>
+    <tr><td>tümü</td><td>Temel</td><td><code>look-punchy-social</code> + <code>caption-active-word</code></td><td>Telefonda okunur; sessizde de çalışır</td></tr>
+  </table>
+  <div class="foot"><span>Lionstone Pro &amp; Studio v0.3.2</span><span class="pn">14</span></div>
+</section>
+
+<!-- 15 · REELS 2 -->
+<section class="page">
+  <div class="run"><span><b>08</b> · Adım adım bir Reels</span><span>Lionstone Reels Kitapçığı</span></div>
+  <span class="kicker">Komutlar</span>
+  <h2>Kayıttan Reels'e</h2>
+  <p class="small"><b>Süreler:</b> <code>--source</code> orijinal kayıttaki saniyeleri, <code>--at</code> bitmiş Reels'teki saniyeleri kullanır. Ölü boşluklar atıldıktan sonra ikisinin nasıl eşleştiğini görmek için <code>lionstone fx segments</code> çalıştırın.</p>
+<pre><span class="c"># 1 · yüz takipli dikey kurgu, sonra bölümleri gör</span>
+lionstone edit talk.mp4 --aspect 9:16 --reframe face --profile social
+lionstone fx segments talk_lionstone/plan.json
+P=talk_lionstone/plan.json
+
+<span class="c"># 2 · temel: tek görünüm + kelime vurgulu altyazı</span>
+lionstone fx apply $P look-punchy-social --global --param intensity=0.7
+lionstone fx apply $P caption-active-word --global
+
+<span class="c"># 3 · açılış ve kanca</span>
+lionstone fx apply $P pixel-resolve --source 0-1.2 --param duration=1.0
+lionstone fx apply $P stage-light   --source 1.2-3.7 --param intensity=0.75 --param y=0.34
+lionstone fx text  $P word-pop --text "Saat kazandıran 3 kurgu" --at 1.2 --duration 2.5
+lionstone fx apply $P zoom-through --join 0
+
+<span class="c"># 4 · içerik: çıkarımlar, kanıt, adımlar</span>
+lionstone fx apply $P frost-panels  --source 10.4-15.7 --param panels=3
+lionstone fx apply $P insight-split --source 16.9-23.2 --param values=0.25,0.5,0.9
+lionstone fx text  $P counter-up --text "saat kazanç" --at 14.5 --duration 4 --param to=12
+lionstone fx apply $P glitch-cut --join 3
+lionstone fx apply $P progress-rail --source 24.1-29.4 --param steps=3 --param side=top
+
+<span class="c"># 5 · kapanış, kontrol, render</span>
+lionstone fx text  $P cta --text "2. bölüm için takip et" --subtext "Her hafta yeni ipucu" --at 26 --duration 3.8
+lionstone fx applied $P
+lionstone fx render $P</pre>
+  <div class="ok"><b>v0.3.2 ile doğrulandı.</b> Bu komut dizisi birebir, 35 saniyelik 1080×1920 bir test kaydında çalıştırıldı: 1080×1920, 30 fps, 29,8 sn çıktı; QA sonucu <i>17 kontrol çalıştı, 4 atlandı (raporlandı), sorun yok: teslime hazır</i>.</div>
+  <h3>İnce ayar turları</h3>
+  <ul class="small">
+    <li><b>Değer değiştir:</b> <code>lionstone fx set $P &lt;instance-id&gt; --param intensity=0.6</code>, sonra yeniden render.</li>
+    <li><b>Birini kaldır:</b> <code>lionstone fx remove $P &lt;instance-id&gt;</code>. ID'leri <code>fx applied</code> listeler.</li>
+    <li><b>Tanıtım klibi:</b> 6,4 sn'lik eşlikçi klip için <code>lionstone fx showcase stage-light talk.mp4</code>.</li>
+  </ul>
+  <div class="foot"><span>Lionstone Pro &amp; Studio v0.3.2</span><span class="pn">15</span></div>
+</section>
+
+<!--GALLERY:reel-->
+
+<!-- 16 · TARİFLER -->
+<section data-ch="09" class="page">
+  <div class="run"><span><b>09</b> · Tarifler</span><span>Lionstone Reels Kitapçığı</span></div>
+  <div class="chapter-no">09</div>
+  <h2>İçerik türüne göre tarifler</h2>
+  <p class="lead">Efekt bütçesine uyan başlangıç noktaları. Süreleri kendinize göre değiştirin, yapıyı koruyun.</p>
+  <div class="grid2">
+    <div class="card"><h4>Podcast kesiti</h4><p class="small">Bölüm için <span class="mono gold">O1 W1 A2 G2 S2 P2 L1</span> kodu; Reels için <code>clips</code> ile kesin.</p>
+<pre>lionstone clips plan.json -n 5 --aspect 9:16 --reframe face
+lionstone fx apply $P stage-light --source 0-3.5</pre></div>
+    <div class="card"><h4>Alıntı kartı</h4><p class="small">Belgesel havası, damga gibi tek başlık.</p>
+<pre>lionstone fx apply $P press-mono --source 41.2-47.0
+lionstone fx text $P word-pop --text "…" --at 1</pre></div>
+    <div class="card"><h4>Emlak turu</h4><p class="small">Aydınlık odalar, bir fiyat, bir konum.</p>
+<pre>lionstone fx apply $P look-bright-interior --global
+lionstone fx apply $P vertical-drift --segment 2
+lionstone fx text $P price-reveal --text "8.450.000 TL" --at 8
+lionstone fx text $P location-label --text "Kaleiçi" --at 3</pre></div>
+    <div class="card"><h4>Ürün lansmanı</h4><p class="small">Nötr renk, kahraman hareketi, duotone giriş.</p>
+<pre>lionstone fx apply $P look-product-neutral --global
+lionstone fx apply $P duotone-pop --source 0-1.5
+lionstone fx apply $P product-hero-reveal --segment 1</pre></div>
+    <div class="card"><h4>Eğitim / liste</h4><p class="small">Adımları sayın, her birini etiketleyin.</p>
+<pre>lionstone fx apply $P progress-rail --source 30-90 --param steps=5
+lionstone fx apply $P frost-panels --source 20-32 --param panels=3</pre></div>
+    <div class="card"><h4>Teknoloji / yapay zekâ</h4><p class="small">Serin renk, açıklama anında tarayan ışık.</p>
+<pre>lionstone fx apply $P look-steel-blue --global
+lionstone fx apply $P scan-line --source 12-13.7 --param speed=0.6</pre></div>
+  </div>
+  <p class="cap mt2">Emin değil misiniz? <code>lionstone fx auto plan.json --content vlog --style social --dry-run</code> her seçimin gerekçesiyle tutarlı bir set önerir. İçerik: podcast, interview, talk, lecture, real-estate, product, vlog, music, corporate. Stil: cinematic, minimal, energetic, documentary, social.</p>
+  <div class="foot"><span>Lionstone Pro &amp; Studio v0.3.2</span><span class="pn">16</span></div>
+</section>
+
+<!-- 17 · ÖTESİ -->
+<section data-ch="10" class="page">
+  <div class="run"><span><b>10</b> · Reels'in ötesi</span><span>Lionstone Reels Kitapçığı</span></div>
+  <div class="chapter-no">10</div>
+  <h2>Reels'in ötesi</h2>
+  <figure class="figure short"><img src="img/07-team.jpg" alt=""><figcaption>Konsept çizim: ortak marka kiti, roller, kilitli presetler ve proje teslimi.</figcaption></figure>
+  <table>
+    <tr><th>Komut</th><th>Ne yapar</th></tr>
+    <tr><td><code>lionstone fx auto</code></td><td>Lionstone Ajanı tek bir görünüm, vurgu zoomları ve gerçek konu değişimlerinde geçişler önerir; her birinin gerekçesiyle.</td></tr>
+    <tr><td><code>lionstone clips plan.json -n 5</code></td><td>Güçlü bir ilk cümleyle başlayan, kendi başına anlamlı anları bulur; yüz takibi, kanca başlığı ve kelime vurgulu altyazıyla 9:16 render eder. <code>--llm</code> kendi Claude API anahtarınızla yeniden sıralar.</td></tr>
+    <tr><td><code>lionstone multicam</code></td><td>Kameraları ve mikrofonları sese göre senkronlar, saat kaymasını yakalar, mikrofon sızmasını keser ve konuşan kişiye geçer.</td></tr>
+    <tr><td><code>lionstone style learn a.mp4 b.mp4</code></td><td>Beğendiğiniz videolardan kesme ritmi, duraklama, ses seviyesi ve rengi öğrenir; yeni kurgularda kullanır.</td></tr>
+    <tr><td><code>lionstone variants talk.mp4</code></td><td>Doğal, sinematik ve dinamik kurguları yan yana verir.</td></tr>
+    <tr><td><code>lionstone export plan.json</code></td><td>DaVinci Resolve ve Final Cut Pro için FCPXML 1.10, Premiere Pro için CMX3600 EDL; orijinal medyanıza bağlı.</td></tr>
+    <tr><td><code>lionstone brand create kit.json --team</code></td><td>Marka kiti: renkler, lisanslı fontlar, logo, alt bant, CTA, bitiş kartı, imza görünüm ve geçiş.</td></tr>
+    <tr><td><code>lionstone team init "ACME"</code></td><td>Paylaşılan klasörde ya da git deposunda roller (viewer, editor, admin, owner); hiçbir şey yüklenmez.</td></tr>
+    <tr><td><code>lionstone preset save … --team --locked</code></td><td>Geçmişi ve geri alması olan sürümlü ekip presetleri; kilitlileri yalnızca yöneticiler değiştirir.</td></tr>
+    <tr><td><code>lionstone fx batch &lt;id&gt; projects/*/plan.json</code></td><td>Tek bir görünüm ya da geçişi bütün bir sezona uygular.</td></tr>
+    <tr><td><code>lionstone mcp</code></td><td>MCP sunucusu: Claude, Cursor ya da herhangi bir MCP istemcisi kurguyu planlayıp inceleyip render edebilir.</td></tr>
+  </table>
+  <div class="foot"><span>Lionstone Pro &amp; Studio v0.3.2</span><span class="pn">17</span></div>
+</section>
+
+<!-- 18 · KURALLAR -->
+<section data-ch="11" class="page">
+  <div class="run"><span><b>11</b> · Kurallar, QA ve sınırlar</span><span>Lionstone Reels Kitapçığı</span></div>
+  <div class="chapter-no">11</div>
+  <h2>Kurallar, QA ve dürüst sınırlar</h2>
+  <div class="grid2">
+    <div>
+      <h3 class="mt0">Efekt bütçesi</h3>
+      <ul>
+        <li>Aynı anda en fazla <b>bir ana + bir yardımcı efekt</b>.</li>
+        <li>İki <b>yüksek maliyetli</b> efekt asla çakışmaz (<code>pixel-resolve</code> ve <code>stabilization</code> yüksek maliyetlidir).</li>
+        <li>Efektler pencerelerinin içinde girer ve çıkar, dışında asla hareket etmez.</li>
+        <li>Flaş sınırı: saniyede en fazla <b>3 flaş</b>; glitch efektleri de buna göre sınırlanır.</li>
+      </ul>
+      <h3>Teslimden önce QA</h3>
+      <p class="small">Her render baştan sona çözülür; ses-görüntü senkronu, siyah ve donmuş kareler, EBU R128 ses seviyesi ve gerçek tepe, her birleşimdeki tıklamalar ve altyazı zamanlaması kontrol edilir. Pro; eskimiş planları, flaşları, pozlamayı, doygunluğu ve yüzü kapatan grafikleri (<code>lionstone[vision]</code> ile) ekler.</p>
+      <div class="note"><b>Atlanan, geçmiş sayılmaz.</b> Çalıştırılamayan bir kontrol “geçti” olarak değil, “atlandı” olarak raporlanır.</div>
+    </div>
+    <div>
+      <h3 class="mt0">Dürüst sınırlar</h3>
+      <ul class="small">
+        <li><code>frost-panels</code> ve <code>insight-split</code> ortalanmış bir konuşmacı için sabit, yüze güvenli konumlar kullanır; yüz takibi yapmaz.</li>
+        <li><code>halo-orbit</code> konuşmacının önüne çizilir (derinlik sıralaması yok).</li>
+        <li><code>afterimage</code> hareket ve parlak alan ister.</li>
+        <li>Marka renkleri marka kitinin verdiği parametrelerdir, videodan okunmaz.</li>
+        <li>İki klip arası çapraz geçiş, partiküller ve özne maskeleme <b>planlıdır</b>, yayında değildir.</li>
+        <li>Yazı presetleri <code>drawtext</code> içeren FFmpeg ister.</li>
+        <li>Remotion kalitesindeki P01–P06 başlıkları Node.js 18+ ve <code>cd remotion &amp;&amp; npm ci</code> ister; yoksa FFmpeg sürümleri kullanılır.</li>
+      </ul>
+      <h3>Gizlilik</h3>
+      <p class="small">Lionstone yerelde ve çevrimdışı çalışır. Görüntünüz yüklenmez; ekip çalışma alanları sizin yönettiğiniz bir klasörde ya da git deposunda durur. API çağıran tek şey kendi anahtarınızla <code>clips --llm</code>'dir.</p>
+    </div>
+  </div>
+  <h3>Gerçek bir QA raporu: 8. bölümdeki Reels</h3>
+<pre><span class="k">QA report: reel.edit.mp4 · Deliverable: yes</span>
+✓ decode_full      every frame and audio packet decoded without errors
+✓ av_length        video/audio length difference 0 ms
+✓ format           1080x1920 @ 30.000 fps (target 1080x1920 @ 30.0)
+✓ loudness         -14.0 LUFS (target -14.0 ±1.0)
+✓ true_peak        -5.8 dBTP (ceiling -1.0)
+✓ join_clicks      inspected 5/5 joins, 0 suspicious
+✓ fx_rendered      12 applied, 0 skipped
+✓ flicker          max 0 strong flashes in any 1 s window (limit 3)
+✓ graphics_rules   3 graphics · overlaps 0 · too short 0 · outside video 0
+<span class="c">- caption_timing   skipped: no transcript (test klibinde konuşma yok)
+- faces_covered    skipped: needs pip install "lionstone[vision]"</span></pre>
+  <p class="cap">Kesit. Raporun tamamı videonun yanına <code>qa.md</code> ve <code>qa.json</code> olarak yazılır.</p>
+  <div class="foot"><span>Lionstone Pro &amp; Studio v0.3.2</span><span class="pn">18</span></div>
+</section>
+
+<!-- 19 · ÖZET -->
+<section data-ch="12" class="page dark">
+  <div class="run"><span><b>12</b> · Komut özeti</span><span>Lionstone Reels Kitapçığı</span></div>
+  <span class="kicker">Bu sayfayı açık tutun</span>
+  <h2>Komut özeti</h2>
+  <div class="grid2 mt4">
+<pre style="margin:0"><span class="k">KURGU</span>
+lionstone edit talk.mp4
+lionstone styles --cmd O6 W3 A3 G5 S4 P3
+lionstone transcript plan.json
+lionstone apply-transcript plan.json
+lionstone cuts plan.json
+lionstone render plan.json
+
+<span class="k">GÖZ AT</span>
+lionstone fx list --kind look
+lionstone fx list --category reel-fx
+lionstone fx show stage-light
+lionstone fx fav stage-light
+lionstone fx preview ID --before-after --gif
+
+<span class="k">SON DOKUNUŞ</span>
+lionstone fx segments $P
+lionstone fx apply $P ID --global
+lionstone fx apply $P ID --source A-B
+lionstone fx apply $P ID --join N
+lionstone fx text  $P ID --text "…" --at S
+lionstone fx auto  $P --content talk --dry-run</pre>
+<pre style="margin:0"><span class="k">YÖNET</span>
+lionstone fx applied $P
+lionstone fx set $P FXID --param k=v
+lionstone fx remove $P FXID
+lionstone fx render $P
+
+<span class="k">REELS</span>
+lionstone clips $P -n 5 --aspect 9:16
+lionstone fx showcase ID talk.mp4
+
+<span class="k">PRO İŞ AKIŞI</span>
+lionstone multicam --cam a=a.mp4 --cam b=b.mp4
+lionstone style learn ref1.mp4 ref2.mp4
+lionstone variants talk.mp4
+lionstone export $P
+
+<span class="k">EKİP</span>
+lionstone team init "ACME"
+lionstone brand apply $P ACME
+lionstone fx batch ID projects/*/plan.json
+
+<span class="k">KONTROL</span>
+lionstone doctor · lionstone qa video.mp4</pre>
+  </div>
+  <h3>Bir bakışta 12 Reel FX</h3>
+  <div class="chips"><span class="chip">stage-light</span><span class="chip">press-mono</span><span class="chip">frost-panels</span><span class="chip">duotone-pop</span><span class="chip">scan-line</span><span class="chip">afterimage</span><span class="chip">halo-orbit</span><span class="chip">neon-outline</span><span class="chip">insight-split</span><span class="chip">brand-frame</span><span class="chip">progress-rail</span><span class="chip">pixel-resolve</span></div>
+  <h3>Hedefe göre seçin</h3>
+  <table>
+    <tr><th>Ne istiyorsunuz?</th><th>Şunu kullanın</th></tr>
+    <tr><td>İlk saniyede kaydırmayı durdurmak</td><td><code>pixel-resolve</code> · <code>duotone-pop</code> · <code>word-pop</code></td></tr>
+    <tr><td>Asıl önemli cümleyi vurgulamak</td><td><code>stage-light</code> · <code>quick-punch-in</code></td></tr>
+    <tr><td>Çıkarım ya da adım listelemek</td><td><code>frost-panels</code> · <code>progress-rail</code> · <code>phrase-build</code></td></tr>
+    <tr><td>Rakamla kanıtlamak</td><td><code>insight-split</code> · <code>counter-up</code> · <code>stat-emphasis</code></td></tr>
+    <tr><td>Teknolojik bir his</td><td><code>scan-line</code> · <code>neon-outline</code> · <code>look-steel-blue</code></td></tr>
+    <tr><td>Birinden alıntı yapmak</td><td><code>press-mono</code> · <code>look-classic-bw</code></td></tr>
+    <tr><td>Bütün seriyi markalamak</td><td><code>brand-frame</code> · marka kiti · kilitli ekip preseti</td></tr>
+    <tr><td>Bir çağrıyla bitirmek</td><td><code>cta</code> · <code>end-card</code></td></tr>
+  </table>
+  <div class="foot"><span>Lionstone Pro &amp; Studio v0.3.2</span><span class="pn">19</span></div>
+</section>
+
+<!-- 20 · ARKA KAPAK -->
+<section class="page cover">
+  <img class="bg" src="img/01-cover.jpg" alt="" style="filter: blur(2px) brightness(.45)">
+  <div class="inner" style="justify-content:center; align-items:center; text-align:center">
+    <svg viewBox="-130 -130 260 260" style="width:26mm;height:26mm"><g stroke="#E8A33D" stroke-width="10" stroke-linecap="round"><line x1="0" y1="-95" x2="0" y2="-125"/><line x1="67" y1="-67" x2="88" y2="-88"/><line x1="95" y1="0" x2="125" y2="0"/><line x1="67" y1="67" x2="88" y2="88"/><line x1="0" y1="95" x2="0" y2="125"/><line x1="-67" y1="67" x2="-88" y2="88"/><line x1="-95" y1="0" x2="-125" y2="0"/><line x1="-67" y1="-67" x2="-88" y2="-88"/></g><polygon points="0,-78 68,-39 68,39 0,78 -68,39 -68,-39" fill="#16181d" stroke="#E8A33D" stroke-width="8"/><polygon points="-18,-30 32,0 -18,30" fill="#F5C400"/></svg>
+    <h2 style="margin-top:8mm; font-size:24pt">Tek ajan. Eksiksiz bir iş akışı.</h2>
+    <p class="sub" style="margin:4mm auto 0">Apache-2.0 lisansıyla ücretsiz ve açık kaynak.<br>Yerelde çalışır · yükleme yok · lisans anahtarı yok · filigran yok.</p>
+    <p class="mono" style="margin-top:10mm; color:#F5C400; font-size:10pt">github.com/ismailarslantas/lionstone</p>
+    <p class="cap" style="margin-top:14mm; color:#bdb6a6">Üçüncü taraf ürün adları sahiplerinin ticari markalarıdır ve yalnızca dosya uyumluluğunu belirtmek için kullanılmıştır.<br>Çizimler konsept görsellerdir; “gerçek render” yazan görseller Lionstone'un gerçek çıktısıdır.</p>
+  </div>
+</section>
+
+</body>
+</html>
