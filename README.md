@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <b>Lionstone Pro & Studio are now free.</b> The complete AI video editor — multicam, Creative Suite, Shorts generator, NLE export, team tools and Lionstone Styles — in one open-source package.<br>
+  <b>Lionstone Pro & Studio v0.3.2 — now free.</b> The complete AI video editor — multicam, Creative Suite, Shorts generator, NLE export, team tools and Lionstone Styles — in one open-source package.<br>
   Local-first · no upload · no license key · no watermark · works offline · <a href="https://github.com/ismailarslantas/lionstone/releases/latest">Latest release</a>
 </p>
 
@@ -68,9 +68,9 @@ Most "AI editors" either chop every silence (and your sentences with it) or send
 
 Full guide with parameters, use cases and recipes: [docs/reel-fx.md](docs/reel-fx.md).
 
-### 🎬 Pro workflow — multicam, style learning, Shorts, NLE export
+### 🎬 Pro workflow (v0.3.2) — multicam, style learning, Shorts, Reel FX, NLE export
 
-<img src="assets/pro-studio/05-pro-workflow.jpg" alt="Pro workflow: multicam, style learn, clips for Shorts and Reels, export to DaVinci Resolve, Final Cut and Premiere" width="100%">
+<img src="assets/pro-studio/05-pro-workflow-032-1280x640.jpg" alt="Lionstone Pro &amp; Studio v0.3.2 workflow: multicam, style learn, clips and Reel FX for Shorts and Reels, FCPXML and EDL export" width="100%">
 
 - **Multicam** — `lionstone multicam` syncs two or more cameras and isolated mics on their audio, re-checks sync to catch clock drift, gates mic bleed and cuts to the active speaker with sensible shot lengths and wide shots for crosstalk.
 - **Style learning** — `lionstone style learn ref1.mp4 ref2.mp4` learns cut rhythm, pause behaviour, loudness and colour from videos you like, then applies them to new edits.
