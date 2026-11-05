@@ -73,6 +73,15 @@ def registry(reload: bool = False) -> Registry:
     except Exception as e:  # e.g. numpy missing: the core must keep working
         log.warning("built-in creative features unavailable: %s", e)
         reg.loaded.append({"name": "builtin", "module": "lionstone.pro", "status": f"failed: {e}"})
+    try:  # Reels workflow: standard library only, independent of the creative suite
+        from .reels.checks import reels_qa
+        from .reels.commands import register as _register_reels
+        _register_reels(reg)
+        reg.qa_hooks.append(reels_qa)
+        reg.loaded.append({"name": "reels", "module": "lionstone.reels", "status": "ok"})
+    except Exception as e:  # pragma: no cover - defensive, like the block above
+        log.warning("reels workflow unavailable: %s", e)
+        reg.loaded.append({"name": "reels", "module": "lionstone.reels", "status": f"failed: {e}"})
     try:
         eps = entry_points(group="lionstone.plugins")
     except TypeError:  # pragma: no cover - py<3.10

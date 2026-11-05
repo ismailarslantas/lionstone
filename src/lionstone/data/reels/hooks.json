@@ -1,0 +1,147 @@
+{
+  "version": 1,
+  "note": "Original Lionstone hook templates. {konu}, {kitle}, {sonuç}, {hata}, {sayı}, {süre}, {ürün}, {marka} are filled from the brand profile and the reel brief.",
+  "angles": {
+    "merak": {
+      "label": "Merak",
+      "use": "Bilgiyi saklayıp izletmek",
+      "templates": [
+        "{kitle} bunu bilmeden {konu} işine girmesin.",
+        "{konu} hakkında kimsenin söylemediği tek şey.",
+        "Bunu öğrendikten sonra {konu} sana aynı görünmeyecek.",
+        "{sayı} saniyede {konu} meselesini çözüyorum.",
+        "Herkes yanlış yerden bakıyor: {konu}.",
+        "{konu} işinde gerçek fark burada başlıyor."
+      ]
+    },
+    "hata": {
+      "label": "Hata",
+      "use": "Kitlenin yaptığı yanlışı göstermek",
+      "templates": [
+        "{kitle} en çok bu hatayı yapıyor: {hata}.",
+        "{hata} yapıyorsan para masada kalıyor.",
+        "{konu} derken bunu yapıyorsan dur.",
+        "Bu hatayı ben de yaptım, sen yapma: {hata}.",
+        "{sayı} kişiden {sayı}'ü {konu} konusunda burada takılıyor.",
+        "{hata}? Bunun yerine şunu dene."
+      ]
+    },
+    "sonuc": {
+      "label": "Sonuç",
+      "use": "Varılacak yeri önden göstermek",
+      "templates": [
+        "{süre} içinde {sonuç}. Nasıl yaptığımı anlatıyorum.",
+        "Bu yöntemle {sonuç}.",
+        "{sonuç} istiyorsan şu üç adıma bak.",
+        "Önce böyleydi, şimdi {sonuç}.",
+        "{ürün} ile {sonuç}: adım adım.",
+        "{sonuç} için ihtiyacın olan tek şey bu."
+      ]
+    },
+    "karsit": {
+      "label": "Karşıt görüş",
+      "use": "Genel kanıya itiraz etmek",
+      "templates": [
+        "{konu} için sana söylenenlerin çoğu yanlış.",
+        "Popüler olmayan fikir: {konu}.",
+        "{konu}? Bence tam tersini yapmalısın.",
+        "Herkes '{konu}' diyor. Ben katılmıyorum.",
+        "{konu} artık işe yaramıyor. Yerine bu var.",
+        "Kimse duymak istemiyor ama {konu}."
+      ]
+    },
+    "liste": {
+      "label": "Liste",
+      "use": "Kaydetmeye değer derli toplu bilgi",
+      "templates": [
+        "{konu} için {sayı} şey. Üçüncüsü çok önemli.",
+        "Kaydet: {konu} için {sayı} adım.",
+        "{kitle} için {sayı} pratik {konu} önerisi.",
+        "{sayı} dakikada öğrenebileceğin {sayı} {konu} kuralı.",
+        "{konu} başlangıç listesi: sadece {sayı} madde.",
+        "Bunları sırayla yap: {konu}."
+      ]
+    },
+    "hikaye": {
+      "label": "Hikâye",
+      "use": "Kişisel deneyimle güven kurmak",
+      "templates": [
+        "Geçen hafta bir müşterim bana şunu sordu: {konu}.",
+        "{süre} önce {hata} yüzünden her şeyi kaybediyordum.",
+        "Bunu ilk duyduğumda inanmadım: {konu}.",
+        "{marka} olarak bunu nasıl çözdüğümüzü anlatayım.",
+        "Bir mesaj aldım ve {konu} hakkındaki fikrim değişti.",
+        "İlk günümde bilseydim keşke: {konu}."
+      ]
+    },
+    "soru": {
+      "label": "Soru",
+      "use": "İzleyiciyi kendine sorgulatmak",
+      "templates": [
+        "{konu} konusunda gerçekten doğru mu yapıyorsun?",
+        "Neden {kitle} hep aynı yerde takılıyor?",
+        "{sonuç} için neden bekliyorsun?",
+        "{konu} sence de gereğinden zor mu?",
+        "Sen olsan hangisini seçerdin?",
+        "{konu} yaparken en çok neyi zorlanıyorsun?"
+      ]
+    },
+    "gosterim": {
+      "label": "Gösterim",
+      "use": "Ürün ya da süreci göstererek anlatmak",
+      "templates": [
+        "{ürün} nasıl kullanılır, 30 saniyede göstereyim.",
+        "İzle: {konu} baştan sona.",
+        "Perde arkası: {konu} böyle hazırlanıyor.",
+        "Önce / sonra: {konu}.",
+        "{ürün} ile yaptığım şeye bak.",
+        "Bu tek hareket {konu} işini değiştiriyor."
+      ]
+    },
+    "uyari": {
+      "label": "Uyarı",
+      "use": "Riski önceden göstermek",
+      "templates": [
+        "{konu} yapmadan önce bunu izle.",
+        "Dikkat: {hata} sana pahalıya patlayabilir.",
+        "{kitle}, bu tuzağa düşmeyin.",
+        "{konu} seçerken şu üç işarete bak.",
+        "Bunu görmeden imza atma: {konu}.",
+        "Şu cümleyi duyarsan dikkatli ol: {konu}."
+      ]
+    },
+    "kolaylik": {
+      "label": "Kolaylık",
+      "use": "Zor görünen işi basitleştirmek",
+      "templates": [
+        "{konu} sandığından çok daha kolay.",
+        "Hiç bilmeden {konu}: bunu dene.",
+        "{süre} ayırırsan {sonuç}.",
+        "En tembel {konu} yöntemi. Ama işe yarıyor.",
+        "{konu} için pahalı araçlara gerek yok.",
+        "Tek bir ayarla {sonuç}."
+      ]
+    }
+  },
+  "second_hook": {
+    "note": "Second hook: lands around 3-6 s, keeps the viewer after the first promise.",
+    "templates": [
+      "Ama asıl mesele bu değil.",
+      "Sonuna kadar izle, en önemlisi en sonda.",
+      "Ve çoğu kişi ikinci adımı atlıyor.",
+      "Bunu sana neden söylediğimi birazdan anlayacaksın.",
+      "Peki bunu nasıl yapacaksın? Şöyle:",
+      "Üstelik bunun için {ürün} bile gerekmeyebilir."
+    ]
+  },
+  "cta": {
+    "templates": [
+      "Kaydet, lazım olacak.",
+      "Bunu ihtiyacı olan birine gönder.",
+      "Yorumlara '{anahtar}' yaz, detayları sana göndereyim.",
+      "Daha fazlası için {hesap} hesabını takip et.",
+      "Profildeki linkten {ürün} için bilgi al.",
+      "Sen hangisini yapıyorsun? Yoruma yaz."
+    ]
+  }
+}

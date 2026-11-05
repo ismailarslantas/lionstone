@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <b>Lionstone Pro & Studio v0.3.2 — now free.</b> The complete AI video editor — multicam, Creative Suite, Shorts generator, NLE export, team tools and Lionstone Styles — in one open-source package.<br>
+  <b>Lionstone v0.4.0 — now with Lionstone Reels.</b> The complete AI video editor — brand-specific Reels workflow, multicam, Creative Suite, Shorts generator, NLE export, team tools and Lionstone Styles — in one open-source package.<br>
   Local-first · no upload · no license key · no watermark · works offline · <a href="https://github.com/ismailarslantas/lionstone/releases/latest">Latest release</a>
 </p>
 
@@ -55,7 +55,25 @@ Most "AI editors" either chop every silence (and your sentences with it) or send
 - **Lionstone Agent** — `lionstone fx auto plan.json --content vlog --style social` picks one consistent look, emphasis zooms and transitions on real topic changes, stays within budgets, and gives a reason for every choice.
 - **Safe by design** — `lionstone fx render` checks flash rate (≤ 3 per second), exposure, saturation and stale edits before it delivers.
 
-### 🎞️ New: Reel FX Pack — 12 one-command effects for Reels & Shorts
+### 📱 New in v0.4: Lionstone Reels — brand-specific Instagram Reels, idea to finished video
+
+Give Claude the raw footage; every Reel comes back cut, captioned, sound-designed, checked and in the brand's own style. One flow per brand — topic, hook, script, edit, QA, cover, caption, calendar — in plain files you can read and undo.
+
+```
+Topic → Hook → Script → Shoot → Cut → Graphics → Sound → QA → Cover + caption → Calendar
+```
+
+- **Brand profile** — `lionstone reels brand init "Brand"`: audience, tone, products, honest promises, banned words, CTA, colours, font, edit style; links to an existing brand kit. Run many brands side by side.
+- **Topic, hook, script with Claude** — the [`lionstone-reels` skill](integrations/lionstone-reels) writes them from the brand profile. A **hook library** of 60 original Turkish templates across 10 angles, second hooks and CTAs (`lionstone reels hooks`), and `lionstone reels lint` checks hook length, A/B hooks, script length, CTA ending, banned words, caption and hashtag limits.
+- **One command to deliver** — `lionstone reels make <reel>`: 9:16, Turkish word-by-word captions, hook title that fits vertical, brand colours, an original 31-sound SFX starter pack (bring your own packs too), music that ducks under the voice, −14 LUFS, three cover versions cropped for the profile grid, `caption.txt`.
+- **Checked before it says "done"** — the final file is re-measured: script vs. what is actually heard, leftover repeats, every cut point, text overflow against the Reels UI safe area, loudness, picture. The report says **TESLİME HAZIR** only when it is; skipped checks are listed, never passed.
+- **Editing room** — `kurgu/room.html`: video and every word side by side. Click a word to jump, click to cut or restore, double-click to fix a caption's spelling. Local, nothing uploaded.
+- **Calendar** — `lionstone reels schedule` / `calendar --ics` from the reel folders themselves.
+- **No monthly fee, no per-video fee, no editing software** — runs in Claude Code on your Mac / Windows / Linux; render speed is your computer's.
+
+Full guide (Turkish): [docs/reels.md](docs/reels.md).
+
+### 🎞️ Reel FX Pack — 12 one-command effects for Reels & Shorts
 
 <img src="docs/img/reelfx-banner-1280x640.png" alt="Reel FX Pack: 12 one-command effects for Reels and Shorts — stage-light, insight-split, pixel-resolve and more" width="100%">
 
