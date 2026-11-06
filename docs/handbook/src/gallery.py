@@ -139,7 +139,7 @@ SHOW_BEATS = [
 
 T = {
     "en": {
-        "real": "Real render", "foot": "Lionstone Pro &amp; Studio v0.3.2", "hb": "Lionstone Reel Handbook",
+        "real": "Real render", "foot": "Lionstone v0.4.1", "hb": "Lionstone Reel Handbook",
         "looks_k": "Gallery · looks", "looks_h": "Every look, on the same frame",
         "looks_p": "Real <code>lionstone fx preview</code> renders at default intensity on one clip. Grades are deliberately subtle: they protect skin, so compare neighbours rather than expecting a filter.",
         "fx_k": "Gallery · effects", "fx_h": "The finishing effects, rendered",
@@ -151,12 +151,12 @@ T = {
         "rfx_p": "Real renders with the settings shown under each frame: <code>lionstone fx apply plan.json &lt;id&gt; …</code>",
         "px_h": "pixel-resolve, frame by frame", "px_p": "Left to right, about 0.15 s apart: five pixel stages resolve into the clean shot.",
         "show_h": "The real showcase reel", "show_p": "Output of <code>lionstone fx showcase stage-light talk.mp4 --param y=0.22</code>.",
-        "reel_k": "Chapter 8 · the result", "reel_h": "The finished Reel, frame by frame",
+        "reel_k": "Chapter 10 · the result", "reel_h": "The finished Reel, frame by frame",
         "reel_p": "The exact command sequence from the previous pages, rendered on this handbook's presenter clip (1080×1920; QA: deliverable, 17 checks run, 4 skipped and reported). Every frame below is real output; captions are absent only because the test clip has no speech.",
         "orig": "Original",
     },
     "tr": {
-        "real": "Gerçek render", "foot": "Lionstone Pro &amp; Studio v0.3.2", "hb": "Lionstone Reels Kitapçığı",
+        "real": "Gerçek render", "foot": "Lionstone v0.4.1", "hb": "Lionstone Reels Kitapçığı",
         "looks_k": "Galeri · görünümler", "looks_h": "Tüm görünümler, aynı karede",
         "looks_p": "Tek bir klipte, varsayılan yoğunlukta gerçek <code>lionstone fx preview</code> renderları. Renkler bilerek ölçülüdür, teni korur; filtre beklemek yerine yan yana karşılaştırın.",
         "fx_k": "Galeri · efektler", "fx_h": "Son dokunuş efektleri, render edilmiş",
@@ -168,7 +168,7 @@ T = {
         "rfx_p": "Her karenin altındaki ayarlarla gerçek renderlar: <code>lionstone fx apply plan.json &lt;id&gt; …</code>",
         "px_h": "pixel-resolve, kare kare", "px_p": "Soldan sağa, yaklaşık 0,15 sn arayla: beş piksel aşaması temiz görüntüye dönüşür.",
         "show_h": "Gerçek vitrin videosu", "show_p": "<code>lionstone fx showcase stage-light talk.mp4 --param y=0.22</code> çıktısı.",
-        "reel_k": "8. bölüm · sonuç", "reel_h": "Bitmiş Reels, kare kare",
+        "reel_k": "10. bölüm · sonuç", "reel_h": "Bitmiş Reels, kare kare",
         "reel_p": "Önceki sayfalardaki komut dizisi, bu kitapçığın sunucu klibinde render edildi (1080×1920; QA: teslime hazır, 17 kontrol çalıştı, 4 atlandı ve raporlandı). Yazılar İngilizce örnek metinle verildi. Aşağıdaki her kare gerçek çıktıdır; altyazı yalnızca test klibinde konuşma olmadığı için yok.",
         "orig": "Orijinal",
     },
@@ -204,34 +204,34 @@ def build(lang):
     ids = list(LOOKS)
     cards = [card("original" if i == "original" else i, t["orig"] if i == "original" else nice(i),
                   "" if i == "original" else i, LOOKS[i][k], "orig" if i == "original" else "") for i in ids]
-    out["looks"] = (page(lang, "04 · " + t["looks_k"], t["looks_k"], t["looks_h"], t["looks_p"],
+    out["looks"] = (page(lang, "06 · " + t["looks_k"], t["looks_k"], t["looks_h"], t["looks_p"],
                          f'<div class="ggrid c5">{"".join(cards[:15])}</div>', "")
-                    + page(lang, "04 · " + t["looks_k"], t["looks_k"], t["looks_h"] + " (2)", t["looks_p"],
+                    + page(lang, "06 · " + t["looks_k"], t["looks_k"], t["looks_h"] + " (2)", t["looks_p"],
                            f'<div class="ggrid c5">{"".join(cards[15:])}</div>', ""))
     fx = [card(i, nice(i), i, v[k]) for i, v in EFFECTS.items()]
     trs = "".join(
         f'<div class="trow"><div class="tlabel"><b>{nice(i)}</b><code>{i}</code><span>{v[k]}</span></div>'
         + "".join(f'<img src="img/real/seq-{i}-{s}.jpg" alt="">' for s in ("1.6", "2.0", "2.4")) + "</div>"
         for i, v in TRANSITIONS.items())
-    out["effects"] = (page(lang, "05 · " + t["fx_k"], t["fx_k"], t["fx_h"], t["fx_p"],
+    out["effects"] = (page(lang, "07 · " + t["fx_k"], t["fx_k"], t["fx_h"], t["fx_p"],
                            f'<div class="ggrid c5">{"".join(fx[:15])}</div>', "")
-                      + page(lang, "05 · " + t["fx_k"], t["fx_k"], t["fx_h"] + " (2)", t["fx_p"],
+                      + page(lang, "07 · " + t["fx_k"], t["fx_k"], t["fx_h"] + " (2)", t["fx_p"],
                              f'<div class="ggrid c5">{"".join(fx[15:])}</div><h3>{t["tr_h"]}</h3>'
                              f'<p class="small">{t["tr_p"]}</p><div class="tgrid">{trs}</div>', ""))
     tx = [card(i, nice(i), i, v[k]) for i, v in TEXT.items()]
-    out["text"] = (page(lang, "06 · " + t["text_k"], t["text_k"], t["text_h"], t["text_p"],
+    out["text"] = (page(lang, "08 · " + t["text_k"], t["text_k"], t["text_h"], t["text_p"],
                         f'<div class="ggrid c5">{"".join(tx[:15])}</div>', "")
-                   + page(lang, "06 · " + t["text_k"], t["text_k"], t["text_h"] + " (2)", t["text_p"],
+                   + page(lang, "08 · " + t["text_k"], t["text_k"], t["text_h"] + " (2)", t["text_p"],
                           f'<div class="ggrid c5">{"".join(tx[15:])}</div>', ""))
     rf = [card(i, nice(i), i, f'{v[k]}<em>{REELFX_CMD[i]}</em>') for i, v in REELFX.items()]
     px = "".join(f'<img src="img/real/px-{s}.jpg" alt="">' for s in ("0.5", "0.75", "0.88", "1.0", "1.15"))
-    out["reelfx"] = page(lang, "07 · " + t["rfx_k"], t["rfx_k"], t["rfx_h"], t["rfx_p"],
+    out["reelfx"] = page(lang, "09 · " + t["rfx_k"], t["rfx_k"], t["rfx_h"], t["rfx_p"],
                          f'<div class="ggrid c6">{"".join(rf)}</div><h3>{t["px_h"]}</h3>'
                          f'<p class="small">{t["px_p"]}</p><div class="strip s5">{px}</div>', "", dark=True)
     sb = "".join(card(f, tm, "", n_en if lang == "en" else n_tr) for f, tm, n_en, n_tr in SHOW_BEATS)
     out["showcase"] = f'<h3>{t["show_h"]} · <span class="realtag">{t["real"]}</span></h3><p class="small">{t["show_p"]}</p><div class="ggrid c4">{sb}</div>'
     rb = "".join(card(f, tm, tool, (en if lang == "en" else tr)) for f, tm, en, tr, tool in REEL_BEATS)
-    out["reel"] = page(lang, "08 · " + t["reel_k"], t["reel_k"], t["reel_h"], t["reel_p"],
+    out["reel"] = page(lang, "10 · " + t["reel_k"], t["reel_k"], t["reel_h"], t["reel_p"],
                        f'<div class="ggrid c4 big">{rb}</div>', "")
     return out
 

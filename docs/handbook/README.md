@@ -1,13 +1,13 @@
-# Lionstone Reel Handbook (v0.3.2)
+# Lionstone Reel Handbook (Lionstone 0.4.1)
 
-A designed A4 guide to every Lionstone Pro & Studio v0.3.2 feature (looks, effects,
-transitions, motion, text, the 12-effect Reel FX Pack), with a step-by-step Reel build.
+A designed A4 guide to every Lionstone feature, free for everyone: Lionstone Reels, your brand identity and the numbered
+visual catalogue, looks, effects, transitions, motion, text, the 12-effect Reel FX Pack, and a step-by-step Reel build.
 
-- [English PDF](lionstone-reel-handbook-v0.3.2-en.pdf)
-- [Türkçe PDF](lionstone-reel-handbook-v0.3.2-tr.pdf)
+- [English PDF](lionstone-reel-handbook-v0.4.1-en.pdf)
+- [Türkçe PDF](lionstone-reel-handbook-v0.4.1-tr.pdf)
 
-Images in `src/img/real/` are real `lionstone fx preview` renders of one source clip
-(9:16); the chapter illustrations in `src/img/0*.jpg` are concept art.
+Images in `src/img/real/` are real Lionstone renders; the man in the catalogue pages is a fictional example. The chapter
+illustrations in `src/img/0*.jpg` are concept art.
 
 ## Rebuild
 
@@ -19,5 +19,5 @@ Then print each build page to A4 PDF with a Chromium browser (no headers/footers
 
 ```bash
 chrome --headless=new --no-pdf-header-footer --virtual-time-budget=15000 \
-  --print-to-pdf=lionstone-reel-handbook-v0.3.2-en.pdf src/build/en.html
+  --print-to-pdf=lionstone-reel-handbook-v0.4.1-en.pdf src/build/en.html
 ```
