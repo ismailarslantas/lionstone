@@ -113,7 +113,7 @@ lionstone --version       <span class="c"># Lionstone · AI editing agent · v0.
   <div class="grid2">
     <div>
       <h3 class="mt0">The commands</h3>
-<pre style="margin:0">lionstone reels start
+<pre style="margin:0;font-size:6.2pt">lionstone reels start
 lionstone reels brand init "Acme" --language en
 lionstone reels new "Acme" "Rent or buy"
 lionstone reels hooks "Acme" "rent" --angle mistake
@@ -123,7 +123,7 @@ lionstone reels make projects/acme/&lt;reel&gt;
 lionstone reels schedule &lt;reel&gt; "2026-11-10 19:00"
 lionstone reels calendar --brand "Acme" --ics cal.ics</pre>
       <h4>What you get in delivery/</h4>
-<pre style="margin:0">acme-rent-or-buy.mp4      <span class="c"># 9:16, -14 LUFS</span>
+<pre style="margin:0;font-size:6.2pt">acme-rent-or-buy.mp4      <span class="c"># 9:16, -14 LUFS</span>
 cover-1.jpg … cover-3.jpg <span class="c"># for the 3:4 grid</span>
 caption.txt               <span class="c"># caption + hashtags</span>
 report.md · qa.md         <span class="c"># the verdict and why</span></pre>
@@ -159,7 +159,7 @@ report.md · qa.md         <span class="c"># the verdict and why</span></pre>
   <div class="grid2">
     <div>
       <h3 class="mt0">1 · Measure your own videos</h3>
-<pre style="margin:0">lionstone reels identity "Acme" --footage talk.mp4 \
+<pre style="margin:0;font-size:6.2pt">lionstone reels identity "Acme" --footage talk.mp4 \
   --example a.mp4 --example b.mp4 --example c.mp4</pre>
       <p class="small">One talking-head take and 3-5 example Reels. Measured: tempo, cuts per minute, pauses, loudness, colour, palette, length, speech rate, opening lines. Music is an estimate. Contact sheets let Claude look at what can't be measured, and anything skipped is listed with the reason.</p>
       <h3>2 · Choose from the catalogue</h3>
@@ -195,6 +195,13 @@ lionstone reels setup "Acme" --pick 0 205 503</pre>
   <h2>Choose by looking</h2>
   <p class="small">Hook titles (1xx) and effects (5xx) from the real catalogue. 79 cards in all: picture options are real Lionstone renders, sound options are waveforms or spectrograms of real output.</p>
   <figure class="figure"><img src="img/real/catalog-opening.jpg" alt=""><figcaption>Group 1xx: hook title.</figcaption></figure>
+  <div class="foot"><span>Lionstone v0.4.1</span><span class="pn">0</span></div>
+</section>
+
+<section class="page">
+  <div class="run"><span><b>03</b> · Brand identity</span><span>Lionstone Reel Handbook</span></div>
+  <span class="kicker">The catalogue · <span class="realtag">Real render</span></span>
+  <h2>Effects · 5xx</h2>
   <figure class="figure"><img src="img/real/catalog-effects.jpg" alt=""><figcaption>Group 5xx: effects, including Lionstone Agent styles and 11 Reel FX.</figcaption></figure>
   <div class="foot"><span>Lionstone v0.4.1</span><span class="pn">0</span></div>
 </section>
@@ -582,7 +589,7 @@ lionstone fx apply $P progress-rail --source 24.1-29.4 --param steps=3 --param s
 lionstone fx text  $P cta --text "Follow for part 2" --subtext "New tips every week" --at 26 --duration 3.8
 lionstone fx applied $P
 lionstone fx render $P</pre>
-  <div class="ok"><b>Verified with v0.3.2.</b> This exact sequence was run on a 35-second 1080×1920 test recording: rendered 1080×1920 at 30 fps, 29.8 s long, and QA reported <i>17 checks run, 4 skipped (reported), no issues: deliverable</i>.</div>
+  <div class="ok"><b>Verified with v0.4.2.</b> This exact sequence was run on a 35-second 1080×1920 test recording (test pattern and tone, no speech or face): rendered 1080×1920 at 30 fps, 28.9 s long, and QA reported <i>17 checks run, 4 skipped (reported), no issues: deliverable</i>.</div>
   <h3>Polish passes</h3>
   <ul class="small">
     <li><b>Change a value:</b> <code>lionstone fx set $P &lt;instance-id&gt; --param intensity=0.6</code>, then render again.</li>
@@ -684,13 +691,13 @@ lionstone fx apply $P scan-line --source 12-13.7 --param speed=0.6</pre></div>
     </div>
   </div>
   <h3>A real QA report: the chapter 10 Reel</h3>
-<pre><span class="k">QA report: reel.edit.mp4 · Deliverable: yes</span>
+<pre><span class="k">QA report: talk.edit.mp4 · Deliverable: yes</span>
 ✓ decode_full      every frame and audio packet decoded without errors
 ✓ av_length        video/audio length difference 0 ms
 ✓ format           1080x1920 @ 30.000 fps (target 1080x1920 @ 30.0)
-✓ loudness         -14.0 LUFS (target -14.0 ±1.0)
-✓ true_peak        -5.8 dBTP (ceiling -1.0)
-✓ join_clicks      inspected 5/5 joins, 0 suspicious
+✓ loudness         -13.9 LUFS (target -14.0 ±1.0)
+✓ true_peak        -5.6 dBTP (ceiling -1.0)
+✓ join_clicks      inspected 4/4 joins, 0 suspicious
 ✓ fx_rendered      12 applied, 0 skipped
 ✓ flicker          max 0 strong flashes in any 1 s window (limit 3)
 ✓ graphics_rules   3 graphics · overlaps 0 · too short 0 · outside video 0

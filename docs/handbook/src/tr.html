@@ -113,7 +113,7 @@ lionstone --version       <span class="c"># Lionstone · AI editing agent · v0.
   <div class="grid2">
     <div>
       <h3 class="mt0">Komutlar</h3>
-<pre style="margin:0">lionstone reels start
+<pre style="margin:0;font-size:6.2pt">lionstone reels start
 lionstone reels brand init "Acme" --language tr
 lionstone reels new "Acme" "Kira mı ev mi"
 lionstone reels hooks "Acme" "kira" --angle hata
@@ -123,7 +123,7 @@ lionstone reels make projects/acme/&lt;reel&gt;
 lionstone reels schedule &lt;reel&gt; "2026-11-10 19:00"
 lionstone reels calendar --brand "Acme" --ics cal.ics</pre>
       <h4>delivery/ içinde gelenler</h4>
-<pre style="margin:0">acme-kira-mi-ev-mi.mp4    <span class="c"># 9:16, -14 LUFS</span>
+<pre style="margin:0;font-size:6.2pt">acme-kira-mi-ev-mi.mp4    <span class="c"># 9:16, -14 LUFS</span>
 cover-1.jpg … cover-3.jpg <span class="c"># 3:4 grid için</span>
 caption.txt               <span class="c"># caption + hashtag'ler</span>
 report.md · qa.md         <span class="c"># karar ve nedeni</span></pre>
@@ -159,7 +159,7 @@ report.md · qa.md         <span class="c"># karar ve nedeni</span></pre>
   <div class="grid2">
     <div>
       <h3 class="mt0">1 · Kendi videolarınız ölçülür</h3>
-<pre style="margin:0">lionstone reels identity "Acme" --footage talk.mp4 \
+<pre style="margin:0;font-size:6.2pt">lionstone reels identity "Acme" --footage talk.mp4 \
   --example a.mp4 --example b.mp4 --example c.mp4</pre>
       <p class="small">Bir kafa çekimi ve 3-5 örnek Reels. Ölçülenler: tempo, dakikadaki kesim, duraklamalar, ses seviyesi, renk, palet, süre, konuşma hızı, açılış cümleleri. Müzik bir tahmindir. Ölçülemeyene Claude kare şeritlerinden bakar; atlanan her şey nedeniyle listelenir.</p>
       <h3>2 · Katalogdan seçin</h3>
@@ -195,6 +195,13 @@ lionstone reels setup "Acme" --pick 0 205 503</pre>
   <h2>Görerek seçin</h2>
   <p class="small">Gerçek katalogdan kanca yazıları (1xx) ve efektler (5xx). Toplam 79 kart: görsel seçenekler gerçek Lionstone çıktısı, ses seçenekleri gerçek çıktının dalga formu ya da spektrogramı.</p>
   <figure class="figure"><img src="img/real/catalog-opening.jpg" alt=""><figcaption>1xx grubu: kanca yazısı.</figcaption></figure>
+  <div class="foot"><span>Lionstone v0.4.1</span><span class="pn">0</span></div>
+</section>
+
+<section class="page">
+  <div class="run"><span><b>03</b> · Marka kimliği</span><span>Lionstone Reels Kitapçığı</span></div>
+  <span class="kicker">Katalog · <span class="realtag">Gerçek render</span></span>
+  <h2>Efektler · 5xx</h2>
   <figure class="figure"><img src="img/real/catalog-effects.jpg" alt=""><figcaption>5xx grubu: Lionstone Agent stilleri ve 11 Reel FX dahil efektler.</figcaption></figure>
   <div class="foot"><span>Lionstone v0.4.1</span><span class="pn">0</span></div>
 </section>
@@ -582,7 +589,7 @@ lionstone fx apply $P progress-rail --source 24.1-29.4 --param steps=3 --param s
 lionstone fx text  $P cta --text "2. bölüm için takip et" --subtext "Her hafta yeni ipucu" --at 26 --duration 3.8
 lionstone fx applied $P
 lionstone fx render $P</pre>
-  <div class="ok"><b>v0.3.2 ile doğrulandı.</b> Bu komut dizisi birebir, 35 saniyelik 1080×1920 bir test kaydında çalıştırıldı: 1080×1920, 30 fps, 29,8 sn çıktı; QA sonucu <i>17 kontrol çalıştı, 4 atlandı (raporlandı), sorun yok: teslime hazır</i>.</div>
+  <div class="ok"><b>v0.4.2 ile doğrulandı.</b> Bu komut dizisi birebir, 35 saniyelik 1080×1920 bir test kaydında (test görüntüsü ve ton; konuşma ve yüz yok) çalıştırıldı: 1080×1920, 30 fps, 28,9 sn çıktı; QA sonucu <i>17 kontrol çalıştı, 4 atlandı (raporlandı), sorun yok: teslime hazır</i>.</div>
   <h3>İnce ayar turları</h3>
   <ul class="small">
     <li><b>Değer değiştir:</b> <code>lionstone fx set $P &lt;instance-id&gt; --param intensity=0.6</code>, sonra yeniden render.</li>
@@ -684,13 +691,13 @@ lionstone fx apply $P scan-line --source 12-13.7 --param speed=0.6</pre></div>
     </div>
   </div>
   <h3>Gerçek bir QA raporu: 10. bölümdeki Reels</h3>
-<pre><span class="k">QA report: reel.edit.mp4 · Deliverable: yes</span>
+<pre><span class="k">QA report: talk.edit.mp4 · Deliverable: yes</span>
 ✓ decode_full      every frame and audio packet decoded without errors
 ✓ av_length        video/audio length difference 0 ms
 ✓ format           1080x1920 @ 30.000 fps (target 1080x1920 @ 30.0)
-✓ loudness         -14.0 LUFS (target -14.0 ±1.0)
-✓ true_peak        -5.8 dBTP (ceiling -1.0)
-✓ join_clicks      inspected 5/5 joins, 0 suspicious
+✓ loudness         -13.9 LUFS (target -14.0 ±1.0)
+✓ true_peak        -5.6 dBTP (ceiling -1.0)
+✓ join_clicks      inspected 4/4 joins, 0 suspicious
 ✓ fx_rendered      12 applied, 0 skipped
 ✓ flicker          max 0 strong flashes in any 1 s window (limit 3)
 ✓ graphics_rules   3 graphics · overlaps 0 · too short 0 · outside video 0
