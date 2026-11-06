@@ -99,6 +99,8 @@ Before the first Reel, Lionstone learns the brand and asks what to use. Afterwar
 
 <img src="assets/reels/11-memory.jpg" alt="It remembers your brand: produce with my saved brand identity, or prepare with a new brand identity. Found from any folder; a new identity archives the old one" width="100%">
 
+<img src="assets/reels/12-looks.jpg" alt="Two editing looks, mix them freely. Editorial: staggered title in a large italic serif, quiet captions with one word set large, glass notification card, neon pills, countdown clock. Bold: glowing heavy headline, heavy captions with a glowing key word, dashed card, emphasis zooms" width="100%">
+
 ```bash
 lionstone reels brand init "Brand" --language en
 lionstone reels identity "Brand" --footage talk.mp4 --example a.mp4 --example b.mp4 --example c.mp4
@@ -110,6 +112,7 @@ lionstone reels make projects/brand/<reel>
 
 - **Brand identity from your own videos** — one talking-head take and 3-5 example Reels. Measured: tempo, cuts per minute, pauses, loudness, colour, palette, length, speech rate, opening lines, and an estimate of whether they use music. Contact sheets let Claude look at what can't be measured, and anything skipped is listed with the reason.
 - **A numbered visual catalogue** — every option has a number and a picture: hook title, captions, colour, pace, effects (Lionstone Agent styles and 11 Reel FX), music, music level, sound effects, framing, noise cleanup, covers and accent colour. Picture options are real Lionstone renders; sound options are waveforms or spectrograms of real output. Click cards on the local page and copy the command, or type the numbers. The man in the catalogue is a fictional example: **your Reel is always made from your own footage.**
+- **Two editing looks you can mix** — *Editorial*: staggered titles in a large italic serif, quiet captions with one word set large, a glass notification card, neon pills, a countdown clock. *Bold*: heavy captions with a glowing key word, a glowing headline, a dashed card for one number or word, emphasis zooms. Each piece is also its own option. Words come from your script and hooks; Poppins and DM Serif Display ship under the SIL OFL, so it looks the same everywhere.
 - **"Decide for me from my brand identity"** — on every group (`100`, `200`, …), or `0` for everything. Each automatic choice records its reason, and the delivery report lists them. It never invents music: if your examples have music, it asks for your own licensed file.
 - **It remembers** — a brand is found from any folder. `lionstone reels start` and `make` offer **produce with my saved brand identity** or **prepare with a new brand identity**. A new identity archives the old one; nothing is deleted.
 

@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Any
 
 from . import memory
-from .brand import Brand, home, save
+from .brand import HEX, Brand, home, save
 from .identity import load_identity
 
 AUTO = "auto"
@@ -35,13 +35,17 @@ QUESTIONS: list[dict[str, Any]] = [
         ("T02", "Satır satır (dikeye uygun)", "Line by line (fits vertical)"),
         ("T01", "Kelime kelime patlayarak", "Word pop, one word at a time"),
         ("P05", "Kelimeler sırayla gelsin", "Words land one after another"),
-        ("none", "Kanca yazısı olmasın", "No hook title")]),
+        ("none", "Kanca yazısı olmasın", "No hook title"),
+        ("L01", "Editoryal: kademeli satırlar, iri italik serif", "Editorial: staggered lines, large italic serif"),
+        ("L02", "Parlayan büyük başlık", "Glowing heavy headline")]),
     _q("captions", "Altyazı stili?", "Caption style?", [
         ("karaoke", "Karaoke: konuşulan kelime vurgulu", "Karaoke: the spoken word is highlighted"),
         ("social", "Büyük sosyal medya altyazısı", "Large social captions"),
         ("bold", "Kutulu, kalın", "Bold on a box"),
         ("clean", "Sade", "Clean"),
-        ("none", "Altyazı yok", "No captions")]),
+        ("none", "Altyazı yok", "No captions"),
+        ("editorial", "Editoryal: ince yazı, anahtar kelime iri italik", "Editorial: quiet text, key word in large italic"),
+        ("keyword-pop", "Kalın yazı, anahtar kelime parlayan renkli", "Heavy text, key word glowing in colour")]),
     _q("grade", "Renk görünümü?", "Colour look?", [
         ("learned", "Örnek Reel'lerimden öğren", "Learn it from my example Reels"),
         ("punchy", "Canlı", "Punchy"), ("natural", "Doğal", "Natural"),
@@ -57,7 +61,15 @@ QUESTIONS: list[dict[str, Any]] = [
           for s in AGENT_STYLES],
         *[(f"fx:{x}", f"Açılışta Reel FX: {x}", f"Reel FX on the opening: {x}") for x in HOOK_FX],
         *[(f"fx:{x}", f"Tüm video Reel FX: {x}", f"Reel FX on the whole video: {x}")
-          for x in WHOLE_FX]]),
+          for x in WHOLE_FX],
+        ("look:editorial", "Editoryal görünüm: cam kart, neon etiket, geri sayım",
+         "Editorial look: glass card, neon pills, countdown"),
+        ("look:bold", "Güçlü görünüm: kesik çizgili kart, vurgu zoomları",
+         "Bold look: dashed card, emphasis zooms"),
+        ("look:glass", "Cam bildirim kartı (ikinci kanca)", "Glass notification card (second hook)"),
+        ("look:pills", "Neon etiketler (anahtar kelimeler)", "Neon pills (key words)"),
+        ("look:card", "Kesik çizgili kart (sayı ya da kelime)", "Dashed card (a number or word)"),
+        ("look:countdown", "Geri sayım saati", "Countdown clock")]),
     _q("music", "Müzik?", "Music?", [
         ("none", "Müzik yok", "No music"),
         ("file:<path>", "Kendi lisanslı dosyam", "My own licensed file")]),
@@ -78,7 +90,8 @@ QUESTIONS: list[dict[str, Any]] = [
         ("4", "4 kapak", "4 covers")]),
     _q("colors", "Marka vurgu rengi?", "Brand accent colour?", [
         ("brand", "Profildeki renk kalsın", "Keep the colour in my profile"),
-        ("examples", "Örnek Reel'lerden al", "Take it from my example Reels")]),
+        ("examples", "Örnek Reel'lerden al", "Take it from my example Reels"),
+        ("#6B2A5E", "Koyu erik", "Deep plum"), ("#FFD60A", "Parlak sarı", "Signal yellow")]),
 ]
 BY_ID = {q["id"]: q for q in QUESTIONS}
 
@@ -100,6 +113,10 @@ def validate(qid: str, value: str) -> str:
         path = value[5:]
         if not Path(path).is_file():
             raise FileNotFoundError(f"müzik dosyası yok: {path}")
+        return value
+    if qid == "colors" and value.startswith("#"):
+        if not HEX.match(value):
+            raise ValueError(f"renk #RRGGBB olmalı: {value}")
         return value
     if qid == "effects" and value.startswith("fx:"):
         return value  # any usable catalog preset; checked against the catalog when applied
@@ -240,6 +257,8 @@ def apply_to_brand(brand: Brand, chosen: dict[str, dict[str, str]],
         st["denoise"] = get("cleanup")
     if get("covers") is not None:
         st["covers"] = int(get("covers"))
+    if (get("colors") or "").startswith("#"):
+        brand.colors["accent"] = get("colors")
     identity = load_identity(brand, root)
     if identity:
         if get("colors") == "examples" and identity["palette"]:

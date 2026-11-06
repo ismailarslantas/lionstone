@@ -17,7 +17,7 @@ from ..cli import main as cli_main
 from ..ff import has_filter
 from ..ingest import probe
 from ..models import EditPlan, QAReport
-from . import memory, sound, visual
+from . import looks, memory, sound, visual
 from .brand import Brand, home, slug
 from .choices import load_choices, missing, summary_lines
 from .content import Reel, lint
@@ -69,7 +69,8 @@ def plan_args(brand: Brand, reel: Reel | None, src: Path, out: Path, extra: list
         args += ["--font", brand.font]
     if reel and st.get("hook_title", True) and reel.hooks:
         fx = st.get("title_effect", "T02")
-        hook = visual.title_lines(reel.hooks[0]) if fx == "T02" else reel.hooks[0]
+        width = {"L01": 15, "L02": 15}.get(fx, 18)
+        hook = visual.title_lines(reel.hooks[0], width) if fx in ("T02", "L01", "L02") else reel.hooks[0]
         args += ["--title", hook, "--title-effect", fx]
     return args + extra
 
@@ -153,6 +154,10 @@ def apply_effects(plan_path: Path, brand: Brand) -> list[str]:
     cat = load_catalog(ent)
     plan = EditPlan.load(plan_path)
     notes: list[str] = []
+    if choice == "look:bold":
+        choice = "agent:social"  # the zooms; the card is one of the look's graphics
+    elif choice.startswith("look:"):
+        return []
     if choice.startswith("agent:"):
         pr = agent.propose(plan, cat, ent, content="vlog", style=choice[6:],
                            intensity="balanced", platform="reels")
@@ -217,6 +222,8 @@ def make(brand: Brand, *, folder: Path | None = None, footage: Path | None = Non
         for note in apply_effects(plan_path, brand):
             log(f"✨ {note}")
     plan = EditPlan.load(plan_path)
+    for note in looks.apply_look(plan, brand, reel):
+        log(f"✨ {note}")
     for g in plan.graphics:  # a talking head: the hook goes above the face, not over it
         if g.layer == "titles":
             g.params.setdefault("position", "top")
@@ -226,6 +233,10 @@ def make(brand: Brand, *, folder: Path | None = None, footage: Path | None = Non
         "width": 1080, "height": 1920})
     plan.save(plan_path)
 
+    from ..pro.captions_pro import register_karaoke
+    from .look_fx import register_captions
+    register_karaoke(brand.accent)  # captions in this brand's colour, not the default gold
+    register_captions(brand.accent)
     render_path = out / "render.mp4"
     render_path.unlink(missing_ok=True)  # never mix a stale render if this one fails
     has_fx = bool((EditPlan.load(plan_path).meta.get("lionstone_fx") or {}).get("instances"))

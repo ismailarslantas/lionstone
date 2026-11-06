@@ -96,6 +96,13 @@ def _layout(effect: str, layer: str, text: str, W: int, H: int) -> tuple[list[st
     """Lines and font size the way the Lionstone builders lay this effect out."""
     if effect == "T01":  # word pop: one word at a time
         return text.split(), min(H * 0.1, W * 0.12)
+    if effect == "L01":  # editorial stack: the last line is the large one
+        lines = [x.strip() for x in text.split("/")]
+        return lines, W * 0.115 if len(lines) == 1 else W * 0.085
+    if effect == "L02":  # glow headline
+        return [x.strip() for x in text.split("/")], W * 0.082
+    if effect in ("L03", "L04", "L05", "L06"):  # sized and clipped by their own builders
+        return [], 0.0
     if effect == "T02":  # phrase build: lines split on "/"
         lines = [x.strip() for x in text.split("/")] if "/" in text else wrap(text, 22)
         return lines, min(H * 0.065, W * 0.07)

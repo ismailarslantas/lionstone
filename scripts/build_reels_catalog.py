@@ -236,6 +236,10 @@ class Builder:
             return self.frame(self.make(color=v, hook_title=False), 1.0)
         if q == "effects":
             video = self.make(effects=v, hook_title=False)
+            if v.startswith("look:"):
+                plan = json.loads((self.folder / "kurgu/plan.json").read_text(encoding="utf-8"))
+                moments = [g["at"] + 1.2 for g in plan["graphics"] if g["id"].startswith("look-") and g["at"] > 0]
+                return self.frame(video, moments[0] if moments else 3.0)
             return self.frame(video, 2.6) if v == "none" else self.strongest(video, base)
         if q == "framing":
             if v == "face":
@@ -245,7 +249,8 @@ class Builder:
                     return text_card("Follow the face", "Needs lionstone[vision]. Keeps the speaker centred when the take is not vertical.")
             return self.frame(self.make("landscape.mp4", reframe=v, hook_title=False), 2.0)
         if q == "colors":
-            return self.frame(self.make(accent=GOLD if v == "brand" else "#D9432F"), 1.2)
+            accent = v if v.startswith("#") else (GOLD if v == "brand" else "#D9432F")
+            return self.frame(self.make(accent=accent), 1.2)
         if q == "covers":
             self.style(covers=int(v))
             for x in (self.folder / "teslim").glob("kapak-*.jpg"):

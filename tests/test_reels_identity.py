@@ -41,11 +41,11 @@ def _identity(tempo="fast", vertical=True, palette=("#FC0C0C",), music=0, color_
 
 @pytest.fixture()
 def clips(ws):
-    _ff("-f", "lavfi", "-i", "sine=f=300:d=4:r=48000", "-af", "volume=2", "-ac", "1", str(ws / "v.wav"))
+    _ff("-f", "lavfi", "-i", "sine=f=300:d=9:r=48000", "-af", "volume=2", "-ac", "1", str(ws / "v.wav"))
     out = []
     for name, col in (("footage", "gray"), ("ex1", "red"), ("ex2", "crimson"), ("ex3", "orangered")):
         p = ws / f"{name}.mp4"
-        _ff("-f", "lavfi", "-i", f"color=c={col}:s=360x640:r=30:d=4", "-i", str(ws / "v.wav"),
+        _ff("-f", "lavfi", "-i", f"color=c={col}:s=360x640:r=30:d=9", "-i", str(ws / "v.wav"),
             "-shortest", "-c:v", "libx264", "-preset", "ultrafast", "-pix_fmt", "yuv420p",
             "-c:a", "aac", str(p))
         out.append(p)
@@ -277,6 +277,120 @@ def test_a_prompt_with_no_one_there_never_crashes(ws, monkeypatch):
     monkeypatch.setattr(sys, "stdin", FakeTty())
     monkeypatch.setattr(builtins, "input", eof)
     assert _prompt("? ") is None
+
+
+@needs_ffmpeg
+@pytest.mark.parametrize("title,caption,look", [("L01", "editorial", "look:editorial"),
+                                                ("L02", "keyword-pop", "look:bold")])
+def test_new_looks_really_render(clips, title, caption, look):
+    from lionstone.ff import has_filter
+    if not (has_filter("drawtext") and has_filter("subtitles")):
+        pytest.skip("this FFmpeg has no drawtext or subtitles")
+    b = brand_mod.Brand(name="M", handle="@m", audience="a", target_seconds=(2, 40))
+    b.style.update(title_effect=title, caption_style=caption, effects=look, sfx=False,
+                   color="natural", intensity="natural")
+    brand_mod.save(b)
+    folder = Path("projects/m/r")
+    (folder / "ham").mkdir(parents=True)
+    shutil.copy(clips[0], folder / "ham" / "take.mp4")
+    script = "Kira artışı korkutuyor mu? Bütçeni 30 gün yaz. Bölgeyi sakin seç."
+    Reel(brand="M", topic="t", why="w", hooks=["Kira artışı korkutuyor mu?", "İzle."], second_hook="Asıl mesele bu.",
+         script=script, cta="Kaydet.", caption="c", cover_text=["Kira"]).save(folder / "reel.json")
+    words, t = [], 0.1
+    for w in script.split():
+        words.append({"word": w, "start": round(t, 2), "end": round(t + 0.3, 2)})
+        t += 0.34
+    Path("w.json").write_text(json.dumps({"words": words}, ensure_ascii=False), encoding="utf-8")
+    assert main(["reels", "make", str(folder), "--identity", "same", "--transcript", "w.json", "--fast"]) in (0, 2)
+    rep = json.loads((folder / "teslim" / "rapor.json").read_text(encoding="utf-8"))
+    rendered = {c["name"]: c for c in rep["qa"]["checks"]}
+    assert rendered["decode_full"]["status"] == "passed"
+    assert rendered["reels_text_fit"]["status"] == "passed", rendered["reels_text_fit"]
+    plan = EditPlan.load(folder / "kurgu" / "plan.json")
+    assert plan.graphics[0].effect == title and any(g.id.startswith("look-") for g in plan.graphics)
+    render = next((folder / "kurgu").glob(".lionstone/render.json"))
+    log = json.loads(render.read_text(encoding="utf-8"))
+    assert not [g for g in log.get("graphics_log", log.get("graphics", [])) if g.get("status") == "skipped"], log
+
+
+def test_keyword_rule_prefers_numbers_then_long_words():
+    from lionstone.reels.looks import keywords, number_or_keyword, pick_keyword
+    assert pick_keyword("You save 30 percent today".split()) == 2
+    assert pick_keyword("Is rising rent scaring you?".split()) == 3
+    assert pick_keyword("bu ve bir".split()) == -1
+    assert keywords("Bütçeni yaz. Bölgeyi seç. Bölgeyi seç.") == ["Bütçeni", "Bölgeyi"]
+    assert number_or_keyword("It costs $30, really.") == "$30"
+    assert number_or_keyword("Marketing matters.") == "Marketing"
+
+
+def test_a_look_only_uses_the_users_own_words():
+    from lionstone.reels.looks import apply_look, look_events
+    from lionstone.speech import segments_from_cuts
+    text = "Kira artıyor. Bütçeni yaz. Bölgeyi seç. Kaydet.".split()
+    words = [Word(t, i * 1.0, i * 1.0 + 0.8) for i, t in enumerate(text)]
+    plan = EditPlan(source="/x.mp4", duration=7.0, intensity="dynamic", words=words)
+    plan.segments = segments_from_cuts([], 7.0, words)
+    b = brand_mod.Brand(name="M", handle="@m")
+    r = Reel(brand="M", topic="t", script=" ".join(text), second_hook="Asıl mesele bu.", hooks=["h"])
+    events = {e.effect: e for e in look_events(plan, "look:editorial", b, r)}
+    assert set(events) == {"L03", "L04", "L06"}
+    assert events["L03"].text == "@m" and events["L03"].subtext == "Asıl mesele bu."
+    assert all(w in " ".join(text) for w in events["L04"].text.split(" / "))
+    assert [e.effect for e in look_events(plan, "look:bold", b, r)] == ["L05"]
+    assert look_events(plan, "none", b, r) == []
+    b.style["effects"] = "look:card"
+    apply_look(plan, b, r)
+    apply_look(plan, b, r)  # a second make replaces, never stacks
+    assert len([g for g in plan.graphics if g.id.startswith("look-")]) == 1
+
+
+def test_a_look_waits_for_the_hook_title_to_leave():
+    from lionstone.models import GraphicEvent
+    from lionstone.reels.looks import look_events
+    from lionstone.speech import segments_from_cuts
+    text = "Bir. İki. Üç. Dört. Beş. Altı.".split()
+    words = [Word(t, i * 1.0, i * 1.0 + 0.8) for i, t in enumerate(text)]
+    plan = EditPlan(source="/x.mp4", duration=6.0, intensity="dynamic", words=words,
+                    graphics=[GraphicEvent("title", "T02", 0.2, 3.0, "Kanca")])
+    plan.segments = segments_from_cuts([], 6.0, words)
+    r = Reel(brand="M", topic="t", script=" ".join(text), second_hook="Asıl mesele.")
+    glass = look_events(plan, "look:glass", brand_mod.Brand(name="M"), r)[0]
+    assert glass.at >= 3.2
+
+
+def test_new_captions_keep_the_cue_line_break():
+    from lionstone.captions import Cue
+    from lionstone.reels.look_fx import editorial_dialogue, keyword_pop_dialogue
+    words = [Word(t, i * 0.5, i * 0.5 + 0.4) for i, t in enumerate("Bütçeni yaz sonra seç".split())]
+    cue = Cue(start=0.0, end=2.0, lines=["Bütçeni yaz", "sonra seç"], words=words)
+    for make in (editorial_dialogue, keyword_pop_dialogue):
+        assert "\\N" in make("#E8B04B")(cue, None)
+
+
+def test_bundled_fonts_have_turkish_letters_and_their_licences():
+    from lionstone.reels.look_fx import FONTS, SANS, SANS_BOLD, SANS_ITALIC, SERIF_ITALIC
+    for f in (SANS, SANS_BOLD, SANS_ITALIC, SERIF_ITALIC):
+        assert f.exists()
+    assert (FONTS / "OFL-Poppins.txt").exists() and (FONTS / "OFL-DMSerifDisplay.txt").exists()
+
+
+def test_rounded_png_is_a_valid_image(tmp_path):
+    import zlib
+
+    from lionstone.reels.look_fx import rounded_png
+    data = rounded_png(tmp_path / "s.png", 40, 20, 8, (1, 2, 3, 200), (9, 9, 9), 2, dash=4).read_bytes()
+    assert data[:8] == b"\x89PNG\r\n\x1a\n"
+    size = int.from_bytes(data[33:37], "big")
+    assert len(zlib.decompress(data[41:41 + size])) == (40 * 4 + 1) * 20
+
+
+def test_colour_choice_reaches_the_brand(ws):
+    b = brand_mod.Brand(name="M")
+    brand_mod.save(b)
+    ch.save_choices(b, ch.resolve(b, {"colors": "#FFD60A"}))
+    assert brand_mod.load("M").accent == "#FFD60A"
+    with pytest.raises(ValueError):
+        ch.validate("colors", "#nope")
 
 
 def test_memory_finds_a_brand_from_another_folder(ws, monkeypatch):

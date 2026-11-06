@@ -12,7 +12,7 @@ on 9:16, 1:1 and 16:9, and renders with the same FFmpeg code in the preview and 
 Like everything in Lionstone, the pack is free and open source (Apache-2.0): no key, no
 watermark, no upload. *Pro* and *Studio* are only catalog labels.
 
-Every name, look and parameter is original to Lionstone. Nothing is bundled from third
+Every name, look and parameter is original to Lionstone. This pack bundles nothing from third
 parties: no stock overlays, LUTs, fonts or footage — just FFmpeg filter math
 (`license.source = "lionstone-original"`).
 

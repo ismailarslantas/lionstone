@@ -108,6 +108,16 @@ numaralarla tek tek sorar.
 | 11xx | Kapak sayısı |
 | 12xx | Vurgu rengi |
 
+Katalogda iki hazır görünüm de var, parçaları ayrı ayrı da seçilebilir:
+
+- **Editoryal:** kademeli başlık ve iri italik serif (`L01`), ince altyazı ve iri anahtar kelime (`editorial`), cam
+  bildirim kartı, neon etiketler, geri sayım.
+- **Güçlü:** parlayan başlık (`L02`), kalın altyazı ve parlayan anahtar kelime (`keyword-pop`), kesik çizgili kart,
+  vurgu zoomları.
+
+Yazılar senin scriptinden, kancalarından ve profilinden gelir; anahtar kelime her satırdan kurala göre seçilir (önce
+sayı, sonra en uzun anlamlı kelime). Yazıyı kişinin arkasına geçirme, nesne takibi, ikon ve 3B grafik yoktur.
+
 **Her grubun `x00` numarası "marka kimliğime göre sen belirle" seçeneğidir** (`100`, `200`, …). `0` hepsini
 belirler, `--pick 0 205` altyazıyı sen seçip kalanını Lionstone'a bırakır. `--auto` da aynı işi yapar.
 Otomatik her seçimin nedeni `choices.json`'da ve teslim raporunda yazar. Lionstone müzik dağıtmaz: "sen belirle"
