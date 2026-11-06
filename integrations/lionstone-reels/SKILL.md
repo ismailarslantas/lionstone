@@ -21,7 +21,8 @@ prices or legal facts; if a claim needs a source, ask the user or search. Create
 `lionstone reels new "<brand>" "<topic>"`.
 
 ## 2 · Hooks
-`lionstone reels hooks "<brand>" "<topic>" --angle <a> --angle <b>` gives filled templates.
+`lionstone reels hooks "<brand>" "<topic>" --angle <a> --angle <b>` gives filled templates in the
+brand's language; `--lang en|tr|both` picks the English or Turkish library or lists both.
 Use them as raw material, not final copy. Write at least two hooks from **different angles**
 (A/B), each ≤ 14 words and readable in 2 seconds, plus a second hook for second 3-6.
 

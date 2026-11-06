@@ -20,6 +20,8 @@ def _cfg(p) -> None:
     b.add_argument("--audience", default="")
     b.add_argument("--accent")
     b.add_argument("--kit", help="uygulanacak Lionstone brand kit adı")
+    b.add_argument("--language", default="tr",
+                   help="markanın dili: tr, en, … (varsayılan tr; kanca, altyazı, konuşma tanıma)")
 
     n = sub.add_parser("new", help="yeni Reel klasörü + reel.json")
     n.add_argument("brand")
@@ -28,7 +30,10 @@ def _cfg(p) -> None:
     h = sub.add_parser("hooks", help="kanca kütüphanesinden markaya göre doldurulmuş öneriler")
     h.add_argument("brand")
     h.add_argument("topic")
-    h.add_argument("--angle", action="append", help="merak, hata, sonuc, karsit, liste, …")
+    h.add_argument("--angle", action="append",
+                   help="merak, hata, sonuc, … ya da curiosity, mistake, result, …")
+    h.add_argument("--lang", choices=["tr", "en", "both"],
+                   help="kanca dili (varsayılan: markanın dili); both iki dili de listeler")
     h.add_argument("--json", action="store_true")
 
     li = sub.add_parser("lint", help="kanca / script / caption / hashtag kontrolü")
@@ -95,8 +100,8 @@ def _brand(a) -> int:
     if not a.name:
         raise ValueError("marka adı gerekli")
     if a.action == "init":
-        b = brand_mod.Brand(name=a.name, handle=a.handle, sector=a.sector, audience=a.audience,
-                            kit=a.kit)
+        b = brand_mod.new_brand(a.name, a.language, handle=a.handle, sector=a.sector,
+                                audience=a.audience, kit=a.kit)
         if a.accent:
             b.colors["accent"] = a.accent
         p = brand_mod.save(b)
@@ -151,14 +156,18 @@ def _run(a) -> int:
         print(f"Reel → {p}\nÇekimi buraya koy → {p.parent / 'ham'}")
         return 0
     if cmd == "hooks":
-        ideas = hook_ideas(brand_mod.load(a.brand), a.topic, a.angle)
+        b = brand_mod.load(a.brand)
+        langs = ["tr", "en"] if a.lang == "both" else [a.lang or b.language]
+        ideas = {lg: hook_ideas(b, a.topic, a.angle, language=lg) for lg in langs}
         if a.json:
-            print(json.dumps(ideas, ensure_ascii=False, indent=1))
+            print(json.dumps(ideas if a.lang == "both" else ideas[langs[0]],
+                             ensure_ascii=False, indent=1))
         else:
-            for k, v in ideas.items():
-                print(f"\n## {k}")
-                for x in v:
-                    print(f"- {x}")
+            for lg, sets in ideas.items():
+                for k, v in sets.items():
+                    print(f"\n## {f'{lg} · ' if a.lang == 'both' else ''}{k}")
+                    for x in v:
+                        print(f"- {x}")
         return 0
     if cmd == "lint":
         r = Reel.load(Path(a.reel))

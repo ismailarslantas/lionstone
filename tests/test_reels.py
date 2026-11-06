@@ -57,6 +57,43 @@ def test_hooks_fill_known_slots_only(ws):
     assert ideas["ikinci_kanca"] and ideas["cta"]
 
 
+def test_english_and_turkish_hook_libraries_match():
+    from lionstone.reels.content import ANGLE_PAIRS, hook_library
+    tr, en = hook_library("tr"), hook_library("en")
+    assert set(tr["angles"]) == set(ANGLE_PAIRS) and set(en["angles"]) == set(ANGLE_PAIRS.values())
+    for lib in (tr, en):
+        assert sum(len(a["templates"]) for a in lib["angles"].values()) == 60
+        assert len(lib["second_hook"]["templates"]) == 6 and len(lib["cta"]["templates"]) == 6
+
+
+def test_hook_language_choice_and_angle_names(ws):
+    b = _brand()  # a Turkish brand
+    en = hook_ideas(b, "rent", ["hata"], language="en")  # Turkish angle name, English library
+    assert any("bütçesiz ev bakmak" in h and "mistake" in h for h in en["mistake"])
+    assert any("{number}" in h for h in en["mistake"]) and en["second_hook"] and en["cta"]
+    tr = hook_ideas(b, "kira", ["mistake"], language="tr")  # and the other way round
+    assert "hata" in tr and "ikinci_kanca" in tr
+    assert "hata" in hook_ideas(b, "kira", ["hata"])  # the brand's language is the default
+    other = brand_mod.new_brand("Marke", "de")
+    assert "cta" in hook_ideas(other, "x") and "curiosity" in hook_ideas(other, "x")
+
+
+def test_english_brand_defaults(ws):
+    b = brand_mod.new_brand("Acme Homes", "en", audience="first-time buyers")
+    p = brand_mod.save(b)
+    assert b.cta == "Save this for later." and "curiosity" in hook_ideas(b, "rent")
+    assert "Brand voice" in (p.parent / "brand.md").read_text(encoding="utf-8")
+    assert main(["reels", "brand", "init", "Second", "--language", "en"]) == 0
+    assert brand_mod.load("Second").language == "en"
+
+
+def test_hooks_cli_lists_both_languages(ws, capsys):
+    _brand()
+    assert main(["reels", "hooks", "Örnek Emlak", "kira", "--angle", "hata", "--lang", "both"]) == 0
+    out = capsys.readouterr().out
+    assert "## tr · hata" in out and "## en · mistake" in out
+
+
 def test_lint_flags_real_problems(ws):
     b = _brand()
     r = Reel(brand=b.name, topic="kira", hooks=["{konu} hakkında"], script="Garanti kazanç.",

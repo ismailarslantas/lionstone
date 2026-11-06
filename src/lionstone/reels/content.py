@@ -19,7 +19,7 @@ from typing import Any
 
 from .brand import Brand, slug
 
-WORDS_PER_SECOND_TR = 2.5  # relaxed Turkish speech on camera
+WORDS_PER_SECOND = {"tr": 2.5, "en": 2.7}  # relaxed speech on camera
 HOOK_MAX_WORDS = 14
 CAPTION_MAX = 2200  # Instagram caption limit
 HASHTAG_MAX = 30  # Instagram hashtag limit
@@ -75,8 +75,22 @@ def new_reel(brand: Brand, topic: str, root: Path | None = None) -> Path:
 
 
 # --- hooks ---------------------------------------------------------------------------
-def hook_library() -> dict[str, Any]:
-    raw = resources.files("lionstone").joinpath("data/reels/hooks.json").read_text("utf-8")
+HOOK_FILES = {"tr": "hooks.json", "en": "hooks.en.json"}
+# same ten angles in both libraries: either name works with either language
+ANGLE_PAIRS = {"merak": "curiosity", "hata": "mistake", "sonuc": "result", "karsit": "contrarian",
+               "liste": "list", "hikaye": "story", "soru": "question", "gosterim": "demo",
+               "uyari": "warning", "kolaylik": "ease"}
+_ANGLE_NAMES = {**ANGLE_PAIRS, **{en: tr for tr, en in ANGLE_PAIRS.items()}}
+
+
+def hook_language(language: str | None) -> str:
+    """Libraries exist for Turkish and English; any other brand language gets English."""
+    return language if language in HOOK_FILES else "en"
+
+
+def hook_library(language: str = "tr") -> dict[str, Any]:
+    name = HOOK_FILES[hook_language(language)]
+    raw = resources.files("lionstone").joinpath(f"data/reels/{name}").read_text("utf-8")
     return json.loads(raw)
 
 
@@ -87,23 +101,33 @@ def fill(template: str, values: dict[str, str]) -> str:
 
 
 def hook_ideas(brand: Brand, topic: str, angles: list[str] | None = None,
-               extra: dict[str, str] | None = None) -> dict[str, list[str]]:
-    """Templates filled with what we know; unknown slots stay visible as {slot}."""
-    lib = hook_library()
+               extra: dict[str, str] | None = None,
+               language: str | None = None) -> dict[str, list[str]]:
+    """Templates filled with what we know; unknown slots stay visible as {slot}.
+    ``language`` picks the library (default: the brand's language)."""
+    lang = hook_language(language or brand.language)
+    lib = hook_library(lang)
+    product = brand.products[0] if brand.products else ""
+    promise = brand.promises[0] if brand.promises else ""
+    pain = brand.pains[0] if brand.pains else ""
     values = {"konu": topic, "kitle": brand.audience, "marka": brand.name,
               "hesap": brand.handle, "anahtar": brand.cta_keyword,
-              "ürün": brand.products[0] if brand.products else "",
-              "sonuç": brand.promises[0] if brand.promises else "",
-              "hata": brand.pains[0] if brand.pains else "", **(extra or {})}
-    unknown = [a for a in angles or [] if a not in lib["angles"]]
-    if unknown:
+              "ürün": product, "sonuç": promise, "hata": pain,
+              "topic": topic, "audience": brand.audience, "brand": brand.name,
+              "handle": brand.handle, "keyword": brand.cta_keyword,
+              "product": product, "result": promise, "mistake": pain, **(extra or {})}
+    known = {a: a if a in lib["angles"] else _ANGLE_NAMES.get(a) for a in
+             (angles or brand.hook_angles or list(lib["angles"]))}
+    unknown = [a for a, name in known.items() if name not in lib["angles"]]
+    if angles and unknown:
         raise ValueError(f"bilinmeyen açı: {', '.join(unknown)} (geçerli: "
                          f"{', '.join(lib['angles'])})")
     out = {}
-    for a in angles or brand.hook_angles or list(lib["angles"]):
-        if a in lib["angles"]:
-            out[a] = [fill(t, values) for t in lib["angles"][a]["templates"]]
-    out["ikinci_kanca"] = [fill(t, values) for t in lib["second_hook"]["templates"]]
+    for name in known.values():
+        if name in lib["angles"]:
+            out[name] = [fill(t, values) for t in lib["angles"][name]["templates"]]
+    second = "second_hook" if lang == "en" else "ikinci_kanca"
+    out[second] = [fill(t, values) for t in lib["second_hook"]["templates"]]
     out["cta"] = [fill(t, values) for t in lib["cta"]["templates"]]
     return out
 
@@ -123,8 +147,8 @@ def tokens(text: str) -> list[str]:
     return [t for t in (re.sub(r"[^\wçğıöşü'-]", "", w) for w in tr_lower(text).split()) if t]
 
 
-def speak_seconds(text: str) -> float:
-    return len(tokens(text)) / WORDS_PER_SECOND_TR
+def speak_seconds(text: str, language: str = "tr") -> float:
+    return len(tokens(text)) / WORDS_PER_SECOND.get(language, WORDS_PER_SECOND["en"])
 
 
 @dataclass
@@ -154,7 +178,7 @@ def lint(reel: Reel, brand: Brand) -> list[Finding]:
     if not reel.script:
         add("hata", "script", "script yok")
     else:
-        secs = speak_seconds(reel.script)
+        secs = speak_seconds(reel.script, brand.language)
         lo, hi = brand.target_seconds
         if not lo * 0.8 <= secs <= hi * 1.15:
             add("uyarı", "script", f"tahmini süre {secs:.0f} sn; hedef {lo:.0f}–{hi:.0f} sn")

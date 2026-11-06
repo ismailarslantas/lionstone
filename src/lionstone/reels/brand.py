@@ -96,6 +96,16 @@ def _default_style() -> dict[str, Any]:
     return Brand(name="_").style
 
 
+EN_DEFAULTS = {"tone": "friendly, clear, trustworthy", "cta": "Save this for later.",
+               "hook_angles": ["curiosity", "mistake", "result"]}
+
+
+def new_brand(name: str, language: str = "tr", **fields: Any) -> Brand:
+    """A brand whose default tone, CTA and hook angles match its language."""
+    defaults = {} if language == "tr" else EN_DEFAULTS
+    return Brand(name=name, language=language, **{**defaults, **fields})
+
+
 def path_for(name: str, root: Path | None = None) -> Path:
     return (root or brands_dir()) / slug(name) / "brand.json"
 
@@ -106,7 +116,8 @@ def save(b: Brand, root: Path | None = None) -> Path:
     p.write_text(json.dumps(b.to_dict(), ensure_ascii=False, indent=2), encoding="utf-8")
     md = p.parent / "brand.md"
     if not md.exists():
-        md.write_text(BRAND_MD.format(name=b.name), encoding="utf-8")
+        tmpl = BRAND_MD if b.language == "tr" else BRAND_MD_EN
+        md.write_text(tmpl.format(name=b.name), encoding="utf-8")
     return p
 
 
@@ -128,6 +139,23 @@ def list_brands(root: Path | None = None) -> list[str]:
     r = root or brands_dir()
     return sorted(p.parent.name for p in r.glob("*/brand.json")) if r.exists() else []
 
+
+BRAND_MD_EN = """# {name}: brand notes
+
+Claude reads this file when writing topics, hooks, scripts and captions. Write freely.
+
+## Brand voice
+- How we talk:
+- What we never say:
+
+## Products / services
+
+## Audience and their problems
+
+## Content that worked (link + why)
+
+## Competitors and how we differ
+"""
 
 BRAND_MD = """# {name} — marka notları
 

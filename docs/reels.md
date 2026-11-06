@@ -61,6 +61,16 @@ lionstone reels hooks "Örnek Emlak" "kira artışı" --angle hata --angle karsi
 
 `hooks`, 10 açıdan (merak, hata, sonuç, karşıt görüş, liste, hikâye, soru, gösterim, uyarı,
 kolaylık) 60 özgün şablonu marka bilgisiyle doldurur; ayrıca ikinci kanca ve CTA şablonları verir.
+
+Kütüphane **İngilizce ve Türkçe** olarak iki ayrı set halindedir (her biri 60 şablon). Varsayılan dil
+markanın dilidir; `--lang` ile değişir, açı adları iki dilde de geçer:
+
+```bash
+lionstone reels hooks "Örnek Emlak" "kira artışı" --lang en --angle mistake
+lionstone reels hooks "Örnek Emlak" "kira artışı" --lang both --angle hata
+lionstone reels brand init "Acme Homes" --language en   # İngilizce marka: kanca, altyazı, konuşma tanıma
+```
+
 Bilinmeyen alanlar `{sayı}` gibi görünür kalır, uydurulmaz. Claude bunlardan yola çıkıp
 `reel.json`'u yazar: konu, **neden tutacağı**, en az iki kanca (A/B), ikinci kanca, konuşur gibi
 akan ve çağrıyla biten script, caption, hashtag'ler, kapak yazıları.
