@@ -56,7 +56,7 @@ Every decision has a reason. Remove `--dry-run` to apply it. Content types: `pod
 
 ## Step 4 — Or choose yourself
 
-**Browse and preview.** 133 presets in the catalog, 92 ready today: 28 looks, 19 effects,
+**Browse and preview.** 145 presets in the catalog, 104 ready today including the 12 Reel FX: 28 looks, 19 effects,
 11 transitions, 6 motion presets, 25 animated text presets and 3 caption styles.
 
 ```bash

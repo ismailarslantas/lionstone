@@ -25,7 +25,7 @@ Original Lionstone looks, effects, transitions, motion and animated text — pre
 
 | Command | What it does |
 |---|---|
-| `lionstone fx list --kind look` · `lionstone fx show soft-bloom` | Browse 133 presets with tier, status, cost and licence. Favourites and search included. |
+| `lionstone fx list --kind look` · `lionstone fx show soft-bloom` | Browse 145 presets with tier, status, cost and licence. Favourites and search included. |
 | `lionstone fx preview soft-bloom --before-after --gif` | Real low-res preview with the export builders; every preset previews and renders. |
 | `lionstone fx apply plan.json dip-to-black --join 2` | Put a look, effect, transition or motion preset on the whole video, a segment, a cut or a source range. Keyframes with 6 easing curves. |
 | `lionstone fx text plan.json counter-up --text "Customers" --at 12 --param to=250` | 25 animated text presets — Word Pop, Counter Up, Price Reveal, Stat, Location/Speaker labels, CTA, Type-on, End Card — plus karaoke captions. |

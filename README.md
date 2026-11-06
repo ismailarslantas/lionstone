@@ -75,11 +75,9 @@ Coming from the paid plugin? Run `pip uninstall lionstone-pro`, then install as 
 
 Most "AI editors" either chop every silence (and your sentences with it) or send your footage to a cloud you don't control. **Lionstone edits like a careful human editor.** It transcribes your video locally with word timestamps, removes fillers (`um`, `uh`, `ııı`, `eee`), stutters, repeated phrases and false starts, keeps the pauses that carry meaning, and **never cuts inside a word**. Every decision is written to `plan.json` with its reason, so you can read the edit, change it by editing `transcript.md`, or undo any cut with `lionstone cuts plan.json --restore c0004`. Your original files are never touched.
 
-### 🎨 Creative Suite — 133 presets, 25 animated text styles
+### 🎨 Creative Suite — 104 presets ready to render, 25 animated text styles
 
-<img src="assets/pro-studio/04-creative-suite.jpg" alt="Creative Suite: 133 original presets, before/after previews, 25 animated text styles, karaoke captions, Lionstone Agent" width="100%">
-
-- **133 original presets** — looks, effects, transitions and motion. Browse with `lionstone fx list`, inspect with `lionstone fx show soft-bloom`.
+- **104 original presets ready to render** (145 in the catalogue; the rest are listed as planned, never shipped as buttons that do nothing) — looks, effects, transitions, motion and text. Browse with `lionstone fx list`, inspect with `lionstone fx show soft-bloom`.
 - **Real previews before you commit** — `lionstone fx preview soft-bloom --before-after --gif` renders a low-res before/after with the same code the final export uses.
 - **25 animated text presets** — Word Pop, Counter Up, Price Reveal, Stat Emphasis, Location and Speaker labels, Call to Action, Type-on, Signature End Card — plus karaoke captions that highlight each word as it is spoken.
 - **Lionstone Agent** — `lionstone fx auto plan.json --content vlog --style social` picks one consistent look, emphasis zooms and transitions on real topic changes, stays within budgets, and gives a reason for every choice.
@@ -371,7 +369,7 @@ Every feature is free and open source (Apache-2.0): no license key, no account, 
 | Speech-aware cutting, edit by text, restore cuts, plan.json | `lionstone edit` · `plan` · `apply-transcript` |
 | Loudness, de-noise, color, LUTs, captions, RTL, Turkish | `lionstone edit` |
 | 12 title effects (F01-F06 + P01-P06) and 12 animated text presets | `lionstone effects list` |
-| **Creative Suite**: 133 looks, effects, transitions, motion and text presets with previews, keyframes and an agent that picks them | `lionstone fx list` · `fx preview` · `fx auto` |
+| **Creative Suite**: 104 ready-to-render looks, effects, transitions, motion and text presets with previews, keyframes and an agent that picks them | `lionstone fx list` · `fx preview` · `fx auto` |
 | **Multicam**: audio sync with drift check, active-speaker switching | `lionstone multicam` |
 | **Style learning** from 1-3 reference videos | `lionstone style learn` |
 | **Shorts/Reels generator**: best moments → 9:16, face-tracked reframe, hook titles | `lionstone clips` |
