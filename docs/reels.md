@@ -30,6 +30,17 @@ kanca yazısı ve kapak yazısı çizilemez, rapor da GÖZDEN GEÇİR der. Tam s
 `brew install ffmpeg-full` ve `export PATH="$(brew --prefix ffmpeg-full)/bin:$PATH"`, ya da
 `conda install -c conda-forge ffmpeg`. `lionstone doctor` iki filtreyi de "available" göstermeli.
 
+## Kısa yol: `lionstone reels start`
+
+Nerede olduğunu söyler. Marka kimliğin yoksa ilk adımları verir; varsa sorar:
+
+1. **Aynı marka kimliğimle üret**
+2. **Yeni marka kimliği ile hazırla**
+
+`reels make` de aynı soruyu sorar (`--identity same` ya da `--identity new` ile sormadan geçer).
+Kimlik bir kez oluşunca hatırlanır: başka bir klasörden de bulunur. Yeni kimlik eskisini silmez,
+seçimleriyle birlikte `brands/<slug>/identity-archive/` altına taşır.
+
 ## 1 · Markayı bir kez tanıt
 
 ```bash
@@ -51,6 +62,59 @@ brand kit'i `kit` alanıyla bağlanır.
 | `title_effect` | `T02` | Kanca yazısı efekti (dikeye göre satır kırar) |
 | `music`, `music_volume` | yok · 0.18 | Müzik dosyası; konuşmanın altında kendiliğinden kısılır |
 | `sfx` | `true` | Ses efektlerini seyrek ve anlamlı yerleştirir |
+
+### Kafa çekimi + 3-5 örnek Reel → marka kimliği
+
+```bash
+lionstone reels identity "Örnek Emlak" --footage kafa-cekimi.mp4 \
+  --example ornek1.mp4 --example ornek2.mp4 --example ornek3.mp4
+```
+
+| Ölçülen | Nereden |
+|---|---|
+| Tempo, dakikadaki kesim, duraklama oranı | Örnek Reel'ler |
+| Ses seviyesi, renk (parlaklık, kontrast, doygunluk, sıcaklık), renk paleti | Örnek Reel'ler |
+| Tipik süre ve süre aralığı, açılış cümleleri | Örnek Reel'ler (konuşma tanıma gerekir) |
+| Müzik var mı | Örnek Reel'ler (**tahmin**: konuşma yokken ses sürüyor mu) |
+| Dikey mi, konuşma hızın, ses seviyen | Kafa çekimin |
+
+Sonuç `brands/<slug>/identity/` altındadır: `identity.md`, `identity.json`, `style.json` ve her video
+için kare şeridi (`frames/`). Altyazı görünümü ve yazı yerleşimi ölçülemez; Claude bu karelere bakıp
+`brand.md`'yi tamamlar. Ölçülemeyen her şey nedeniyle listelenir.
+
+### Görsel katalogdan seç
+
+```bash
+lionstone reels catalog "Örnek Emlak" --open
+lionstone reels setup "Örnek Emlak" --pick 101 201 301 502 601 801
+```
+
+Her seçeneğin bir numarası ve görseli vardır. Sayfada her gruptan bir karta tıkla, hazır komutu kopyala;
+ya da numaraları kendin yaz. Terminalde yalnızca `lionstone reels setup "Örnek Emlak"` yazarsan aynı
+numaralarla tek tek sorar.
+
+| Numaralar | Grup |
+|---|---|
+| 1xx | Kanca yazısı |
+| 2xx | Altyazı |
+| 3xx | Renk (örneklerinden öğrenilen dahil) |
+| 4xx | Tempo |
+| 5xx | Efektler (Lionstone Agent stilleri, 11 Reel FX) |
+| 6xx | Müzik (`602=muzik.mp3`, lisans sende) |
+| 7xx | Müzik seviyesi |
+| 8xx | Ses efektleri |
+| 9xx | Kadraj |
+| 10xx | Gürültü temizliği |
+| 11xx | Kapak sayısı |
+| 12xx | Vurgu rengi |
+
+**Her grubun `x00` numarası "marka kimliğime göre sen belirle" seçeneğidir** (`100`, `200`, …). `0` hepsini
+belirler, `--pick 0 205` altyazıyı sen seçip kalanını Lionstone'a bırakır. `--auto` da aynı işi yapar.
+Otomatik her seçimin nedeni `choices.json`'da ve teslim raporunda yazar. Lionstone müzik dağıtmaz: "sen belirle"
+müzik uyduramaz, örneklerinde müzik varsa bunu söyler ve kendi lisanslı dosyanı ister.
+
+Katalogdaki resim karelerin hepsi gerçek Lionstone çıktısıdır. **Görsellerdeki kurgusal erkek karakter yalnızca
+örnektir; Reel'in her zaman kendi çekiminden ve referans videolarından üretilir.**
 
 ## 2 · Konu, hook, script (Claude)
 

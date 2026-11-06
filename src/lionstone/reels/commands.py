@@ -23,6 +23,35 @@ def _cfg(p) -> None:
     b.add_argument("--language", default="tr",
                    help="markanın dili: tr, en, … (varsayılan tr; kanca, altyazı, konuşma tanıma)")
 
+    sta = sub.add_parser("start", help="kayıtlı marka kimliği: aynısıyla üret ya da yenisini hazırla")
+    sta.add_argument("brand", nargs="?")
+    sta.add_argument("--choice", choices=["same", "new"])
+    sta.add_argument("--json", action="store_true")
+
+    i = sub.add_parser("identity", help="kafa çekimi + 3-5 örnek Reel → marka kimliği")
+    i.add_argument("brand")
+    i.add_argument("--footage", required=True, help="kafa çekimi videosu")
+    i.add_argument("--example", action="append", required=True, default=[],
+                   help="markana uygun örnek Reel (3-5 kez)")
+    i.add_argument("--no-asr", action="store_true")
+    i.add_argument("--model", default="small")
+
+    su = sub.add_parser("setup", help="efekt, stil, müzik ve diğer seçimler; her soruda 'sen belirle'")
+    su.add_argument("brand")
+    su.add_argument("--auto", action="store_true", help="hepsini marka kimliğine göre belirle")
+    su.add_argument("--pick", nargs="+", default=[], metavar="NO",
+                    help="katalog numaraları, örn. --pick 101 205 503 602=muzik.mp3 (0 = kalanı sen belirle)")
+    su.add_argument("--set", action="append", default=[], metavar="SORU=DEĞER",
+                    help="tek cevap, örn. captions=karaoke, effects=auto, music=file:muzik.mp3")
+    su.add_argument("--questions", action="store_true", help="soruları JSON olarak yaz, kaydetme")
+    su.add_argument("--show", action="store_true", help="kayıtlı seçimleri göster")
+
+    cat = sub.add_parser("catalog", help="görsel katalog: her seçeneğin numarası ve gerçek görüntüsü")
+    cat.add_argument("brand", nargs="?")
+    cat.add_argument("--open", action="store_true", help="tarayıcıda aç")
+    cat.add_argument("--json", action="store_true", help="numara, görsel yolu ve grup özet görselleri")
+    cat.add_argument("-o", "--output", help="HTML dosyası")
+
     n = sub.add_parser("new", help="yeni Reel klasörü + reel.json")
     n.add_argument("brand")
     n.add_argument("topic")
@@ -45,11 +74,13 @@ def _cfg(p) -> None:
     m.add_argument("--video", help="reel klasörü yoksa çekim dosyası")
     m.add_argument("--music", help="müzik dosyası (lisansı sende)")
     m.add_argument("--no-sfx", action="store_true")
-    m.add_argument("--covers", type=int, default=3)
+    m.add_argument("--covers", type=int, default=None)
     m.add_argument("--fast", action="store_true")
     m.add_argument("--transcript", help="kelime zamanlı transcript JSON")
     m.add_argument("--no-asr", action="store_true")
     m.add_argument("--model", default=None, help="faster-whisper modeli (varsayılan small)")
+    m.add_argument("--identity", choices=["same", "new"],
+                   help="kayıtlı marka kimliği: same ile sormadan üret, new ile yenisini hazırla")
     m.add_argument("--keep-plan", action="store_true",
                    help="kurgu/plan.json'u yeniden üretme (düzenleme odası değişiklikleri korunur)")
 
@@ -120,6 +151,157 @@ def _brand(a) -> int:
     return 0
 
 
+def _prompt(text: str) -> str | None:
+    """A line from the user, or None when nobody is there."""
+    import sys
+    if not sys.stdin.isatty():
+        return None
+    try:
+        return input(text)
+    except EOFError:
+        return None
+
+
+def _print_next(lines: list[str]) -> None:
+    for x in lines:
+        print(f"  {x}")
+
+
+def _start(a) -> int:
+    import sys
+
+    from . import choices as ch
+    st = ch.start_state(a.brand)
+    if a.json:
+        print(json.dumps(st, ensure_ascii=False, indent=1))
+        return 0
+    if st["state"] != "ready":
+        print({"new": "Kayıtlı marka kimliği yok. Başlamak için:",
+               "needs_identity": f"{st.get('brand')}: marka kimliği yok:",
+               "needs_setup": f"{st.get('brand')}: kurulum eksik ({', '.join(st.get('missing', []))}):"
+               }[st["state"]])
+        _print_next(st["next"])
+        return 2
+    print(f"Kayıtlı marka kimliği: {st['brand']} · {st['identity_at'] or 'tarih yok'} · "
+          f"tempo {st['tempo']}")
+    print("\n".join(ch.summary_lines(st["choices"])))
+    choice = a.choice
+    if not choice and sys.stdin.isatty():
+        for n, o in enumerate(st["options"], 1):
+            print(f"  {n}. {o['label']}")
+        raw = _prompt("[1-2, Enter = 1] ")
+        choice = None if raw is None else ("new" if raw.strip() == "2" else "same")
+    if not choice:
+        for o in st["options"]:
+            print(f"{o['value']}: {o['label']}")
+            _print_next(o["next"])
+        return 0
+    picked = next(o for o in st["options"] if o["value"] == choice)
+    print(picked["label"] + ":")
+    _print_next(picked["next"])
+    return 0
+
+
+def _show_catalog(a) -> int:
+    import webbrowser
+
+    from . import catalog as cl
+    from .choices import brand_dir
+    b = brand_mod.load(a.brand) if a.brand else None
+    lang = b.language if b else "tr"
+    if a.json:
+        print(json.dumps(cl.to_json(lang), ensure_ascii=False, indent=1))
+        return 0
+    for g in cl.to_json(lang):
+        print(f"\n## {g['title']}  ({g['ask']})\n   {g['sheet']}")
+        for o in g["options"]:
+            print(f"  {o['number']:>4}  {o['label']}")
+    out = Path(a.output) if a.output else (brand_dir(b) if b else Path(".")) / "catalog.html"
+    page = cl.write_html(out, b.name if b else "<marka>", lang)
+    print(f"\n0 = hepsini marka kimliğime göre sen belirle\nSayfa → {page}")
+    print('Seçim → lionstone reels setup "<marka>" --pick 101 205 503')
+    if a.open:
+        webbrowser.open(page.resolve().as_uri())
+    return 0
+
+
+def _identity(a) -> int:
+    from .identity import analyze, identity_dir
+    b = brand_mod.load(a.brand)
+    i = analyze(b, Path(a.footage), [Path(x) for x in a.example], asr=not a.no_asr, model=a.model)
+    st = i["style"]
+    print(f"Tempo {st['tempo']} · {st['cuts_per_minute']} kesim/dk · duraklama "
+          f"{st['pause_ratio'] * 100:.0f}% · palet {', '.join(i['palette']) or '-'}")
+    for s in i["skipped"]:
+        print(f"  ölçülmedi: {s}")
+    print(f"Kimlik → {identity_dir(b) / 'identity.md'}\nSıradaki → lionstone reels setup \"{a.brand}\"")
+    return 0
+
+
+def _setup(a) -> int:
+    import sys
+
+    from . import choices as ch
+    b = brand_mod.load(a.brand)
+    if a.questions:
+        print(json.dumps(ch.questions(b.language), ensure_ascii=False, indent=1))
+        return 0
+    if a.show:
+        chosen = ch.load_choices(b)
+        print("\n".join(ch.summary_lines(chosen)) or "henüz seçim yok")
+        left = ch.missing(chosen)
+        print(f"eksik: {', '.join(left)}" if left else "✅ kurulum tamam")
+        return 0 if not left else 2
+    answers = {q["id"]: ch.AUTO for q in ch.QUESTIONS} if a.auto else {}
+    if a.pick:
+        from .catalog import parse_picks
+        answers.update(parse_picks(a.pick))
+    for item in a.set:
+        if "=" not in item:
+            raise ValueError(f"--set SORU=DEĞER olmalı: {item}")
+        qid, value = item.split("=", 1)
+        answers[qid.strip()] = value.strip()
+    if not answers:
+        if not sys.stdin.isatty():
+            print("Katalog: lionstone reels catalog --open · cevap: --pick NO NO … ya da --auto")
+            return 2
+        from .catalog import write_html
+        page = write_html(ch.brand_dir(b) / "catalog.html", b.name, b.language)
+        print(f"Görsel katalog → {page}")
+        answers = ch.ask(b)
+    chosen = ch.resolve(b, answers)
+    print(f"Seçimler → {ch.save_choices(b, chosen)}")
+    print("\n".join(ch.summary_lines(chosen)))
+    left = ch.missing(chosen)
+    if left:
+        print(f"eksik: {', '.join(left)}")
+        return 2
+    print("✅ kurulum tamam → lionstone reels new / make")
+    return 0
+
+
+def _identity_gate(b, choice: str | None) -> int | None:
+    """On later Reels: same identity, or a new one? Returns an exit code to stop with."""
+    import sys
+
+    from . import choices as ch
+    st = ch.start_state(b.name)
+    if st["state"] != "ready":
+        return None
+    if not choice and sys.stdin.isatty():
+        print(f"Kayıtlı marka kimliği: {b.name} · {st['identity_at'] or 'tarih yok'}")
+        for n, o in enumerate(st["options"], 1):
+            print(f"  {n}. {o['label']}")
+        raw = _prompt("[1-2, Enter = 1] ")
+        choice = "new" if raw is not None and raw.strip() == "2" else "same"
+    if choice == "new":
+        print(st["options"][1]["label"] + ":")
+        _print_next(st["options"][1]["next"])
+        return 3
+    print(f"🧠 Kayıtlı marka kimliğiyle üretiliyor: {b.name} · {st['identity_at'] or 'tarih yok'}")
+    return None
+
+
 def _make(a) -> int:
     from .deliver import make
     folder = Path(a.reel) if a.reel else None
@@ -132,6 +314,9 @@ def _make(a) -> int:
         if not (a.brand and a.video):
             raise ValueError("reel klasörü ya da --brand + --video gerekli")
         b = brand_mod.load(a.brand)
+    stop = _identity_gate(b, a.identity)
+    if stop is not None:
+        return stop
     extra = []
     if a.transcript:
         extra += ["--transcript", a.transcript]
@@ -150,6 +335,14 @@ def _run(a) -> int:
     cmd = a.reels_cmd
     if cmd == "brand":
         return _brand(a)
+    if cmd == "start":
+        return _start(a)
+    if cmd == "catalog":
+        return _show_catalog(a)
+    if cmd == "identity":
+        return _identity(a)
+    if cmd == "setup":
+        return _setup(a)
     if cmd == "new":
         b = brand_mod.load(a.brand)
         p = new_reel(b, a.topic)

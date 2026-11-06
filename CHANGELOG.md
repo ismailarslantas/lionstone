@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.4.1 — 2026-11-06
+**Brand onboarding for Lionstone Reels: measure your style, choose from a visual catalogue, and every later Reel remembers.**
+
+- `lionstone reels identity "<brand>" --footage talk.mp4 --example a.mp4 …` (one talking-head take + 3-5 example Reels): measures tempo, cuts per minute, pauses, loudness, colour, palette, length, speech rate and opening lines; estimates music; writes contact sheets for the agent to look at what can't be measured. Saved in `brands/<slug>/identity/`. Anything not measured is listed with the reason.
+- **Visual catalogue**: `lionstone reels catalog [--open]`. Every option has a number and a picture: hook title, captions, colour, pace, effects (Lionstone Agent styles and 11 Reel FX), music, music level, sound effects, framing, noise cleanup, covers, accent colour. Picture options are real Lionstone renders on a fictional example character; sound options are waveforms or spectrograms of real output. The character is only the example: your Reel is made from your own footage.
+- `lionstone reels setup "<brand>" --pick 101 205 503 602=track.mp3`: choose by typing numbers, or click cards on the local page and copy the command. **Every group has a "decide for me from my brand identity" option** (`x00`), `0` decides everything, and each automatic choice records its reason.
+- `lionstone reels make` follows the choices. The report lists them.
+- **Memory**: a brand made in one folder is found from any other. `lionstone reels start` and `make` offer **"produce with my saved brand identity"** or **"prepare with a new brand identity"** (`--identity same|new`). A new identity archives the old one and its choices in `identity-archive/`; nothing is deleted.
+- Fixes: strong noise cleanup crashed FFmpeg 9 (`anlmdn` replaced); captions in vertical video always sit above the app UI, in every style; a failed `make` no longer leaves an old verdict behind; prompts no longer crash when there is no terminal (Windows `NUL`).
+
 ## 0.4.0 — 2026-11-06
 Lionstone 0.4.0 is the whole Lionstone package — speech-aware editing, Creative Suite (145 presets incl. Reel FX), multicam, style learning, Shorts/Reels clips, brand kits, team tools, NLE export, Styles, MCP and QA — plus **Lionstone Reels**.
 

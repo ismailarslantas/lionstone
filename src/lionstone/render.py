@@ -104,8 +104,8 @@ def video_sources(plan: EditPlan) -> dict[str, dict]:
 def _denoise(level: str) -> str:
     return {
         "off": "",
-        "light": "afftdn=nr=8:nf=-45:tn=1",
-        "strong": "afftdn=nr=16:nf=-40:tn=1,anlmdn=s=0.0005",
+        "light": "afftdn=nr=10:nf=-45",
+        "strong": "afftdn=nr=20:nf=-30",
     }.get(level, "")
 
 

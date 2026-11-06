@@ -31,6 +31,7 @@ def _ff(*args):
 def ws(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
     monkeypatch.setenv("LIONSTONE_SFX_DIR", str(tmp_path / "sfx"))
+    monkeypatch.setenv("XDG_CONFIG_HOME", str(tmp_path / "cfg"))
     return tmp_path
 
 
@@ -142,6 +143,28 @@ def test_overflow_blocks_and_vertical_title_fits():
     assert text_findings(plan)[0]["severity"] == "high"  # F01 doesn't wrap on 9:16
     plan.graphics[0] = GraphicEvent("g0", "T02", 0.2, 2.0, title_lines(hook))
     assert not text_findings(plan)
+
+
+@needs_ffmpeg
+def test_strong_cleanup_really_removes_noise(tmp_path):
+    import re
+
+    from lionstone.render import _denoise
+
+    def level(af, amp):
+        p = subprocess.run(
+            ["ffmpeg", "-hide_banner", "-f", "lavfi", "-i", f"anoisesrc=c=white:a={amp}:r=48000:d=3",
+             "-af", f"{af},atrim=start=1.5,astats=measure_overall=RMS_level:measure_perchannel=none",
+             "-f", "null", "-"], capture_output=True, encoding="utf-8", errors="replace", check=True)
+        return float(re.findall(r"RMS level dB: (-?[\d.]+)", p.stderr)[-1])
+    assert level(_denoise("strong"), 0.03) < level("anull", 0.03) - 10  # a noisy room
+    assert level(_denoise("light"), 0.006) < level("anull", 0.006) - 3  # an ordinary room
+
+
+def test_reels_hook_sits_above_the_face():
+    from lionstone.models import GraphicEvent
+    from lionstone.pro.fx.builders import _center_y
+    assert _center_y(GraphicEvent("g", "P05", 0, 2, "x", params={"position": "top"}), 1920) == "307"
 
 
 def test_cover_text_fits():

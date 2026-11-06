@@ -8,7 +8,25 @@ description: Produce brand-specific Instagram Reels end to end with Lionstone �
 You run the creative steps; Lionstone runs and measures the production steps. Work in the
 brand's language (Turkish by default) and in the folder that holds `brands/` and `projects/`.
 
-## 0 · Brand
+## 0 · Start
+Always run `lionstone reels start --json` first.
+- `state: ready`: a saved brand identity exists. Ask the user which option they want, using its labels:
+  **produce with the saved brand identity** or **prepare with a new brand identity**. Same → go to step 1.
+  New → ask for the footage and examples, then do "Identity" and "Catalogue" below (the old identity is archived).
+- `new`, `needs_identity`, `needs_setup`: do the missing steps below, in order.
+
+**Identity.** Ask for one talking-head video of the user and 3-5 example Reels in the style they want for the brand.
+Run `lionstone reels identity "<brand>" --footage <take> --example <a> --example <b> --example <c>`. Read
+`identity/identity.md`, look at `identity/frames/*.jpg`, and complete `brand.md` with what you see (caption look, text
+placement, framing). Say which measurements were skipped and why; music is an estimate.
+
+**Catalogue.** Before any Reel, ask what to use. Run `lionstone reels catalog "<brand>" --json`, show the user each
+group's `sheet` image and offer to open the page (`lionstone reels catalog "<brand>" --open`). They answer with numbers.
+Every group's first number and `0` mean "decide for me from my brand identity": always offer that. Apply with
+`lionstone reels setup "<brand>" --pick <numbers>`, then show the choices and, for automatic ones, the reasons.
+The man in the catalogue is a fictional example. The Reel is always made from the user's own footage.
+
+## Brand
 `lionstone reels brand list`. If the brand is missing, ask for: name, @handle, sector, audience,
 tone, products, results the brand can honestly claim, audience problems, banned words, CTA,
 colours. Then `lionstone reels brand init …` and fill `brands/<slug>/brand.json` + `brand.md`.
@@ -37,7 +55,7 @@ Run `lionstone reels lint <folder>` and fix every 🔴 before showing the user.
 
 ## 4 · Production
 The user puts footage into `<folder>/ham/`. Then:
-`lionstone reels make <folder>` (add `--music <file>` only if the user owns the licence).
+`lionstone reels make <folder> --identity same` (add `--music <file>` only if the user owns the licence).
 Read `<folder>/teslim/rapor.md`.
 - Only say the Reel is ready if it says **TESLİME HAZIR**.
 - Report every "Bak"/"Düzelt" row and every skipped check honestly.

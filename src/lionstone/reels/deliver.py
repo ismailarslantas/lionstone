@@ -17,12 +17,15 @@ from ..cli import main as cli_main
 from ..ff import has_filter
 from ..ingest import probe
 from ..models import EditPlan, QAReport
-from . import sound, visual
-from .brand import Brand, slug
+from . import memory, sound, visual
+from .brand import Brand, home, slug
+from .choices import load_choices, missing, summary_lines
 from .content import Reel, lint
+from .identity import identity_dir
 from .room import write_room
 
 VIDEO_EXT = {".mp4", ".mov", ".m4v", ".mkv", ".webm"}
+WHOLE_FX = ("brand-frame", "progress-rail")
 
 ROWS = [  # report row → QA checks behind it
     ("Tekrar taraması", ["reels_repeats"]),
@@ -48,10 +51,18 @@ def find_footage(folder: Path, reel: Reel | None) -> Path:
 
 def plan_args(brand: Brand, reel: Reel | None, src: Path, out: Path, extra: list[str]) -> list[str]:
     st = brand.style
+    caption = st.get("caption_style", "karaoke")
+    color = st.get("color", "punchy")
     args = ["plan", str(src), "-o", str(out), "--aspect", st.get("aspect", "9:16"),
             "--intensity", st.get("intensity", "dynamic"), "--profile", "social",
-            "--captions", "burn", "--caption-style", st.get("caption_style", "karaoke"),
-            "--color", st.get("color", "punchy"), "--accent", brand.accent]
+            "--captions", "none" if caption == "none" else "burn",
+            "--color", "natural" if color == "learned" else color, "--accent", brand.accent,
+            "--denoise", st.get("denoise", "light"), "--reframe", st.get("reframe", "center")]
+    if caption != "none":
+        args += ["--caption-style", caption]
+    learned = identity_dir(brand) / "style.json"
+    if color == "learned" and learned.exists():  # measured colour, on top of a light base
+        args += ["--x", f"style={learned.resolve()}", "--x", "style_apply=color"]
     if brand.language and "--language" not in extra:
         args += ["--language", brand.language]
     if brand.font:
@@ -115,6 +126,8 @@ def report_md(brand: Brand, reel: Reel | None, report: QAReport, extras: dict) -
                  f"{'; '.join(le)[:120]} |")
     lines += ["", f"Video: `{Path(report.file).name}` · {extras.get('duration', 0):.1f} sn",
               f"SFX: {len(extras.get('cues', []))} · Müzik: {extras.get('music') or 'yok'}", ""]
+    if extras.get("choices"):
+        lines += ["## Marka kurulumu", *summary_lines(extras["choices"]), ""]
     if report.issues:
         lines.append("## Bulgular")
         for i in report.issues:
@@ -127,8 +140,51 @@ def report_md(brand: Brand, reel: Reel | None, report: QAReport, extras: dict) -
     return "\n".join(lines) + "\n", ready
 
 
+def apply_effects(plan_path: Path, brand: Brand) -> list[str]:
+    """Turn the brand's effects choice into plan instances, each with a reason. Captions and
+    colour were already chosen, so the agent's own caption and look picks are left out."""
+    choice = brand.style.get("effects") or "none"
+    if choice == "none":
+        return []
+    from ..pro.commands_fx import load_catalog
+    from ..pro.features import agent, timeline
+    from ..pro.features.entitlements import current
+    ent = current()
+    cat = load_catalog(ent)
+    plan = EditPlan.load(plan_path)
+    notes: list[str] = []
+    if choice.startswith("agent:"):
+        pr = agent.propose(plan, cat, ent, content="vlog", style=choice[6:],
+                           intensity="balanced", platform="reels")
+        keep_look = brand.style.get("color") == "none"
+        pr.decisions = [d for d in pr.decisions if "caption" not in d.preset
+                        and (keep_look or "look-" not in d.preset)]
+        n = agent.apply(plan, pr, cat)
+        notes.append(f"{choice}: {n} karar")
+    elif choice.startswith("fx:"):
+        preset = cat.get("lionstone." + choice[3:].replace("lionstone.", ""))
+        if not preset.usable:
+            raise ValueError(f"{preset.name} kullanılamıyor: {preset.implementationStatus}")
+        params = {}
+        for key, color in (("accent", brand.accent), ("color", brand.accent),
+                           ("highlight", brand.accent), ("bg", brand.colors.get("primary"))):
+            if key in preset.parameters and color:
+                params[key] = color
+        whole = choice[3:] in WHOLE_FX or not plan.segments
+        anchor = ({"type": "global"} if whole else
+                  {"type": "segment", "start": plan.segments[0].start, "end": plan.segments[0].end})
+        timeline.add(plan, timeline.FxInstance(
+            preset=preset.id, version=preset.version, anchor=anchor, params=params,
+            created_by="agent", reason=f"brand choice: {choice}"))
+        notes.append(f"{preset.name}: {anchor['type']}")
+    else:
+        raise ValueError(f"bilinmeyen efekt seçimi: {choice}")
+    plan.save(plan_path)
+    return notes
+
+
 def make(brand: Brand, *, folder: Path | None = None, footage: Path | None = None,
-         extra: list[str] | None = None, fast: bool = False, covers: int = 3,
+         extra: list[str] | None = None, fast: bool = False, covers: int | None = None,
          music: str | None = None, sfx: bool | None = None, keep_plan: bool = False,
          log=print) -> dict:
     reel = Reel.load(folder) if folder and (folder / "reel.json").exists() else None
@@ -137,8 +193,16 @@ def make(brand: Brand, *, folder: Path | None = None, footage: Path | None = Non
     out = (folder / "kurgu") if folder else src.with_name(f"{src.stem}_reels")
     deliver = (folder / "teslim") if folder else out / "teslim"
     deliver.mkdir(parents=True, exist_ok=True)
+    for old in ("rapor.md", "rapor.json"):  # a failed run must not leave an old verdict behind
+        (deliver / old).unlink(missing_ok=True)
+    memory.remember(brand.slug, brand.name, home(brand), use=True)
 
     log(f"🎬 {brand.name} · {src.name}")
+    chosen = load_choices(brand)
+    if missing(chosen):
+        log("🧭 Marka kurulumu tamam değil, eksikler için varsayılan kullanılıyor: "
+            f"{', '.join(missing(chosen))} → `lionstone reels setup`")
+    covers = covers if covers is not None else int(brand.style.get("covers", 3))
     plan_path = out / "plan.json"
     if keep_plan and not plan_path.exists():
         raise FileNotFoundError(f"--keep-plan: plan yok: {plan_path}")
@@ -150,7 +214,12 @@ def make(brand: Brand, *, folder: Path | None = None, footage: Path | None = Non
             code = cli_main(["brand", "apply", str(plan_path), brand.kit])
             if code != 0:
                 raise RuntimeError(f"brand kit uygulanamadı: {brand.kit}")
+        for note in apply_effects(plan_path, brand):
+            log(f"✨ {note}")
     plan = EditPlan.load(plan_path)
+    for g in plan.graphics:  # a talking head: the hook goes above the face, not over it
+        if g.layer == "titles":
+            g.params.setdefault("position", "top")
     plan.meta.setdefault("reels", {}).update({
         "brand": brand.name, "script": reel.script if reel else "",
         "topic": reel.topic if reel else "", "cta": (reel.cta if reel else "") or brand.cta,
@@ -159,7 +228,9 @@ def make(brand: Brand, *, folder: Path | None = None, footage: Path | None = Non
 
     render_path = out / "render.mp4"
     render_path.unlink(missing_ok=True)  # never mix a stale render if this one fails
-    cli_main(["render", str(plan_path), "-o", str(render_path), *(["--fast"] if fast else [])])
+    has_fx = bool((EditPlan.load(plan_path).meta.get("lionstone_fx") or {}).get("instances"))
+    cli_main([*(["fx", "render"] if has_fx else ["render"]), str(plan_path), "-o", str(render_path),
+              *(["--fast"] if fast else [])])
     if not render_path.exists():
         raise RuntimeError("render adımı çıktı üretmedi")
     plan = EditPlan.load(plan_path)
@@ -177,7 +248,8 @@ def make(brand: Brand, *, folder: Path | None = None, footage: Path | None = Non
             log("🔊 SFX başlangıç paketi oluşturuluyor")
             sound.build_pack()
         custom = (folder / "sfx.json") if folder else None
-        cues = sound.load_cues(custom) if custom and custom.exists() else sound.auto_cues(plan)
+        cues = sound.load_cues(custom) if custom and custom.exists() else sound.auto_cues(
+            plan, density=brand.style.get("sfx_density", "sparse"))
     music = music or brand.style.get("music") or None
     log(f"🔊 Ses: {len(cues)} efekt · müzik: {Path(music).name if music else 'yok'}")
     mixed = sound.mix(render_path, final, cues=cues, music=music,
@@ -215,11 +287,12 @@ def make(brand: Brand, *, folder: Path | None = None, footage: Path | None = Non
             json.dumps([asdict(f) for f in findings], ensure_ascii=False, indent=1), "utf-8")
 
     write_room(plan, out / "room.html", f"{brand.name} · düzenleme odası")
-    missing = [f"FFmpeg'de {flt} yok: {what}" for flt, what, needed in (
+    absent = [f"FFmpeg'de {flt} yok: {what}" for flt, what, needed in (
         ("subtitles", "altyazı videoya yakılamadı", bool(plan.words)),
         ("drawtext", "kapak ve başlık yazıları çizilemedi", True)) if needed and not has_filter(flt)]
     extras = {"covers": cover_files, "cues": mixed["cues"], "music": mixed["music"],
-              "duration": info.duration, "lint_errors": lint_errors, "review": missing}
+              "duration": info.duration, "lint_errors": lint_errors, "review": absent,
+              "choices": chosen}
     md, ready = report_md(brand, reel, report, extras)
     (deliver / "rapor.md").write_text(md, encoding="utf-8")
     (deliver / "rapor.json").write_text(json.dumps(

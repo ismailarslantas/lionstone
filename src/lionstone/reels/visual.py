@@ -56,7 +56,7 @@ def make_cover(video: Path, out: Path, text: str, *, at: float, colors: dict[str
     fs = fit_size(lines, box_w, box_h, max_size=int(W * 0.115))
     line_h = int(fs * 1.22)
     block_h = line_h * len(lines)
-    y0 = int((H - block_h) / 2)
+    y0 = int(H * 0.68 - block_h / 2)  # under a talking head's face, inside the 3:4 grid crop
     fontfile = font_path(font)
     out.parent.mkdir(parents=True, exist_ok=True)
     c_text = colors.get("text", "#FFFFFF").lstrip("#")
