@@ -23,7 +23,7 @@ HEX = re.compile(r"^#[0-9A-Fa-f]{6}$")
 def slug(s: str) -> str:
     table = str.maketrans("ıİşŞğĞüÜöÖçÇ", "iissgguuoocc")
     s = re.sub(r"[^a-z0-9]+", "-", s.translate(table).lower())
-    return s.strip("-")[:48] or "marka"
+    return s.strip("-")[:48] or "brand"
 
 
 def brands_dir() -> Path:
@@ -35,7 +35,7 @@ class Brand:
     name: str
     handle: str = ""  # @instagram
     sector: str = ""
-    audience: str = ""  # "İzmir'de ev arayan genç aileler"
+    audience: str = ""  # "young families looking for a home in Izmir"
     tone: str = "samimi, net, güven veren"
     language: str = "tr"
     products: list[str] = field(default_factory=list)
@@ -68,14 +68,14 @@ class Brand:
         out = []
         for k, c in self.colors.items():
             if not HEX.match(c or ""):
-                out.append(f"renk {k}={c!r} #RRGGBB olmalı")
+                out.append(f"colour {k}={c!r} must be #RRGGBB")
         if not self.audience:
-            out.append("audience boş: konu ve hook yazımı kitleyi bilmeden yapılmaz")
+            out.append("audience is empty: topics and hooks can't be written without knowing the audience")
         if self.handle and not self.handle.startswith("@"):
-            out.append("handle @ ile başlamalı")
+            out.append("handle must start with @")
         lo, hi = self.target_seconds
         if not 5 <= lo < hi <= 180:
-            out.append("target_seconds 5–180 sn aralığında ve küçükten büyüğe olmalı")
+            out.append("target_seconds must be within 5-180 s, smallest first")
         return out
 
     # --- io ---------------------------------------------------------------
@@ -142,7 +142,7 @@ def load(name_or_path: str, root: Path | None = None) -> Brand:
             target = path_for(name_or_path, remembered)
     if not target.exists():
         raise FileNotFoundError(
-            f"marka bulunamadı: {name_or_path!r} → `lionstone reels brand init \"{name_or_path}\"`")
+            f"brand not found: {name_or_path!r} → `lionstone reels brand init \"{name_or_path}\"`")
     b = Brand.from_dict(json.loads(target.read_text(encoding="utf-8")))
     b.root = target.parent.parent.resolve()
     return b

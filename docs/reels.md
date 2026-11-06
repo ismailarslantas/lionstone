@@ -1,279 +1,292 @@
-# Lionstone Reels — markaya özel Instagram Reels akışı
+# Lionstone Reels: brand-specific Instagram Reels
 
-Çekimi ver, video markanın stiliyle, kontrol edilmiş ve paylaşıma hazır gelsin.
-Konu bulmaktan takvime kadar her adım düz dosyalarda durur: okunur, değiştirilir, geri alınır.
+Give it the footage; the video comes back in your brand's style, checked and ready to post.
+Every step from finding a topic to the calendar lives in plain files you can read, change and undo.
 
 ```
-Konu → Hook → Script → Çekim → Kesim → Grafik → Ses → Kontrol → Kapak + Caption → Takvim
- 🧠      🧠      🧠       🎥      🤖       🤖      🤖      🤖          🤖 + 🧠          🤖
+Topic → Hook → Script → Shoot → Cut → Graphics → Sound → QA → Cover + Caption → Calendar
+ 🧠      🧠      🧠       🎥      🤖      🤖       🤖     🤖      🤖 + 🧠           🤖
 ```
 
-🧠 Claude yazar (marka profilini ve kanca kütüphanesini okuyarak) · 🎥 sen çekersin · 🤖 Lionstone yapar ve ölçer.
+🧠 Claude writes it (reading your brand profile and the hook library) · 🎥 you shoot it · 🤖 Lionstone does it and measures it.
 
-## Hazırlaman gereken
+## What you need
 
 | | |
 |---|---|
-| Claude | Ücretli bir Claude planı ve **Claude Code** (sistem normal sohbette değil, bilgisayarına kurulan Claude Code'da çalışır) |
-| Bilgisayar | Mac, Windows ya da Linux. Render senin bilgisayarında yapılır; hız bilgisayarına bağlı |
-| Yazılım | Python 3.10+, FFmpeg. Kurgu programı gerekmez |
-| Ücret | Lionstone ücretsiz ve açık kaynak (Apache-2.0). Aylık ücret yok, video başına ücret yok |
+| Claude | A paid Claude plan and **Claude Code** (the workflow runs in Claude Code on your computer, not in a normal chat) |
+| Computer | Mac, Windows or Linux. Rendering happens on your computer, so speed depends on it |
+| Software | Python 3.10+ and FFmpeg. No editing software needed |
+| Price | Lionstone is free and open source (Apache-2.0). No monthly fee, no per-video fee, no license key, no watermark |
 
 ```bash
 pip install "lionstone[whisper] @ git+https://github.com/ismailarslantas/lionstone"
 lionstone doctor
-lionstone reels sfx build        # 31 özgün ses efektiyle başlangıç paketi
+lionstone reels sfx build        # a starter pack of 31 original sound effects
 ```
 
-**Mac'te FFmpeg:** `brew install ffmpeg` paketinde `drawtext` ve `subtitles` filtreleri yoktur; altyazı,
-kanca yazısı ve kapak yazısı çizilemez, rapor da GÖZDEN GEÇİR der. Tam sürümü kur:
-`brew install ffmpeg-full` ve `export PATH="$(brew --prefix ffmpeg-full)/bin:$PATH"`, ya da
-`conda install -c conda-forge ffmpeg`. `lionstone doctor` iki filtreyi de "available" göstermeli.
+**FFmpeg on a Mac:** the plain `brew install ffmpeg` package has no `drawtext` or `subtitles` filter, so captions,
+hook titles and cover text can't be drawn, and the report says NEEDS REVIEW. Install the full build:
+`brew install ffmpeg-full` and `export PATH="$(brew --prefix ffmpeg-full)/bin:$PATH"`, or
+`conda install -c conda-forge ffmpeg`. `lionstone doctor` should show both filters as "available".
 
-## Kısa yol: `lionstone reels start`
+## The short way: `lionstone reels start`
 
-Nerede olduğunu söyler. Marka kimliğin yoksa ilk adımları verir; varsa sorar:
+It tells you where you stand. With no brand identity it gives you the first steps; with one it asks:
 
-1. **Aynı marka kimliğimle üret**
-2. **Yeni marka kimliği ile hazırla**
+1. **Produce with my saved brand identity**
+2. **Prepare with a new brand identity**
 
-`reels make` de aynı soruyu sorar (`--identity same` ya da `--identity new` ile sormadan geçer).
-Kimlik bir kez oluşunca hatırlanır: başka bir klasörden de bulunur. Yeni kimlik eskisini silmez,
-seçimleriyle birlikte `brands/<slug>/identity-archive/` altına taşır.
+`reels make` asks the same question (`--identity same` or `--identity new` skips it).
+Once made, an identity is remembered and found from any folder. A new identity doesn't delete the old one: it moves it,
+with its choices, to `brands/<slug>/identity-archive/`.
 
-## 1 · Markayı bir kez tanıt
+## 1 · Introduce the brand once
 
 ```bash
-lionstone reels brand init "Örnek Emlak" --handle @ornekemlak \
-  --audience "İzmir'de ev arayan genç aileler" --accent "#E8B04B"
+lionstone reels brand init "Acme Homes" --language en --handle @acmehomes \
+  --audience "young families looking for a home in Izmir" --accent "#E8B04B"
 ```
 
-`brands/ornek-emlak/brand.json` ve `brand.md` oluşur. JSON'da: kitle, ses tonu, ürünler,
-dürüstçe vaat edilebilecek sonuçlar, kitlenin sorunları, yasaklı ifadeler, CTA, hashtag'ler,
-renkler, font ve kurgu stili (`style`). `brand.md` serbest notlar içindir: Claude konu, hook ve
-caption yazarken ikisini de okur. Logo, alt yazı bandı ve bitiş kartı için mevcut bir Lionstone
-brand kit'i `kit` alanıyla bağlanır.
+`--language` sets the language of hooks, captions and speech recognition. It defaults to `en`; Turkish brands use `--language tr`.
 
-| `style` alanı | Varsayılan | Ne yapar |
+This creates `brands/acme-homes/brand.json` and `brand.md`. The JSON holds the audience, tone of voice, products,
+results you can honestly promise, the audience's problems, banned phrases, CTA, hashtags, colours, font and edit
+style (`style`). `brand.md` is for free-form notes: Claude reads both when it writes topics, hooks and captions.
+For a logo, lower third and end card, link an existing Lionstone brand kit with the `kit` field.
+
+| `style` field | Default | What it does |
 |---|---|---|
-| `intensity` | `dynamic` | Kesim sertliği: natural · balanced · dynamic |
-| `caption_style` | `karaoke` | Türkçe kelime kelime altyazı, konuşulan kelime vurgulu |
-| `color` | `punchy` | Renk görünümü |
-| `title_effect` | `T02` | Kanca yazısı efekti (dikeye göre satır kırar) |
-| `music`, `music_volume` | yok · 0.18 | Müzik dosyası; konuşmanın altında kendiliğinden kısılır |
-| `sfx` | `true` | Ses efektlerini seyrek ve anlamlı yerleştirir |
+| `intensity` | `dynamic` | How hard it cuts: natural · balanced · dynamic |
+| `caption_style` | `karaoke` | Word-by-word captions in the brand's language, with the spoken word highlighted |
+| `color` | `punchy` | Colour look |
+| `title_effect` | `T02` | Hook title effect (breaks lines for vertical) |
+| `music`, `music_volume` | none · 0.18 | Music file; it ducks under the voice by itself |
+| `sfx` | `true` | Places sound effects sparsely and with a reason |
 
-### Kafa çekimi + 3-5 örnek Reel → marka kimliği
+### One talking-head take + 3-5 example Reels → brand identity
 
 ```bash
-lionstone reels identity "Örnek Emlak" --footage kafa-cekimi.mp4 \
-  --example ornek1.mp4 --example ornek2.mp4 --example ornek3.mp4
+lionstone reels identity "Acme Homes" --footage talk.mp4 \
+  --example example1.mp4 --example example2.mp4 --example example3.mp4
 ```
 
-| Ölçülen | Nereden |
+| Measured | From |
 |---|---|
-| Tempo, dakikadaki kesim, duraklama oranı | Örnek Reel'ler |
-| Ses seviyesi, renk (parlaklık, kontrast, doygunluk, sıcaklık), renk paleti | Örnek Reel'ler |
-| Tipik süre ve süre aralığı, açılış cümleleri | Örnek Reel'ler (konuşma tanıma gerekir) |
-| Müzik var mı | Örnek Reel'ler (**tahmin**: konuşma yokken ses sürüyor mu) |
-| Dikey mi, konuşma hızın, ses seviyen | Kafa çekimin |
+| Tempo, cuts per minute, pause ratio | Example Reels |
+| Loudness, colour (brightness, contrast, saturation, warmth), palette | Example Reels |
+| Typical length and range, opening lines | Example Reels (needs speech recognition) |
+| Whether there is music | Example Reels (**an estimate**: does sound continue when nobody speaks?) |
+| Whether it's vertical, your speech rate, your loudness | Your talking-head take |
 
-Sonuç `brands/<slug>/identity/` altındadır: `identity.md`, `identity.json`, `style.json` ve her video
-için kare şeridi (`frames/`). Altyazı görünümü ve yazı yerleşimi ölçülemez; Claude bu karelere bakıp
-`brand.md`'yi tamamlar. Ölçülemeyen her şey nedeniyle listelenir.
+The result is in `brands/<slug>/identity/`: `identity.md`, `identity.json`, `style.json` and a contact sheet per video
+(`frames/`). Caption look and text placement can't be measured; Claude looks at those frames and completes
+`brand.md`. Anything that couldn't be measured is listed with the reason.
 
-### Görsel katalogdan seç
+### Choose from the visual catalogue
 
 ```bash
-lionstone reels catalog "Örnek Emlak" --open
-lionstone reels setup "Örnek Emlak" --pick 101 201 301 502 601 801
+lionstone reels catalog "Acme Homes" --open
+lionstone reels setup "Acme Homes" --pick 101 201 301 502 601 801
 ```
 
-Her seçeneğin bir numarası ve görseli vardır. Sayfada her gruptan bir karta tıkla, hazır komutu kopyala;
-ya da numaraları kendin yaz. Terminalde yalnızca `lionstone reels setup "Örnek Emlak"` yazarsan aynı
-numaralarla tek tek sorar.
+Every option has a number and a picture. On the page, click one card per group and copy the ready-made command, or
+type the numbers yourself. Running just `lionstone reels setup "Acme Homes"` in a terminal asks the same numbers
+one at a time. The catalogue page and these questions follow the brand's language (English or Turkish).
 
-| Numaralar | Grup |
+| Numbers | Group |
 |---|---|
-| 1xx | Kanca yazısı |
-| 2xx | Altyazı |
-| 3xx | Renk (örneklerinden öğrenilen dahil) |
-| 4xx | Tempo |
-| 5xx | Efektler (Lionstone Agent stilleri, 11 Reel FX) |
-| 6xx | Müzik (`602=muzik.mp3`, lisans sende) |
-| 7xx | Müzik seviyesi |
-| 8xx | Ses efektleri |
-| 9xx | Kadraj |
-| 10xx | Gürültü temizliği |
-| 11xx | Kapak sayısı |
-| 12xx | Vurgu rengi |
+| 1xx | Hook title |
+| 2xx | Captions |
+| 3xx | Colour (including one learned from your examples) |
+| 4xx | Pace |
+| 5xx | Effects (Lionstone Agent styles, 11 Reel FX) |
+| 6xx | Music (`602=track.mp3`, licensing is yours) |
+| 7xx | Music level |
+| 8xx | Sound effects |
+| 9xx | Framing |
+| 10xx | Noise cleanup |
+| 11xx | Number of covers |
+| 12xx | Accent colour |
 
-Katalogda iki hazır görünüm de var, parçaları ayrı ayrı da seçilebilir:
+The catalogue also has two ready-made looks, and you can pick their parts separately:
 
-- **Editoryal:** kademeli başlık ve iri italik serif (`L01`), ince altyazı ve iri anahtar kelime (`editorial`), cam
-  bildirim kartı, neon etiketler, geri sayım.
-- **Güçlü:** parlayan başlık (`L02`), kalın altyazı ve parlayan anahtar kelime (`keyword-pop`), kesik çizgili kart,
-  vurgu zoomları.
+- **Editorial:** staggered title in a large italic serif (`L01`), quiet captions with one key word set large
+  (`editorial`), a glass notification card, neon pills, a countdown.
+- **Bold:** glowing headline (`L02`), heavy captions with a glowing key word (`keyword-pop`), a dashed card, emphasis zooms.
 
-Yazılar senin scriptinden, kancalarından ve profilinden gelir; anahtar kelime her satırdan kurala göre seçilir (önce
-sayı, sonra en uzun anlamlı kelime). Yazıyı kişinin arkasına geçirme, nesne takibi, ikon ve 3B grafik yoktur.
+The words come from your script, hooks and profile; the key word is chosen from each line by rule (a number first, then
+the longest meaningful word). There's no text behind the person, no object tracking, no icons and no 3D graphics.
 
-**Her grubun `x00` numarası "marka kimliğime göre sen belirle" seçeneğidir** (`100`, `200`, …). `0` hepsini
-belirler, `--pick 0 205` altyazıyı sen seçip kalanını Lionstone'a bırakır. `--auto` da aynı işi yapar.
-Otomatik her seçimin nedeni `choices.json`'da ve teslim raporunda yazar. Lionstone müzik dağıtmaz: "sen belirle"
-müzik uyduramaz, örneklerinde müzik varsa bunu söyler ve kendi lisanslı dosyanı ister.
+**Each group's `x00` number means "decide for me from my brand identity"** (`100`, `200`, …). `0` decides everything,
+and `--pick 0 205` lets you choose the captions and leaves the rest to Lionstone. `--auto` does the same as `0`.
+Each automatic choice writes its reason to `choices.json` and the delivery report. Lionstone ships no music, so "decide
+for me" can't invent any: if your examples have music, it says so and asks for your own licensed file.
+The "decide for me" option doesn't pick the Editorial or Bold looks; you choose those by number.
 
-Katalogdaki resim karelerin hepsi gerçek Lionstone çıktısıdır. **Görsellerdeki kurgusal erkek karakter yalnızca
-örnektir; Reel'in her zaman kendi çekiminden ve referans videolarından üretilir.**
+Every picture card in the catalogue is real Lionstone output. **The fictional man in the pictures is only an example;
+your Reel is always made from your own footage and reference videos.**
 
-## 2 · Konu, hook, script (Claude)
-
-```bash
-lionstone reels new "Örnek Emlak" "Kira mı ev almak mı"
-lionstone reels hooks "Örnek Emlak" "kira artışı" --angle hata --angle karsit
-```
-
-`hooks`, 10 açıdan (merak, hata, sonuç, karşıt görüş, liste, hikâye, soru, gösterim, uyarı,
-kolaylık) 60 özgün şablonu marka bilgisiyle doldurur; ayrıca ikinci kanca ve CTA şablonları verir.
-
-Kütüphane **İngilizce ve Türkçe** olarak iki ayrı set halindedir (her biri 60 şablon). Varsayılan dil
-markanın dilidir; `--lang` ile değişir, açı adları iki dilde de geçer:
+## 2 · Topic, hook, script (Claude)
 
 ```bash
-lionstone reels hooks "Örnek Emlak" "kira artışı" --lang en --angle mistake
-lionstone reels hooks "Örnek Emlak" "kira artışı" --lang both --angle hata
-lionstone reels brand init "Acme Homes" --language en   # İngilizce marka: kanca, altyazı, konuşma tanıma
+lionstone reels new "Acme Homes" "Rent or buy"
+lionstone reels hooks "Acme Homes" "rising rents" --angle mistake --angle contrarian
 ```
 
-Bilinmeyen alanlar `{sayı}` gibi görünür kalır, uydurulmaz. Claude bunlardan yola çıkıp
-`reel.json`'u yazar: konu, **neden tutacağı**, en az iki kanca (A/B), ikinci kanca, konuşur gibi
-akan ve çağrıyla biten script, caption, hashtag'ler, kapak yazıları.
+`hooks` fills 60 original templates across 10 angles (curiosity, mistake, result, contrarian, list, story, question,
+demo, warning, ease) with what it knows about the brand, and also gives second-hook and CTA templates.
+
+The library comes as two separate sets, **English and Turkish** (60 templates each). The default is the brand's
+language; `--lang` changes it, and angle names work in either language:
 
 ```bash
-lionstone reels lint projects/ornek-emlak/2026-11-05-kira-mi-ev-almak-mi
+lionstone reels hooks "Acme Homes" "rising rents" --lang tr --angle mistake
+lionstone reels hooks "Acme Homes" "rising rents" --lang both --angle hata
+lionstone reels brand init "Örnek Emlak" --language tr   # a Turkish brand: hooks, captions, speech recognition
 ```
 
-Kontrol eder: kanca uzunluğu (≤ 14 kelime), doldurulmamış şablon, A/B kanca, ikinci kanca,
-scriptin hedef süreye uyması (Türkçe ≈ 2,5 kelime/sn), CTA ile bitiş, yasaklı ifadeler,
-caption ≤ 2200 karakter, hashtag ≤ 30, kapak yazısı.
-
-## 3 · Çek ve teslim al
-
-Videoyu reel klasöründeki `ham/` içine koy:
+Unknown slots stay visible as `{number}`; nothing is invented. Claude starts from these and writes `reel.json`: the
+topic, **why it will work**, at least two hooks (A/B), a second hook, a script that flows like speech and ends on the
+call to action, the caption, hashtags and cover text.
 
 ```bash
-lionstone reels make projects/ornek-emlak/2026-11-05-kira-mi-ev-almak-mi
+lionstone reels lint projects/acme-homes/2026-11-05-rent-or-buy
 ```
 
-| Adım | Ne olur |
+It checks hook length (≤ 14 words), unfilled template slots, A/B hooks, the second hook, script length against the
+target (≈ 2.7 words/s in English, ≈ 2.5 in Turkish), the CTA ending, banned phrases, caption ≤ 2200 characters,
+hashtags ≤ 30 and cover text.
+
+## 3 · Shoot and deliver
+
+Put the video in the reel folder's `raw/`:
+
+```bash
+lionstone reels make projects/acme-homes/2026-11-05-rent-or-buy
+```
+
+| Step | What happens |
 |---|---|
-| Kesim | Boşluk, dolgu sesi, tekrar eden kelime ve cümleler atılır; kesim kelimenin içine düşmez. Kesilemeyen tekrar raporda görünür |
-| Grafik | 9:16, Türkçe kelime kelime altyazı, kanca yazısı, marka rengi, brand kit |
-| Ses | Efektler, müzik (ducking), -14 LUFS |
-| Kontrol | Bitmiş video yeniden ölçülür (aşağıda) |
-| Kapak | Ham görüntüden 3 versiyon, yazı 3:4 grid kırpmasına göre yerleşir |
-| Metin | `caption.txt` (caption + hashtag'ler), metin kontrol sonucu |
-| Düzenleme odası | `kurgu/room.html` |
+| Cut | Silences, filler sounds, repeated words and sentences go; no cut lands inside a word. A repeat that can't be cut shows in the report |
+| Graphics | 9:16, word-by-word captions in the brand's language, hook title, brand colours, brand kit |
+| Sound | Effects, music (ducking), -14 LUFS |
+| QA | The finished video is measured again (below) |
+| Cover | 3 versions from the raw footage, with text placed for the 3:4 grid crop |
+| Copy | `caption.txt` (caption + hashtags), copy-check results |
+| Editing room | `edit/room.html` |
 
-Çıktı `teslim/` klasörüne gelir:
+The result lands in `delivery/`:
 
 ```
-teslim/
-  ornek-emlak-kira-mi-ev-almak-mi.mp4
-  kapak-1.jpg  kapak-2.jpg  kapak-3.jpg
+delivery/
+  acme-homes-rent-or-buy.mp4
+  cover-1.jpg  cover-2.jpg  cover-3.jpg
   caption.txt
-  rapor.md  rapor.json  qa.md  qa.json
+  report.md  report.json  qa.md  qa.json  copy-check.json
 ```
 
-### Teslim raporu
+Reel folders made before 0.4.2 used `ham/`, `kurgu/`, `teslim/`. They keep working: footage is found and existing
+sub-folders are used as they are.
+
+### The delivery report
 
 ```
-TESLİME HAZIR ✅
+READY TO DELIVER ✅
 
-| Kontrol                  | Durum |
-| Tekrar taraması          | Temiz |
-| Kesim noktaları          | Temiz |
-| Senaryo karşılaştırması  | Temiz |
-| Yazı taşması             | Temiz |
-| Ses seviyesi             | Temiz |
-| Görüntü                  | Temiz |
-| Kapak                    | 3 versiyon |
+| Check             | Status    |
+| Repeat scan       | Clean     |
+| Cut points        | Clean     |
+| Script comparison | Clean     |
+| Text overflow     | Clean     |
+| Loudness          | Clean     |
+| Picture           | Clean     |
+| Covers            | 3 versions|
 ```
 
-- **Senaryo karşılaştırması:** videoda gerçekten duyulan kelimeler scriptle hizalanır; eksik,
-  fazla ve değişen kelimeler listelenir. %75'in altı teslimi durdurur.
-- **Tekrar taraması:** kesimden sonra kalan "bence bence" türü tekrarlar.
-- **Kesim noktaları:** kelime kırpılması, birleşimlerde tık, düşük güvenli kesimler.
-- **Yazı taşması:** her grafik, efektin gerçek yazı boyutuyla ölçülür; Reels arayüzünün kapladığı
-  alt %20 ve sağ kenar hesaba katılır. Açık taşma teslimi durdurur. Bu bir tahmindir (OCR yok)
-  ve raporda öyle yazar.
-- **Ses ve görüntü:** loudness, true peak, siyah/donmuş kare, A/V uzunluğu, format.
+- **Script comparison:** the words actually heard in the video are aligned with the script; missing, extra and changed
+  words are listed. Under 75% stops delivery.
+- **Repeat scan:** repeats left after cutting, like "I think I think".
+- **Cut points:** clipped words, clicks at joins, low-confidence cuts.
+- **Text overflow:** every graphic is measured at the effect's real text size, allowing for the bottom 20% and right
+  edge taken by the Reels UI. A clear overflow stops delivery. This is an estimate (no OCR) and the report says so.
+- **Sound and picture:** loudness, true peak, black or frozen frames, A/V length, format.
 
-Çalışmayan bir kontrol "geçti" sayılmaz: raporda "Atlandı" ve nedeniyle yazılır.
+A check that didn't run doesn't count as passed: the report shows it as "Skipped" with the reason.
 
-Rapor üç karardan birini verir:
+The report gives one of three verdicts:
 
-| Karar | Anlamı | Çıkış kodu |
+| Verdict | Meaning | Exit code |
 |---|---|---|
-| **TESLİME HAZIR ✅** | Çalışan kontroller temiz, senaryo ≥ %90 uyuşuyor | 0 |
-| **GÖZDEN GEÇİR 👀** | Senaryo %75–90 uyuşuyor, tekrar kalmış ya da senaryo karşılaştırılamamış | 2 |
-| **DÜZELTME GEREKİYOR 🛑** | Senaryo < %75, açık yazı taşması, teknik hata ya da metin hatası | 2 |
+| **READY TO DELIVER ✅** | Every check that ran is clean, script matches ≥ 90% | 0 |
+| **NEEDS REVIEW 👀** | Script matches 75-90%, a repeat is left in, or the script couldn't be compared | 2 |
+| **FIX NEEDED 🛑** | Script matches < 75%, clear text overflow, a technical fault or a copy error | 2 |
 
-## 4 · Düzenleme odası
+## 4 · The editing room
 
 ```bash
-lionstone reels room projects/…/kurgu/plan.json   # make zaten oluşturur
+lionstone reels room projects/…/edit/plan.json   # make already creates it
 ```
 
-Tarayıcıda açılan tek bir yerel sayfa: video ve her kelime yan yana. Kelimeye tıkla → o ana git.
-Kes moduna geç → kelimeye tıklayarak kes ya da kesileni geri al. Çift tıkla → altyazıdaki yazımı
-düzelt (isim, marka, ürün adı). Önizleme kesilen yerleri atlayarak oynatır. "Değişiklikleri indir"
-ile gelen dosyayı uygula ve yeniden render et:
+One local page in your browser: the video and every word side by side. Click a word → jump to that moment.
+Switch to cut mode → click a word to cut it or restore it. Double-click → fix the spelling in the captions (names,
+brand, product). Preview plays back skipping what's cut. "Download changes" gives you a file to apply, then re-render:
 
 ```bash
-lionstone reels room-apply projects/…/kurgu/plan.json ~/Downloads/room-edits.json
+lionstone reels room-apply projects/…/edit/plan.json ~/Downloads/room-edits.json
 lionstone reels make projects/… --keep-plan
 ```
 
-`--keep-plan` planı yeniden üretmez: düzeltmelerin korunur; ses, kontrol ve kapaklar yeniden yapılır.
+`--keep-plan` doesn't regenerate the plan, so your corrections stay; sound, QA and covers are made again.
 
-Video internete yüklenmez; sayfa dosyayı diskinden oynatır.
+The video isn't uploaded anywhere: the page plays the file from your disk.
 
-## 5 · Takvim
+## 5 · Calendar
 
 ```bash
-lionstone reels schedule projects/…/kira-mi-ev-almak-mi "2026-11-10 19:00"
-lionstone reels calendar --brand "Örnek Emlak" --ics takvim.ics
+lionstone reels schedule projects/…/rent-or-buy "2026-11-10 19:00"
+lionstone reels calendar --brand "Acme Homes" --ics calendar.ics
 ```
 
-Takvim reel klasörlerinin kendisinden üretilir (tek doğru kaynak). `.ics` Google, Apple ve
-Outlook takvimine eklenir. Durumlar: fikir · script · çekim · kurgu · kontrol · hazır · yayında.
+The calendar is built from the reel folders themselves (one source of truth). The `.ics` file works with Google, Apple
+and Outlook calendars. Statuses: idea · script · shoot · edit · review · ready · published.
 
-## Ses efektleri ve müzik
+## Sound effects and music
 
-`lionstone reels sfx build` FFmpeg ile 31 özgün efekt üretir (whoosh, pop, click, ding, riser,
-boom, swipe, type). Lisanslı kendi paketlerini aynı klasöre (`~/.config/lionstone/sfx`, ya da
-`LIONSTONE_SFX_DIR`) koyduğunda alt klasör adı kategori olur ve otomatik kullanılır. Yerleşim
-seyrektir (en fazla 1,2 sn'de bir): açılışta whoosh, yazı grafiklerinde pop, CTA'da ding. Elle
-yerleşim için reel klasörüne `sfx.json` koy:
+`lionstone reels sfx build` makes 31 original effects with FFmpeg (whoosh, pop, click, ding, riser, boom, swipe, type).
+Put your own licensed packs in the same folder (`~/.config/lionstone/sfx` or `LIONSTONE_SFX_DIR`): the sub-folder name
+becomes the category and they're used automatically. Placement is sparse (at most one per 1.2 s): a whoosh on the
+opening, a pop on text graphics, a ding on the CTA. For manual placement, add `sfx.json` to the reel folder:
 
 ```json
 [{"at": 1.2, "sound": "pop"}, {"at": 6.8, "sound": "ding/ding-02", "gain": 0.4}]
 ```
 
-Müziğin ticari kullanım lisansı senin sorumluluğunda; Lionstone müzik dağıtmaz.
+Commercial licensing for music is your responsibility; Lionstone ships no music.
 
-## Kontrol listesi
+## Checklist
 
-`lionstone reels checklist` 37 maddelik teslim öncesi listeyi gösterir: 🤖 olanları Lionstone
-ölçer, 👀 olanlara (vaat edilen sonuç gerçek mi, müzik lisansı, müşteri onayı…) göz ile bakılır.
+`lionstone reels checklist` shows the 37-item pre-delivery list: Lionstone measures the 🤖 items, and a person looks at
+the 👀 ones (is the promised result real, is the music licensed, has the client approved…).
 
-## Kim için
+## Who it's for
 
-- Videosunu kendisi çıkarmak isteyen içerik üreticileri
-- Düzenli içerik üreten markalar ve ajanslar
-- Editörüyle daha hızlı üretmek isteyen ekipler
-- Birden fazla markayı tek düzende yönetenler (`brands/` altında her marka ayrı)
+- Creators who want to finish their own videos
+- Brands and agencies that publish regularly
+- Teams that want to go faster with their editor
+- Anyone running several brands in one setup (each brand has its own folder under `brands/`)
 
-Çekim yine sende. Tek tuşla viral video vaadi yok: kanca ve script iyi olduğu kadar iyidir,
-Lionstone işin kalanını hatasız ve hızlı yapar.
+You still do the shooting. There's no promise of a one-click viral video: the hook and script are only as good as they
+are, and Lionstone does the rest of the job carefully and quickly.
+
+## Known limits
+
+- The workflow has been tested with synthetic speech and a fictional AI-generated character, not yet on real camera
+  footage with a human voice. Please report what you find.
+- Text overflow is an estimate, not OCR. Music detection is an estimate.
+- Speech recognition needs `lionstone[whisper]`; face tracking and the face-coverage check need `lionstone[vision]`.
+
+## Want it set up for you?
+
+The software is free and open source. If you'd rather have someone build your brand profile, identity and catalogue
+choices for you, see [Brand setup for your team](brand-setup.md).

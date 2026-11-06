@@ -1,52 +1,52 @@
 {
   "version": 1,
   "groups": [
-    {"name": "Metin", "items": [
-      {"text": "Konunun bu kitle için neden tutacağı yazılı", "auto": true},
-      {"text": "Ana kanca ≤ 14 kelime", "auto": true},
-      {"text": "En az 2 farklı açıdan kanca var (A/B)", "auto": true},
-      {"text": "İkinci kanca yazılı", "auto": true},
-      {"text": "Script hedef süreye uyuyor", "auto": true},
-      {"text": "Script çağrıyla (CTA) bitiyor", "auto": true},
-      {"text": "Markanın yasaklı ifadeleri yok", "auto": true},
-      {"text": "Caption ≤ 2200 karakter, hashtag ≤ 30", "auto": true},
-      {"text": "Vaat edilen sonuç markanın gerçekten sunabildiği bir sonuç", "auto": false},
-      {"text": "Fiyat, kampanya ve tarih bilgileri güncel", "auto": false}
+    {"name": "Copy", "items": [
+      {"text": "Why this topic works for this audience is written down", "auto": true},
+      {"text": "Main hook ≤ 14 words", "auto": true},
+      {"text": "At least 2 hooks from different angles (A/B)", "auto": true},
+      {"text": "Second hook written", "auto": true},
+      {"text": "Script fits the target length", "auto": true},
+      {"text": "Script ends with the CTA", "auto": true},
+      {"text": "None of the brand's banned phrases", "auto": true},
+      {"text": "Caption ≤ 2200 characters, hashtags ≤ 30", "auto": true},
+      {"text": "The promised result is one the brand can really deliver", "auto": false},
+      {"text": "Prices, offers and dates are current", "auto": false}
     ]},
-    {"name": "Kesim", "items": [
-      {"text": "Boşluklar ve dolgu sesleri (ıı, şey, yani) temizlendi", "auto": true},
-      {"text": "Tekrarlanan cümle / yanlış başlangıç kalmadı", "auto": true},
-      {"text": "Hiçbir kesim bir kelimenin içine düşmüyor", "auto": true},
-      {"text": "Kesim noktalarında tık / patlama yok", "auto": true},
-      {"text": "Senaryodaki her cümle videoda var", "auto": true},
-      {"text": "Düşük güvenli kesimler raporda listelendi", "auto": true},
-      {"text": "İlk kare boş ya da siyah değil", "auto": true},
-      {"text": "Konuşmacının nefes / yutkunma anları rahatsız etmiyor", "auto": false},
-      {"text": "Jump-cut ritmi markanın temposuna uygun", "auto": false}
+    {"name": "Cutting", "items": [
+      {"text": "Silences and filler sounds (um, uh, like) removed", "auto": true},
+      {"text": "No repeated sentence or false start left", "auto": true},
+      {"text": "No cut lands inside a word", "auto": true},
+      {"text": "No clicks or pops at cut points", "auto": true},
+      {"text": "Every sentence in the script is in the video", "auto": true},
+      {"text": "Low-confidence cuts are listed in the report", "auto": true},
+      {"text": "The first frame is not empty or black", "auto": true},
+      {"text": "The speaker's breaths and swallows aren't distracting", "auto": false},
+      {"text": "Jump-cut rhythm suits the brand's pace", "auto": false}
     ]},
-    {"name": "Görüntü ve yazı", "items": [
-      {"text": "9:16, 1080×1920, kare hızı sabit", "auto": true},
-      {"text": "Siyah kare ve donmuş görüntü yok", "auto": true},
-      {"text": "Yazılar güvenli alanda; alt %20 ve sağ kenar Reels arayüzüne kalıyor", "auto": true},
-      {"text": "Uzun kelimeler altyazıda taşmıyor", "auto": true},
-      {"text": "Altyazı yazımı doğru (isim, marka, ürün adı)", "auto": false},
-      {"text": "Marka renkleri ve fontu doğru", "auto": false},
-      {"text": "Yüz yazının altında kalmıyor (lionstone[vision] kuruluysa)", "auto": true},
-      {"text": "Renk ve pozlama sahneler arasında tutarlı", "auto": false}
+    {"name": "Picture and text", "items": [
+      {"text": "9:16, 1080×1920, constant frame rate", "auto": true},
+      {"text": "No black or frozen frames", "auto": true},
+      {"text": "Text is in the safe area; the bottom 20% and right edge are left to the Reels UI", "auto": true},
+      {"text": "Long words don't overflow in captions", "auto": true},
+      {"text": "Caption spelling is right (names, brand, product)", "auto": false},
+      {"text": "Brand colours and font are right", "auto": false},
+      {"text": "Text doesn't cover the face (with lionstone[vision] installed)", "auto": true},
+      {"text": "Colour and exposure are consistent between scenes", "auto": false}
     ]},
-    {"name": "Ses", "items": [
-      {"text": "Ses -14 LUFS civarında, tepe ≤ -1 dBTP", "auto": true},
-      {"text": "Müzik konuşmanın altına çekiliyor (sidechain ducking uygulanır)", "auto": true},
-      {"text": "Ses ve görüntü aynı uzunlukta, senkron", "auto": true},
-      {"text": "Efektler seyrek ve anlamlı (en fazla 1,2 sn'de bir)", "auto": true},
-      {"text": "Müziğin ticari kullanım lisansı var", "auto": false}
+    {"name": "Sound", "items": [
+      {"text": "Audio around -14 LUFS, peak ≤ -1 dBTP", "auto": true},
+      {"text": "Music ducks under the voice (sidechain ducking is applied)", "auto": true},
+      {"text": "Audio and picture are the same length and in sync", "auto": true},
+      {"text": "Sound effects are sparse and meaningful (at most one per 1.2 s)", "auto": true},
+      {"text": "The music is licensed for commercial use", "auto": false}
     ]},
-    {"name": "Teslim", "items": [
-      {"text": "Kapak yazısı 3:4 grid kırpmasının içine yerleşiyor", "auto": true},
-      {"text": "Kapak versiyonları hazır", "auto": true},
-      {"text": "caption.txt hazır", "auto": true},
-      {"text": "Takvimde yayın tarihi var", "auto": false},
-      {"text": "Müşteri / marka onayı alındı", "auto": false}
+    {"name": "Delivery", "items": [
+      {"text": "Cover text fits inside the 3:4 grid crop", "auto": true},
+      {"text": "Cover versions are ready", "auto": true},
+      {"text": "caption.txt is ready", "auto": true},
+      {"text": "A publish date is on the calendar", "auto": false},
+      {"text": "Client or brand approval received", "auto": false}
     ]}
   ]
 }

@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.4.2 — 2026-11-06
+**Lionstone Reels speaks English. Same features as 0.4.1, free as ever, now documented for everyone.**
+
+- **English everywhere you operate it**: `lionstone reels` help, messages, lint, checklist, the editing room, the calendar export, the delivery report and [docs/reels.md](docs/reels.md). Hooks, captions and speech recognition still work in English and Turkish, and the catalogue page follows the brand's language.
+- **Report verdicts**: READY TO DELIVER, NEEDS REVIEW, FIX NEEDED (they were TESLİME HAZIR, GÖZDEN GEÇİR, DÜZELTME GEREKİYOR).
+- **Names on disk**: `raw/`, `edit/`, `delivery/`, `report.md`, `report.json`, `cover-1.jpg`, `copy-check.json`. Statuses: idea, script, shoot, edit, review, ready, published. Reel folders and `reel.json` files from 0.4.0 and 0.4.1 keep working: `ham/`, `kurgu/`, `teslim/` are found and Turkish statuses are read and accepted.
+- **`lionstone reels brand init` now defaults to `--language en`** (it was `tr`). Saved brands keep their language. Turkish brands: add `--language tr`.
+- **[Reel Handbook](docs/handbook/README.md)** updated from v0.3.2 for the 0.4.1 feature set, in English and Turkish.
+- **[Brand setup](docs/brand-setup.md)**: an optional, by-quote setup service from Kreatif Hizmetler, with a request form. The software stays free and nothing is held back.
+
 ## 0.4.1 — 2026-11-06
 **Brand onboarding for Lionstone Reels: measure your style, choose from a visual catalogue, and every later Reel remembers.**
 

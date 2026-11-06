@@ -149,9 +149,9 @@ def test_lint_uses_the_speakers_measured_rate():
     b = brand_mod.Brand(name="M", target_seconds=(5, 6))
     script = " ".join(["kelime"] * 20)
     r = Reel(brand="M", topic="t", script=script)
-    assert any(f.field == "script" and "tahmini" in f.message for f in lint(r, b))  # 8 s at 2.5/s
+    assert any(f.field == "script" and "estimated" in f.message for f in lint(r, b))  # 8 s at 2.5/s
     b.style["words_per_second"] = 4.0  # 5 s for this speaker
-    assert not any(f.field == "script" and "tahmini" in f.message for f in lint(r, b))
+    assert not any(f.field == "script" and "estimated" in f.message for f in lint(r, b))
     assert len(tokens(script)) == 20
 
 
@@ -236,13 +236,13 @@ def test_pick_turns_numbers_into_answers(ws):
     assert full["captions"] == "bold" and full["opening"] == "auto" and len(full) == len(ch.QUESTIONS)
     music = number_of("music", "file:<path>")
     assert parse_picks([f"{music}=bed.mp3"]) == {"music": "file:bed.mp3"}
-    with pytest.raises(ValueError, match="dosya"):
+    with pytest.raises(ValueError, match="needs a file"):
         parse_picks([str(music)])
-    with pytest.raises(ValueError, match="iki numara"):
+    with pytest.raises(ValueError, match="two numbers"):
         parse_picks(["101", "102"])
-    with pytest.raises(ValueError, match="numara"):
+    with pytest.raises(ValueError, match="no such number"):
         parse_picks(["9999"])
-    with pytest.raises(ValueError, match="numarası değil"):
+    with pytest.raises(ValueError, match="not a catalogue number"):
         parse_picks(["abc"])
 
 
@@ -251,7 +251,7 @@ def test_setup_pick_reaches_the_brand(ws, capsys):
     brand_mod.save(brand_mod.Brand(name="M", audience="a"))
     n = number_of("captions", "bold")
     assert main(["reels", "setup", "M", "--pick", str(n)]) == 2  # the rest is still open
-    assert "eksik" in capsys.readouterr().out
+    assert "missing" in capsys.readouterr().out
     assert brand_mod.load("M").style["caption_style"] == "bold"
 
 
@@ -291,8 +291,8 @@ def test_new_looks_really_render(clips, title, caption, look):
                    color="natural", intensity="natural")
     brand_mod.save(b)
     folder = Path("projects/m/r")
-    (folder / "ham").mkdir(parents=True)
-    shutil.copy(clips[0], folder / "ham" / "take.mp4")
+    (folder / "raw").mkdir(parents=True)
+    shutil.copy(clips[0], folder / "raw" / "take.mp4")
     script = "Kira artışı korkutuyor mu? Bütçeni 30 gün yaz. Bölgeyi sakin seç."
     Reel(brand="M", topic="t", why="w", hooks=["Kira artışı korkutuyor mu?", "İzle."], second_hook="Asıl mesele bu.",
          script=script, cta="Kaydet.", caption="c", cover_text=["Kira"]).save(folder / "reel.json")
@@ -302,13 +302,13 @@ def test_new_looks_really_render(clips, title, caption, look):
         t += 0.34
     Path("w.json").write_text(json.dumps({"words": words}, ensure_ascii=False), encoding="utf-8")
     assert main(["reels", "make", str(folder), "--identity", "same", "--transcript", "w.json", "--fast"]) in (0, 2)
-    rep = json.loads((folder / "teslim" / "rapor.json").read_text(encoding="utf-8"))
+    rep = json.loads((folder / "delivery" / "report.json").read_text(encoding="utf-8"))
     rendered = {c["name"]: c for c in rep["qa"]["checks"]}
     assert rendered["decode_full"]["status"] == "passed"
     assert rendered["reels_text_fit"]["status"] == "passed", rendered["reels_text_fit"]
-    plan = EditPlan.load(folder / "kurgu" / "plan.json")
+    plan = EditPlan.load(folder / "edit" / "plan.json")
     assert plan.graphics[0].effect == title and any(g.id.startswith("look-") for g in plan.graphics)
-    render = next((folder / "kurgu").glob(".lionstone/render.json"))
+    render = next((folder / "edit").glob(".lionstone/render.json"))
     log = json.loads(render.read_text(encoding="utf-8"))
     assert not [g for g in log.get("graphics_log", log.get("graphics", [])) if g.get("status") == "skipped"], log
 
@@ -449,4 +449,4 @@ def test_make_with_new_identity_stops_before_rendering(ws, monkeypatch, capsys):
     assert _identity_gate(b, "new") == 3
     assert "reels identity" in capsys.readouterr().out
     assert _identity_gate(b, "same") is None
-    assert "Kayıtlı marka kimliğiyle" in capsys.readouterr().out
+    assert "saved brand identity" in capsys.readouterr().out

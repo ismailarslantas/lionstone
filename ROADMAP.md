@@ -2,7 +2,10 @@
 
 Lionstone Pro & Studio follows one strategy: **a trustworthy edit + QA engine first, then the creative, pro and team workflows built on it.**
 
-## ✅ v0.4.1 — Reels brand onboarding (latest)
+## ✅ v0.4.2 — Lionstone Reels in English (latest)
+- Command help, reports, editing room and the full guide in English; Reel Handbook updated; optional brand setup service documented
+
+## ✅ v0.4.1 — Reels brand onboarding
 - Brand identity from a talking-head take and 3-5 example Reels, numbered visual catalogue, "decide for me", memory with same-or-new identity
 
 ## ✅ v0.4.0 — Lionstone Reels

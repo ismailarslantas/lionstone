@@ -25,7 +25,7 @@ def room_words(plan: EditPlan) -> list[dict]:
     return out
 
 
-def write_room(plan: EditPlan, out: Path, title: str = "Düzenleme odası") -> Path:
+def write_room(plan: EditPlan, out: Path, title: str = "Editing room") -> Path:
     data = {"video": Path(plan.source).resolve().as_uri(), "words": room_words(plan),
             "duration": plan.duration,
             "cuts": [[round(c.start, 3), round(c.end, 3)] for c in plan.cuts if c.enabled]}
@@ -59,7 +59,7 @@ def apply_edits(plan: EditPlan, edits: dict) -> dict:
     n = sum(1 for c in plan.cuts if c.kind == "manual")
     for a, b in _spans(remove, plan):
         plan.cuts.append(Cut(id=f"m{n:04d}", start=round(a, 3), end=round(b, 3), kind="manual",
-                             reason="düzenleme odasında silindi"))
+                             reason="removed in the editing room"))
         n += 1
         stats["removed"] += 1
     for i in restore:
@@ -80,7 +80,7 @@ def apply_edits(plan: EditPlan, edits: dict) -> dict:
 
 
 ROOM_HTML = r"""<!doctype html>
-<html lang="tr"><head><meta charset="utf-8">
+<html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>__TITLE__</title>
 <style>
@@ -101,10 +101,10 @@ video{width:100%;max-height:72vh;background:#000;border-radius:10px}
 #stat{color:var(--mute);font-size:13px}
 </style></head><body>
 <header><h1>__TITLE__</h1><span id="stat"></span>
-<button id="mode" title="Kesme modu: kelimeye tıklayınca keser / geri alır">✂︎ Kes modu</button>
-<button id="preview" class="on" title="Kesilen yerleri atlayarak oynat">Önizleme: açık</button>
-<button id="export" class="primary">Değişiklikleri indir</button></header>
-<p class="help">Kelimeye tıkla → o ana git. Kes modunda tıkla → kes / geri al. Çift tıkla → altyazı yazımını düzelt. Noktalı alt çizgi: tanıma güveni düşük.</p>
+<button id="mode" title="Cut mode: clicking a word cuts or restores it">✂︎ Cut mode</button>
+<button id="preview" class="on" title="Play back skipping what is cut">Preview: on</button>
+<button id="export" class="primary">Download changes</button></header>
+<p class="help">Click a word → jump to it. In cut mode, click → cut or restore. Double-click → fix the caption spelling. Dotted underline: low recognition confidence.</p>
 <main><video id="v" controls playsinline preload="metadata"></video><div id="words"></div></main>
 <script>
 const D=__DATA__;const v=document.getElementById('v');v.src=D.video;
@@ -113,13 +113,13 @@ const orig=D.words.map(w=>w.cut);const text={};
 D.words.forEach(w=>{const s=document.createElement('span');s.className='w'+(w.cut?' cut':'')+(w.c<0.6?' low':'');
 s.textContent=w.t;s.dataset.i=w.i;box.appendChild(s);box.appendChild(document.createTextNode(' '));w.el=s;});
 function stat(){const r=D.words.filter((w,i)=>w.cut&&!orig[i]).length,b=D.words.filter((w,i)=>!w.cut&&orig[i]).length;
-document.getElementById('stat').textContent=`${r} kelime kesildi · ${b} geri alındı · ${Object.keys(text).length} düzeltme`;}
+document.getElementById('stat').textContent=`${r} words cut · ${b} restored · ${Object.keys(text).length} corrections`;}
 box.addEventListener('click',e=>{const el=e.target.closest('.w');if(!el)return;const w=D.words[el.dataset.i];
 if(cutMode){w.cut=!w.cut;el.classList.toggle('cut',w.cut);stat();}else{v.currentTime=w.s;v.play();}});
 box.addEventListener('dblclick',e=>{const el=e.target.closest('.w');if(!el)return;const w=D.words[el.dataset.i];
-const t=prompt('Altyazıda görünecek yazım:',w.t);if(t&&t.trim()&&t!==w.t){w.t=t.trim();el.textContent=w.t;text[w.i]=w.t;el.classList.add('edited');stat();}});
+const t=prompt('Spelling to show in the captions:',w.t);if(t&&t.trim()&&t!==w.t){w.t=t.trim();el.textContent=w.t;text[w.i]=w.t;el.classList.add('edited');stat();}});
 document.getElementById('mode').onclick=e=>{cutMode=!cutMode;e.target.classList.toggle('on',cutMode);};
-document.getElementById('preview').onclick=e=>{preview=!preview;e.target.classList.toggle('on',preview);e.target.textContent='Önizleme: '+(preview?'açık':'kapalı');};
+document.getElementById('preview').onclick=e=>{preview=!preview;e.target.classList.toggle('on',preview);e.target.textContent='Preview: '+(preview?'on':'off');};
 const restored=()=>D.words.filter((w,i)=>!w.cut&&orig[i]);
 let last=null;v.addEventListener('timeupdate',()=>{const t=v.currentTime;
 if(preview){const c=D.cuts.find(c=>t>=c[0]&&t<c[1]&&!restored().some(w=>(w.s+w.e)/2>=c[0]&&(w.s+w.e)/2<=c[1]));if(c){v.currentTime=c[1];return;}}

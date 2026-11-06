@@ -1,6 +1,7 @@
 """Reels workflow: brand → brief → lint → make (render + SFX + QA + covers) → room → calendar."""
 
 import json
+import re
 import shutil
 import subprocess
 from pathlib import Path
@@ -100,14 +101,14 @@ def test_lint_flags_real_problems(ws):
     r = Reel(brand=b.name, topic="kira", hooks=["{konu} hakkında"], script="Garanti kazanç.",
              caption="x" * 2300)
     levels = {(f.field, f.level) for f in lint(r, b)}
-    assert ("hooks[0]", "hata") in levels
-    assert ("marka", "hata") in levels
-    assert ("caption", "hata") in levels
+    assert ("hooks[0]", "error") in levels
+    assert ("brand", "error") in levels
+    assert ("caption", "error") in levels
     good = Reel(brand=b.name, topic="kira", why="aileler kira artışından korkuyor",
                 hooks=["Kira artışı seni korkutuyor mu?", "Ev bakmadan önce bunu izle."],
                 second_hook="Ama asıl mesele bu değil.", script=SCRIPT,
                 cta="Kaydet, lazım olacak.", caption="Kaydet.", cover_text=["KİRA Mİ EV Mİ?"])
-    assert not [f for f in lint(good, b) if f.level != "bilgi"]
+    assert not [f for f in lint(good, b) if f.level != "info"]
 
 
 def test_turkish_tokens_and_timing():
@@ -177,7 +178,7 @@ def test_cover_text_fits():
 def test_make_end_to_end(ws):
     b = _brand()
     folder = Path("projects") / b.slug / "r1"
-    (folder / "ham").mkdir(parents=True)
+    (folder / "raw").mkdir(parents=True)
     # three "sentences" of tone separated by pauses; words placed on the tones
     parts = [("t", 2.4), ("s", 1.4), ("t", 2.4), ("s", 1.2), ("t", 2.4)]
     files = []
@@ -189,7 +190,7 @@ def test_make_end_to_end(ws):
         files.append(p)
     _ff(*sum((["-i", str(p)] for p in files), []), "-filter_complex",
         f"concat=n={len(files)}:v=0:a=1", str(ws / "a.wav"))
-    video = folder / "ham" / "cekim.mp4"
+    video = folder / "raw" / "cekim.mp4"
     _ff("-f", "lavfi", "-i", "testsrc2=s=720x1280:r=30:d=9.8", "-i", str(ws / "a.wav"),
         "-shortest", "-c:v", "libx264", "-preset", "ultrafast", "-pix_fmt", "yuv420p",
         "-c:a", "aac", str(video))
@@ -212,24 +213,24 @@ def test_make_end_to_end(ws):
     reel.save(folder / "reel.json")
 
     code = main(["reels", "make", str(folder), "--transcript", str(tr), "--fast"])
-    deliver = folder / "teslim"
-    rep = json.loads((deliver / "rapor.json").read_text(encoding="utf-8"))
+    deliver = folder / "delivery"
+    rep = json.loads((deliver / "report.json").read_text(encoding="utf-8"))
     names = {c["name"]: c["status"] for c in rep["qa"]["checks"]}
     assert names["reels_script_match"] == "passed", rep["qa"]["checks"]
     assert names["reels_repeats"] == "passed"
     assert names["loudness"] == "passed"
     assert names["reels_text_fit"] == "passed", rep["qa"]["checks"]
-    md = (deliver / "rapor.md").read_text(encoding="utf-8")
+    md = (deliver / "report.md").read_text(encoding="utf-8")
     full_ffmpeg = has_filter("subtitles") and has_filter("drawtext")
     if full_ffmpeg:
-        assert code == 0 and rep["ready"] and "TESLİME HAZIR" in md, md
+        assert code == 0 and rep["ready"] and "READY TO DELIVER" in md, md
     else:  # e.g. Homebrew's plain ffmpeg: no captions or titles, and the report must say so
-        assert code == 2 and not rep["ready"] and "GÖZDEN GEÇİR" in md and "FFmpeg'de" in md, md
-    assert len(list(deliver.glob("kapak-*.jpg"))) == 3
+        assert code == 2 and not rep["ready"] and "NEEDS REVIEW" in md and "FFmpeg has no" in md, md
+    assert len(list(deliver.glob("cover-*.jpg"))) == 3
     assert rep["cues"], "auto SFX cues placed"
     assert "#izmiremlak" in (deliver / "caption.txt").read_text(encoding="utf-8")
-    assert (folder / "kurgu" / "room.html").exists()
-    assert Reel.load(folder).status == ("hazır" if full_ffmpeg else "kontrol")
+    assert (folder / "edit" / "room.html").exists()
+    assert Reel.load(folder).status == ("ready" if full_ffmpeg else "review")
 
     assert main(["reels", "schedule", str(folder), "2026-11-10 19:00"]) == 0
     ics = to_ics(entries())
@@ -237,7 +238,7 @@ def test_make_end_to_end(ws):
 
 
     # room edits survive --keep-plan and reach the delivered file, with SFX and final QA
-    plan_file = folder / "kurgu" / "plan.json"
+    plan_file = folder / "edit" / "plan.json"
     long_before = EditPlan.load(plan_file).output_duration
     edits = ws / "edits.json"
     edits.write_text(json.dumps({"remove": [5, 6], "text": {"0": "KİRA"}}), encoding="utf-8")
@@ -246,7 +247,7 @@ def test_make_end_to_end(ws):
     kept = EditPlan.load(plan_file)
     assert kept.words[0].text == "KİRA" and any(c.kind == "manual" for c in kept.cuts)
     assert kept.output_duration < long_before
-    rep = json.loads((deliver / "rapor.json").read_text(encoding="utf-8"))
+    rep = json.loads((deliver / "report.json").read_text(encoding="utf-8"))
     checks = {c["name"]: c for c in rep["qa"]["checks"]}
     assert checks["plan_duration"]["status"] == "passed"
     assert "1080x1920" in checks["format"]["detail"]
@@ -383,7 +384,7 @@ def test_verdict_needs_review_when_script_differs_or_could_not_run():
     rep = QAReport(file="x.mp4")
     rep.checks.append(QACheck("reels_script_match", "editorial", "warning", "match 77%"))
     md, ready = report_md(b, r, rep, {})
-    assert not ready and "GÖZDEN GEÇİR" in md and "TESLİME HAZIR" not in md
+    assert not ready and "NEEDS REVIEW" in md and "READY TO DELIVER" not in md
     rep = QAReport(file="x.mp4")
     rep.checks.append(QACheck("reels_script_match", "editorial", "skipped", "no transcript"))
     md, ready = report_md(b, r, rep, {})
@@ -404,7 +405,7 @@ def test_cover_text_is_really_drawn(ws):
 
 
 def test_unknown_hook_angle_is_an_error(ws):
-    with pytest.raises(ValueError, match="bilinmeyen açı"):
+    with pytest.raises(ValueError, match="unknown angle"):
         hook_ideas(_brand(), "kira", ["yok-boyle"])
 
 
@@ -414,3 +415,29 @@ def test_room_html_has_words(tmp_path):
                     words=words)
     html = write_room(plan, tmp_path / "room.html").read_text(encoding="utf-8")
     assert "merhaba" in html and "room-edits.json" in html and "</script>" in html
+
+
+def test_reels_help_and_status_names_are_english(capsys):
+    with pytest.raises(SystemExit):
+        main(["reels", "--help"])
+    with pytest.raises(SystemExit):
+        main(["reels", "setup", "--help"])
+    text = capsys.readouterr().out
+    assert "visual catalogue" in text and "decide for me" in text
+    assert not re.search(r"[çğıİşŞğĞ]|marka|kanca|kapak", text)
+
+
+def test_projects_from_before_the_english_names_keep_working(ws):
+    from lionstone.reels.content import reel_dir
+    from lionstone.reels.deliver import find_footage
+    old = ws / "old-reel"
+    (old / "ham").mkdir(parents=True)
+    (old / "kurgu").mkdir()
+    (old / "ham" / "take.mp4").write_bytes(b"x")
+    Reel(brand="M", topic="t", status="kurgu").save(old / "reel.json")
+    assert Reel.load(old).status == "edit"
+    assert Reel.load(old).save(old / "reel.json")
+    assert find_footage(old, None).name == "take.mp4"
+    assert reel_dir(old, "edit").name == "kurgu"  # an old plan stays where it is
+    assert reel_dir(old, "delivery").name == "delivery"
+    assert reel_dir(ws / "new-reel", "raw").name == "raw"
