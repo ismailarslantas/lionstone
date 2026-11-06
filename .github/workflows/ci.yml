@@ -23,12 +23,22 @@ jobs:
         run: |
           case "$RUNNER_OS" in
             Linux) sudo apt-get update && sudo apt-get install -y ffmpeg fonts-dejavu-core ;;
-            macOS) brew install ffmpeg ;;
+            macOS)
+              if [ "${{ matrix.python }}" = "3.10" ]; then
+                brew install ffmpeg  # plain formula: no drawtext/libass, must degrade honestly
+              else
+                brew install ffmpeg-full && echo "$(brew --prefix ffmpeg-full)/bin" >> "$GITHUB_PATH"
+              fi ;;
             Windows) choco install ffmpeg -y --no-progress ;;
           esac
       - run: pip install -e ".[dev,mcp]"
       - run: ruff check src tests
-      - run: pytest -q
+      - name: FFmpeg filters the Reels workflow relies on
+        shell: bash
+        run: |
+          ffmpeg -hide_banner -version | head -1
+          ffmpeg -hide_banner -filters | grep -E " (drawtext|subtitles|sidechaincompress|loudnorm) " || true
+      - run: pytest -q -rs
 
   remotion:
     runs-on: ubuntu-latest

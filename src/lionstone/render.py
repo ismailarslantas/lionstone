@@ -16,7 +16,7 @@ from pathlib import Path
 from .captions import write_captions
 from .color import color_chain, measure_luma
 from .effects import Catalog
-from .effects.ffmpeg_fx import FxContext, build_graphics
+from .effects.ffmpeg_fx import FxContext, build_graphics, filter_path
 from .ff import font_path, has_filter, run
 from .ingest import probe
 from .models import EditPlan, MediaInfo
@@ -104,8 +104,8 @@ def video_sources(plan: EditPlan) -> dict[str, dict]:
 def _denoise(level: str) -> str:
     return {
         "off": "",
-        "light": "afftdn=nr=8:nf=-45:tn=1",
-        "strong": "afftdn=nr=16:nf=-40:tn=1,anlmdn=s=0.0005",
+        "light": "afftdn=nr=10:nf=-45",
+        "strong": "afftdn=nr=20:nf=-30",
     }.get(level, "")
 
 
@@ -251,7 +251,8 @@ def build_graph(plan: EditPlan, info: MediaInfo, opts: RenderOptions, workdir: P
         burn = False
     meta["captions_burned"] = bool(burn)
     if burn:
-        parts.append(f"[{cur}]subtitles=filename='captions.ass'[vout]")
+        fonts = Path(__file__).resolve().parent / "data" / "fonts"
+        parts.append(f"[{cur}]subtitles=filename='captions.ass':fontsdir={filter_path(fonts)}[vout]")
     else:
         parts.append(f"[{cur}]null[vout]")
     return ";\n".join(parts), meta

@@ -1,0 +1,147 @@
+{
+  "version": 1,
+  "note": "Original Lionstone hook templates in English. {topic}, {audience}, {result}, {mistake}, {number}, {time}, {product}, {brand} are filled from the brand profile and the reel brief.",
+  "angles": {
+    "curiosity": {
+      "label": "Curiosity",
+      "use": "Hold back the answer so people keep watching",
+      "templates": [
+        "{audience}: don't touch {topic} until you've seen this.",
+        "The one thing nobody tells you about {topic}.",
+        "After this, {topic} won't look the same to you.",
+        "I can settle {topic} in {number} seconds.",
+        "Everyone is looking in the wrong place: {topic}.",
+        "This is where {topic} actually gets interesting."
+      ]
+    },
+    "mistake": {
+      "label": "Mistake",
+      "use": "Show what the audience is getting wrong",
+      "templates": [
+        "The mistake {audience} make most: {mistake}.",
+        "If you're {mistake}, you're leaving money on the table.",
+        "Stop right there if this is how you do {topic}.",
+        "I made this mistake so you don't have to: {mistake}.",
+        "{number} out of {number} people get stuck here with {topic}.",
+        "Still {mistake}? Try this instead."
+      ]
+    },
+    "result": {
+      "label": "Result",
+      "use": "Show the destination first",
+      "templates": [
+        "{result} in {time}. Here's how I did it.",
+        "This method got me {result}.",
+        "Want {result}? Follow these three steps.",
+        "It used to be a mess. Now: {result}.",
+        "{result} with {product}, step by step.",
+        "All you need for {result} is this."
+      ]
+    },
+    "contrarian": {
+      "label": "Contrarian",
+      "use": "Push back on common wisdom",
+      "templates": [
+        "Most of what you've heard about {topic} is wrong.",
+        "Unpopular opinion: {topic}.",
+        "{topic}? I'd do the exact opposite.",
+        "Everyone says '{topic}'. I disagree.",
+        "{topic} doesn't work anymore. This does.",
+        "Nobody wants to hear this, but {topic}."
+      ]
+    },
+    "list": {
+      "label": "List",
+      "use": "Tidy, save-worthy information",
+      "templates": [
+        "{number} things about {topic}. The third one matters most.",
+        "Save this: {number} steps for {topic}.",
+        "{number} practical {topic} tips for {audience}.",
+        "{number} {topic} rules you can learn in {number} minutes.",
+        "Your {topic} starter list: just {number} items.",
+        "Do these in order: {topic}."
+      ]
+    },
+    "story": {
+      "label": "Story",
+      "use": "Build trust with real experience",
+      "templates": [
+        "Last week a client asked me this: {topic}.",
+        "{time} ago, {mistake} nearly cost me everything.",
+        "I didn't believe it the first time I heard it: {topic}.",
+        "Here's how we solved this at {brand}.",
+        "One message changed how I think about {topic}.",
+        "I wish I'd known this on day one: {topic}."
+      ]
+    },
+    "question": {
+      "label": "Question",
+      "use": "Make the viewer question themselves",
+      "templates": [
+        "Are you really doing {topic} right?",
+        "Why do {audience} always get stuck in the same place?",
+        "What are you waiting for? {result} is closer than you think.",
+        "Is {topic} harder than it needs to be?",
+        "Which one would you pick?",
+        "What's the hardest part of {topic} for you?"
+      ]
+    },
+    "demo": {
+      "label": "Demo",
+      "use": "Explain by showing the product or process",
+      "templates": [
+        "How to use {product}, in 30 seconds.",
+        "Watch: {topic}, start to finish.",
+        "Behind the scenes: how {topic} gets made.",
+        "Before and after: {topic}.",
+        "Look what I just did with {product}.",
+        "This one move changes {topic}."
+      ]
+    },
+    "warning": {
+      "label": "Warning",
+      "use": "Show the risk before it hits",
+      "templates": [
+        "Watch this before you start {topic}.",
+        "Careful: {mistake} can cost you a lot.",
+        "{audience}, don't fall for this.",
+        "Choosing {topic}? Look for these three signs.",
+        "Don't sign anything until you've seen this: {topic}.",
+        "If you hear this sentence, be careful: {topic}."
+      ]
+    },
+    "ease": {
+      "label": "Ease",
+      "use": "Make something hard look simple",
+      "templates": [
+        "{topic} is a lot easier than you think.",
+        "New to {topic}? Start with this.",
+        "Give it {time} and you get {result}.",
+        "The laziest way to do {topic}. It works.",
+        "You don't need expensive tools for {topic}.",
+        "One setting, and you get {result}."
+      ]
+    }
+  },
+  "second_hook": {
+    "note": "Second hook: lands around 3-6 s, keeps the viewer after the first promise.",
+    "templates": [
+      "But that's not the real problem.",
+      "Stay to the end, the best part comes last.",
+      "And most people skip the second step.",
+      "You'll see why I'm telling you this in a second.",
+      "So how do you actually do it? Like this:",
+      "And you might not even need {product}."
+    ]
+  },
+  "cta": {
+    "templates": [
+      "Save this for later.",
+      "Send this to someone who needs it.",
+      "Comment '{keyword}' and I'll send you the details.",
+      "Follow {handle} for more.",
+      "Link in bio for {product}.",
+      "Which one are you doing? Tell me in the comments."
+    ]
+  }
+}

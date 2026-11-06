@@ -34,7 +34,8 @@ except ImportError:  # core installed before filter_path existed
 
 
 def _center_y(ev: GraphicEvent, H: int) -> str:
-    return f"{int(H * 0.28)}" if ev.params.get("position") == "upper" else "h/2"
+    pos = ev.params.get("position")
+    return f"{int(H * (0.16 if pos == 'top' else 0.28))}" if pos in ("upper", "top") else "h/2"
 
 
 def p03_depth_parallax(fx: Effect, ev: GraphicEvent, inp: str, ctx: FxContext):

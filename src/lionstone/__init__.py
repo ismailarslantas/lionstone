@@ -1,6 +1,6 @@
 """Lionstone — open-source AI editing agent for spoken-word video."""
 
-__version__ = "0.3.2"
+__version__ = "0.4.1"
 
 from .models import Cut, EditPlan, GraphicEvent, QAReport, Segment, Word
 

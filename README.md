@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <b>Lionstone Pro & Studio v0.3.2 — now free.</b> The complete AI video editor — multicam, Creative Suite, Shorts generator, NLE export, team tools and Lionstone Styles — in one open-source package.<br>
+  <b>Lionstone v0.4.1 — Lionstone Reels with brand identity and a visual catalogue.</b> The complete AI video editor — brand-specific Reels workflow, multicam, Creative Suite, Shorts generator, NLE export, team tools and Lionstone Styles — in one open-source package.<br>
   Local-first · no upload · no license key · no watermark · works offline · <a href="https://github.com/ismailarslantas/lionstone/releases/latest">Latest release</a>
 </p>
 
@@ -55,7 +55,76 @@ Most "AI editors" either chop every silence (and your sentences with it) or send
 - **Lionstone Agent** — `lionstone fx auto plan.json --content vlog --style social` picks one consistent look, emphasis zooms and transitions on real topic changes, stays within budgets, and gives a reason for every choice.
 - **Safe by design** — `lionstone fx render` checks flash rate (≤ 3 per second), exposure, saturation and stale edits before it delivers.
 
-### 🎞️ New: Reel FX Pack — 12 one-command effects for Reels & Shorts
+### 📱 New in v0.4: Lionstone Reels — brand-specific Instagram Reels, idea to finished video
+
+<img src="assets/reels/01-hero.jpg" alt="Lionstone Reels, new in Lionstone 0.4.0: raw footage in, a checked, on-brand Instagram Reel out. Open source, Apache-2.0, runs on your computer, nothing uploaded" width="100%">
+
+Give Claude the raw footage; every Reel comes back cut, captioned, sound-designed, checked and in the brand's own style. One flow per brand — topic, hook, script, edit, QA, cover, caption, calendar — in plain files you can read and undo.
+
+```
+Topic → Hook → Script → Shoot → Cut → Graphics → Sound → QA → Cover + caption → Calendar
+```
+
+<img src="assets/reels/02-flow.jpg" alt="One flow per brand, topic to calendar. Claude writes topic, hook, script and caption; you shoot the footage; Lionstone does the rest and measures it, in plain files you can read, change and undo" width="100%">
+
+<img src="assets/reels/03-brand-copy.jpg" alt="Brand profile and copy checks: lionstone reels brand init, many brands side by side, a hook library in English and Turkish with 60 templates each across 10 angles, lionstone reels hooks --lang en|tr|both, and lint for hook length, A/B hooks, script length, CTA ending, banned words, caption and hashtag limits" width="100%">
+
+<img src="assets/reels/04-deliver.jpg" alt="One command to deliver: lionstone reels make gives 9:16 1080x1920, cuts silences, filler words and repeated sentences, karaoke captions above the Reels UI, hook title in brand colours, 31 original sound effects, music that ducks under the voice, -14 LUFS, 3 cover versions and caption.txt" width="100%">
+
+<img src="assets/reels/05-qa.jpg" alt="It checks before it says done. Three verdicts: READY, REVIEW and FIX. Measured: script vs. words heard, leftover repeats, every cut point, estimated text overflow, loudness and true peak, black or frozen frames, A/V length and format. A check that can't run is listed as skipped, never passed" width="100%">
+
+<img src="assets/reels/06-room-sound-calendar.jpg" alt="Editing room: a local page with video and every word, click to jump, cut or restore, double-click to fix a caption. Sound: lionstone reels sfx build, synthesised by FFmpeg. Calendar: lionstone reels schedule and calendar --ics for Google, Apple and Outlook calendars" width="100%">
+
+- **Brand profile** — `lionstone reels brand init "Brand"`: audience, tone, products, honest promises, banned words, CTA, colours, font, edit style; links to an existing brand kit. Run many brands side by side.
+- **Topic, hook, script with Claude** — the [`lionstone-reels` skill](integrations/lionstone-reels) writes them from the brand profile. A **hook library in English and Turkish**: 60 original templates in each, across the same 10 angles, plus second hooks and CTAs (`lionstone reels hooks --lang en|tr|both`), and `lionstone reels lint` checks hook length, A/B hooks, script length, CTA ending, banned words, caption and hashtag limits.
+- **One command to deliver** — `lionstone reels make <reel>`: 9:16, word-by-word captions in the brand's language, hook title that fits vertical, brand colours, an original 31-sound SFX starter pack (bring your own packs too), music that ducks under the voice, −14 LUFS, three cover versions cropped for the profile grid, `caption.txt`.
+- **Checked before it says "done"** — the final file is re-measured: script vs. what is actually heard, leftover repeats, every cut point, estimated text overflow against the Reels UI safe area, loudness, picture. Three verdicts: **TESLİME HAZIR** (ready), **GÖZDEN GEÇİR** (a person must look: script match under 90 %, a repeat left, or no transcript) and **DÜZELTME GEREKİYOR** (fix needed). Skipped checks are listed, never passed.
+- **Editing room** — `kurgu/room.html`: video and every word side by side. Click a word to jump, click to cut or restore, double-click to fix a caption's spelling, then `lionstone reels make <reel> --keep-plan`. Local, nothing uploaded.
+- **Calendar** — `lionstone reels schedule` / `calendar --ics` from the reel folders themselves.
+- **No monthly fee, no per-video fee, no editing software** — runs in Claude Code on your Mac / Windows / Linux; render speed is your computer's.
+
+On macOS, Reels needs a full FFmpeg (`brew install ffmpeg-full` or conda-forge): Homebrew's plain `ffmpeg` can't draw captions, titles or cover text, and the report says so. Hooks, captions and speech recognition work in English and Turkish; command help, reports and the full guide are in Turkish today. Speech recognition needs `lionstone[whisper]`; music licensing stays with you. Full guide (Turkish): [docs/reels.md](docs/reels.md).
+
+### 🧭 New in v0.4.1: your brand identity, chosen from a visual catalogue
+
+Before the first Reel, Lionstone learns the brand and asks what to use. Afterwards it remembers.
+
+<img src="assets/reels/07-identity.jpg" alt="Your brand identity from your own videos: one talking-head take and 3-5 example Reels; Lionstone measures tempo, cuts, pauses, loudness, colour, palette, length, speech rate and opening lines, and estimates music" width="100%">
+
+<img src="assets/reels/08-catalogue.jpg" alt="Choose from a visual catalogue: every option has a number and a picture, then lionstone reels setup --pick. The man in the catalogue is a fictional example; your Reel is made from your own footage" width="100%">
+
+<img src="assets/reels/09-numbers.jpg" alt="What the numbers choose: 1xx hook title, 2xx captions, 3xx colour, 4xx pace, 5xx effects, 6xx music, 7xx music level, 8xx sound effects, 9xx framing, 10xx noise cleanup, 11xx covers, 12xx accent colour" width="100%">
+
+<img src="assets/reels/10-decide.jpg" alt="Or let it decide from your brand identity: x00 decides a group, 0 decides everything; each automatic choice records its reason and it never invents music" width="100%">
+
+<img src="assets/reels/11-memory.jpg" alt="It remembers your brand: produce with my saved brand identity, or prepare with a new brand identity. Found from any folder; a new identity archives the old one" width="100%">
+
+<img src="assets/reels/12-looks.jpg" alt="Two editing looks, mix them freely. Editorial: staggered title in a large italic serif, quiet captions with one word set large, glass notification card, neon pills, countdown clock. Bold: glowing heavy headline, heavy captions with a glowing key word, dashed card, emphasis zooms" width="100%">
+
+```bash
+lionstone reels brand init "Brand" --language en
+lionstone reels identity "Brand" --footage talk.mp4 --example a.mp4 --example b.mp4 --example c.mp4
+lionstone reels catalog "Brand" --open
+lionstone reels setup "Brand" --pick 0 205 503     # your numbers, or 0: decide the rest for me
+lionstone reels new "Brand" "Topic"
+lionstone reels make projects/brand/<reel>
+```
+
+- **Brand identity from your own videos** — one talking-head take and 3-5 example Reels. Measured: tempo, cuts per minute, pauses, loudness, colour, palette, length, speech rate, opening lines, and an estimate of whether they use music. Contact sheets let Claude look at what can't be measured, and anything skipped is listed with the reason.
+- **A numbered visual catalogue** — every option has a number and a picture: hook title, captions, colour, pace, effects (Lionstone Agent styles and 11 Reel FX), music, music level, sound effects, framing, noise cleanup, covers and accent colour. Picture options are real Lionstone renders; sound options are waveforms or spectrograms of real output. Click cards on the local page and copy the command, or type the numbers. The man in the catalogue is a fictional example: **your Reel is always made from your own footage.**
+- **Two editing looks you can mix** — *Editorial*: staggered titles in a large italic serif, quiet captions with one word set large, a glass notification card, neon pills, a countdown clock. *Bold*: heavy captions with a glowing key word, a glowing headline, a dashed card for one number or word, emphasis zooms. Each piece is also its own option. Words come from your script and hooks; Poppins and DM Serif Display ship under the SIL OFL, so it looks the same everywhere.
+- **"Decide for me from my brand identity"** — on every group (`100`, `200`, …), or `0` for everything. Each automatic choice records its reason, and the delivery report lists them. It never invents music: if your examples have music, it asks for your own licensed file.
+- **It remembers** — a brand is found from any folder. `lionstone reels start` and `make` offer **produce with my saved brand identity** or **prepare with a new brand identity**. A new identity archives the old one; nothing is deleted.
+
+**From the real catalogue** (real Lionstone renders on a fictional example character):
+
+<img src="src/lionstone/data/reels/catalog/sheets/opening.jpg" alt="Catalogue group 1xx: hook title options on the example character" width="100%">
+
+<img src="src/lionstone/data/reels/catalog/sheets/captions.jpg" alt="Catalogue group 2xx: caption options on the example character" width="100%">
+
+<img src="src/lionstone/data/reels/catalog/sheets/effects.jpg" alt="Catalogue group 5xx: effect options on the example character" width="100%">
+
+### 🎞️ Reel FX Pack — 12 one-command effects for Reels & Shorts
 
 <img src="docs/img/reelfx-banner-1280x640.png" alt="Reel FX Pack: 12 one-command effects for Reels and Shorts — stage-light, insight-split, pixel-resolve and more" width="100%">
 
@@ -162,6 +231,7 @@ A Claude skill in [`integrations/lionstone-styles`](integrations/lionstone-style
 sudo apt install ffmpeg                  # Ubuntu / Debian (full build)
 winget install ffmpeg                    # Windows (full build)
 conda install -c conda-forge ffmpeg      # macOS / anywhere (full build)
+# or on macOS: brew install ffmpeg-full, then add $(brew --prefix ffmpeg-full)/bin to PATH
 # brew install ffmpeg also works; if `lionstone doctor` reports drawtext/subtitles
 # missing, Lionstone still edits but skips titles & burn-in (and says so in qa.md)
 

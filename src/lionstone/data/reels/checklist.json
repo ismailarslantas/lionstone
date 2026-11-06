@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "groups": [
+    {"name": "Metin", "items": [
+      {"text": "Konunun bu kitle için neden tutacağı yazılı", "auto": true},
+      {"text": "Ana kanca ≤ 14 kelime", "auto": true},
+      {"text": "En az 2 farklı açıdan kanca var (A/B)", "auto": true},
+      {"text": "İkinci kanca yazılı", "auto": true},
+      {"text": "Script hedef süreye uyuyor", "auto": true},
+      {"text": "Script çağrıyla (CTA) bitiyor", "auto": true},
+      {"text": "Markanın yasaklı ifadeleri yok", "auto": true},
+      {"text": "Caption ≤ 2200 karakter, hashtag ≤ 30", "auto": true},
+      {"text": "Vaat edilen sonuç markanın gerçekten sunabildiği bir sonuç", "auto": false},
+      {"text": "Fiyat, kampanya ve tarih bilgileri güncel", "auto": false}
+    ]},
+    {"name": "Kesim", "items": [
+      {"text": "Boşluklar ve dolgu sesleri (ıı, şey, yani) temizlendi", "auto": true},
+      {"text": "Tekrarlanan cümle / yanlış başlangıç kalmadı", "auto": true},
+      {"text": "Hiçbir kesim bir kelimenin içine düşmüyor", "auto": true},
+      {"text": "Kesim noktalarında tık / patlama yok", "auto": true},
+      {"text": "Senaryodaki her cümle videoda var", "auto": true},
+      {"text": "Düşük güvenli kesimler raporda listelendi", "auto": true},
+      {"text": "İlk kare boş ya da siyah değil", "auto": true},
+      {"text": "Konuşmacının nefes / yutkunma anları rahatsız etmiyor", "auto": false},
+      {"text": "Jump-cut ritmi markanın temposuna uygun", "auto": false}
+    ]},
+    {"name": "Görüntü ve yazı", "items": [
+      {"text": "9:16, 1080×1920, kare hızı sabit", "auto": true},
+      {"text": "Siyah kare ve donmuş görüntü yok", "auto": true},
+      {"text": "Yazılar güvenli alanda; alt %20 ve sağ kenar Reels arayüzüne kalıyor", "auto": true},
+      {"text": "Uzun kelimeler altyazıda taşmıyor", "auto": true},
+      {"text": "Altyazı yazımı doğru (isim, marka, ürün adı)", "auto": false},
+      {"text": "Marka renkleri ve fontu doğru", "auto": false},
+      {"text": "Yüz yazının altında kalmıyor (lionstone[vision] kuruluysa)", "auto": true},
+      {"text": "Renk ve pozlama sahneler arasında tutarlı", "auto": false}
+    ]},
+    {"name": "Ses", "items": [
+      {"text": "Ses -14 LUFS civarında, tepe ≤ -1 dBTP", "auto": true},
+      {"text": "Müzik konuşmanın altına çekiliyor (sidechain ducking uygulanır)", "auto": true},
+      {"text": "Ses ve görüntü aynı uzunlukta, senkron", "auto": true},
+      {"text": "Efektler seyrek ve anlamlı (en fazla 1,2 sn'de bir)", "auto": true},
+      {"text": "Müziğin ticari kullanım lisansı var", "auto": false}
+    ]},
+    {"name": "Teslim", "items": [
+      {"text": "Kapak yazısı 3:4 grid kırpmasının içine yerleşiyor", "auto": true},
+      {"text": "Kapak versiyonları hazır", "auto": true},
+      {"text": "caption.txt hazır", "auto": true},
+      {"text": "Takvimde yayın tarihi var", "auto": false},
+      {"text": "Müşteri / marka onayı alındı", "auto": false}
+    ]}
+  ]
+}

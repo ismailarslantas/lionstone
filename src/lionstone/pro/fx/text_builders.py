@@ -54,7 +54,8 @@ def t01_word_pop(fx: Effect, ev: GraphicEvent, inp: str, ctx: FxContext):
     size = int(min(H * 0.1, W * 0.12))
     slot = max(0.18, (t1 - t0 - t_out) / len(words))
     parts, cur = [], inp
-    y = f"{int(H * 0.28)}" if ev.params.get("position") == "upper" else "(h-th)/2"
+    pos = ev.params.get("position")
+    y = f"{int(H * (0.16 if pos == 'top' else 0.28))}" if pos in ("upper", "top") else "(h-th)/2"
     for i, w in enumerate(words):
         a = t0 + i * slot
         b = t1 if i == len(words) - 1 else a + slot
@@ -76,7 +77,8 @@ def t02_phrase_build(fx, ev, inp, ctx):
     lines = [s.strip() for s in ev.text.split("/")] if "/" in ev.text else _wrap(ev.text, 22)
     size = int(min(H * 0.065, ctx.width * 0.07))
     lh = int(size * 1.25)
-    top = f"(h-{len(lines) * lh})/2"
+    top = (f"{int(H * 0.16) - len(lines) * lh // 2}" if ev.params.get("position") == "top"
+           else f"(h-{len(lines) * lh})/2")
     parts, cur = [], inp
     for i, line in enumerate(lines):
         a = t0 + i * 0.35

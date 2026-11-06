@@ -2,7 +2,13 @@
 
 Lionstone Pro & Studio follows one strategy: **a trustworthy edit + QA engine first, then the creative, pro and team workflows built on it.**
 
-## ✅ v0.3.1 — A/V sync fix (latest)
+## ✅ v0.4.1 — Reels brand onboarding (latest)
+- Brand identity from a talking-head take and 3-5 example Reels, numbered visual catalogue, "decide for me", memory with same-or-new identity
+
+## ✅ v0.4.0 — Lionstone Reels
+- Brand-specific Reels workflow: brand profiles, hook library, script lint, one-command delivery with SFX/music, covers, script-vs-video QA, editing room, content calendar
+
+## ✅ v0.3.1 — A/V sync fix
 - Audio and video stay in sync when a recording's audio ends before its video
 
 ## ✅ v0.3.0 — Lionstone Pro & Studio, free and open source
@@ -21,7 +27,8 @@ Lionstone Pro & Studio follows one strategy: **a trustworthy edit + QA engine fi
 ## 🔜 Next
 - [ ] Built-in speaker diarization (pyannote / NeMo, optional)
 - [ ] Segment-level re-render: change a title → re-encode only affected GOPs
-- [ ] Browser review UI: player + transcript + timeline + cut reasons + before/after
+- [ ] Browser review UI: player + transcript + timeline + cut reasons + before/after (first step shipped: `lionstone reels room`)
+- [ ] Reels: OCR-based text overflow check, cover A/B tracking from Instagram insights
 - [ ] Breath detection and optional breath attenuation
 - [ ] Filler lexicons: German, Spanish, French, Arabic, Portuguese (PRs welcome!)
 - [ ] Personal edit memory: learn from accepted / restored cuts, inspectable & resettable
