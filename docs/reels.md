@@ -25,6 +25,11 @@ lionstone doctor
 lionstone reels sfx build        # 31 özgün ses efektiyle başlangıç paketi
 ```
 
+**Mac'te FFmpeg:** `brew install ffmpeg` paketinde `drawtext` ve `subtitles` filtreleri yoktur; altyazı,
+kanca yazısı ve kapak yazısı çizilemez, rapor da GÖZDEN GEÇİR der. Tam sürümü kur:
+`brew install ffmpeg-full` ve `export PATH="$(brew --prefix ffmpeg-full)/bin:$PATH"`, ya da
+`conda install -c conda-forge ffmpeg`. `lionstone doctor` iki filtreyi de "available" göstermeli.
+
 ## 1 · Markayı bir kez tanıt
 
 ```bash

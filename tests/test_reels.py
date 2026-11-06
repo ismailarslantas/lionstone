@@ -8,6 +8,7 @@ from pathlib import Path
 import pytest
 
 from lionstone.cli import main
+from lionstone.ff import has_filter
 from lionstone.models import EditPlan, Word
 from lionstone.reels import brand as brand_mod
 from lionstone.reels.calendar import entries, to_ics
@@ -158,13 +159,17 @@ def test_make_end_to_end(ws):
     assert names["reels_repeats"] == "passed"
     assert names["loudness"] == "passed"
     assert names["reels_text_fit"] == "passed", rep["qa"]["checks"]
-    assert code == 0 and rep["ready"], (deliver / "rapor.md").read_text(encoding="utf-8")
+    md = (deliver / "rapor.md").read_text(encoding="utf-8")
+    full_ffmpeg = has_filter("subtitles") and has_filter("drawtext")
+    if full_ffmpeg:
+        assert code == 0 and rep["ready"] and "TESLİME HAZIR" in md, md
+    else:  # e.g. Homebrew's plain ffmpeg: no captions or titles, and the report must say so
+        assert code == 2 and not rep["ready"] and "GÖZDEN GEÇİR" in md and "FFmpeg'de" in md, md
     assert len(list(deliver.glob("kapak-*.jpg"))) == 3
     assert rep["cues"], "auto SFX cues placed"
-    assert "TESLİME HAZIR" in (deliver / "rapor.md").read_text(encoding="utf-8")
     assert "#izmiremlak" in (deliver / "caption.txt").read_text(encoding="utf-8")
     assert (folder / "kurgu" / "room.html").exists()
-    assert Reel.load(folder).status == "hazır"
+    assert Reel.load(folder).status == ("hazır" if full_ffmpeg else "kontrol")
 
     assert main(["reels", "schedule", str(folder), "2026-11-10 19:00"]) == 0
     ics = to_ics(entries())
@@ -327,7 +332,6 @@ def test_verdict_needs_review_when_script_differs_or_could_not_run():
 
 @needs_ffmpeg
 def test_cover_text_is_really_drawn(ws):
-    from lionstone.ff import has_filter
     from lionstone.reels.visual import make_cover
     if not has_filter("drawtext"):
         pytest.skip("this FFmpeg has no drawtext")

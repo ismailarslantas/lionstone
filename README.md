@@ -71,7 +71,7 @@ Topic → Hook → Script → Shoot → Cut → Graphics → Sound → QA → Co
 - **Calendar** — `lionstone reels schedule` / `calendar --ics` from the reel folders themselves.
 - **No monthly fee, no per-video fee, no editing software** — runs in Claude Code on your Mac / Windows / Linux; render speed is your computer's.
 
-Reels is Turkish-first today: hook templates, command help, reports and the guide are in Turkish. Speech recognition needs `lionstone[whisper]`; music licensing stays with you. Full guide (Turkish): [docs/reels.md](docs/reels.md).
+On macOS, Reels needs a full FFmpeg (`brew install ffmpeg-full` or conda-forge): Homebrew's plain `ffmpeg` can't draw captions, titles or cover text, and the report says so. Reels is Turkish-first today: hook templates, command help, reports and the guide are in Turkish. Speech recognition needs `lionstone[whisper]`; music licensing stays with you. Full guide (Turkish): [docs/reels.md](docs/reels.md).
 
 ### 🎞️ Reel FX Pack — 12 one-command effects for Reels & Shorts
 
@@ -180,6 +180,7 @@ A Claude skill in [`integrations/lionstone-styles`](integrations/lionstone-style
 sudo apt install ffmpeg                  # Ubuntu / Debian (full build)
 winget install ffmpeg                    # Windows (full build)
 conda install -c conda-forge ffmpeg      # macOS / anywhere (full build)
+# or on macOS: brew install ffmpeg-full, then add $(brew --prefix ffmpeg-full)/bin to PATH
 # brew install ffmpeg also works; if `lionstone doctor` reports drawtext/subtitles
 # missing, Lionstone still edits but skips titles & burn-in (and says so in qa.md)
 
