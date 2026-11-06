@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/ismailarslantas/lionstone/releases/latest"><img src="assets/pro-studio/01-hero.jpg" alt="Lionstone Pro & Studio are now free — open source, Apache-2.0, local-first, no license keys, no watermark" width="100%"></a>
+  <a href="https://github.com/ismailarslantas/lionstone/releases/latest"><img src="assets/launch/13-launch.jpg" alt="Lionstone v0.4.2: the free AI video editor that runs on your computer. Raw footage in, a checked, on-brand Instagram Reel out. 100% free, open source, Apache-2.0, no license key, no watermark, no upload" width="100%"></a>
 </p>
 
 <p align="center">
@@ -12,14 +12,44 @@
 </p>
 
 <p align="center">
-  <b>Lionstone v0.4.1 — Lionstone Reels with brand identity and a visual catalogue.</b> The complete AI video editor — brand-specific Reels workflow, multicam, Creative Suite, Shorts generator, NLE export, team tools and Lionstone Styles — in one open-source package.<br>
-  Local-first · no upload · no license key · no watermark · works offline · <a href="https://github.com/ismailarslantas/lionstone/releases/latest">Latest release</a>
+  <b>Lionstone v0.4.2 is 100% free: the complete AI video editor, now fully in English.</b><br>
+  Brand-specific Reels workflow, brand identity, visual catalogue, multicam, Creative Suite, Shorts generator, NLE export, team tools and Lionstone Styles, all in one open-source package.<br>
+  Local-first · no upload · no license key · no watermark · works offline<br>
+  <a href="https://github.com/ismailarslantas/lionstone/releases/latest">Latest release</a> · <a href="docs/reels.md">Reels guide</a> · <a href="docs/handbook/README.md">Reel Handbook (free PDF)</a> · <a href="docs/brand-setup.md">Brand setup</a>
 </p>
 
 ```bash
 pip install "lionstone[all] @ git+https://github.com/ismailarslantas/lionstone"
 lionstone doctor
 ```
+
+---
+
+## 🎉 Everything is free. Really.
+
+<img src="assets/launch/14-free.jpg" alt="Free means free: Lionstone software $0, monthly fee $0, per-video fee $0, license key none, watermark none, upload none. Apache-2.0. Writing hooks and scripts with Claude uses your own Claude plan" width="100%">
+
+There is no paid tier to find out about later. Every feature on this page ships in this repository under Apache-2.0: no license key, no account, no watermark, no per-video fee, and nothing leaves your computer. The one cost outside Lionstone: writing hooks and scripts with Claude uses your own Claude plan. Editing, QA and rendering run on your machine.
+
+<img src="assets/launch/15-everything.jpg" alt="Everything in one free package: speech-aware editing, Lionstone Reels, brand identity, visual catalogue, Creative Suite, Reel FX Pack, Shorts generator, multicam, style learning, NLE export, team tools, QA and MCP" width="100%">
+
+### 🌍 New in v0.4.2: Lionstone Reels speaks English
+
+<img src="assets/launch/16-english.jpg" alt="Lionstone Reels now speaks English: command help, delivery reports, editing room and the full guide. Three clear verdicts: READY TO DELIVER, NEEDS REVIEW, FIX NEEDED. Hooks, captions and speech recognition work in English and Turkish" width="100%">
+
+Command help, messages, delivery reports, the editing room and [the full guide](docs/reels.md) are in English. Hooks, captions and speech recognition work in English and Turkish. Projects from 0.4.0 and 0.4.1 keep working. New brands default to `--language en`; Turkish brands add `--language tr`.
+
+### 📘 The Reel Handbook: a free, designed PDF
+
+<a href="docs/handbook/README.md"><img src="assets/launch/17-handbook.jpg" alt="The Reel Handbook: a designed A4 guide to every feature, free PDF, in English and Turkish" width="100%"></a>
+
+Lionstone Reels from idea to delivery, your brand identity and the catalogue, every look, effect and text style with real renders, and one Reel built step by step with every command. **[English PDF](docs/handbook/lionstone-reel-handbook-v0.4.1-en.pdf) · [Türkçe PDF](docs/handbook/lionstone-reel-handbook-v0.4.1-tr.pdf)**
+
+### 🤝 Want it set up for you?
+
+<a href="docs/brand-setup.md"><img src="assets/launch/18-setup.jpg" alt="Want it set up for you? The software stays free. Setup is an optional service: installation, brand profile, brand identity, catalogue choices, first Reel, handover. Kreatif Hizmetler, by quote" width="100%"></a>
+
+You can do all of this yourself, and nothing is held back if you do. For brands and agencies who'd rather have it done, **Kreatif Hizmetler** sets up Lionstone Reels by quote: installation, brand profile, identity, catalogue choices and your first Reel, then your team runs it alone. [See what's included](docs/brand-setup.md) or [fill in the form](https://github.com/ismailarslantas/lionstone/issues/new?template=brand_setup.yml).
 
 ---
 
@@ -55,7 +85,7 @@ Most "AI editors" either chop every silence (and your sentences with it) or send
 - **Lionstone Agent** — `lionstone fx auto plan.json --content vlog --style social` picks one consistent look, emphasis zooms and transitions on real topic changes, stays within budgets, and gives a reason for every choice.
 - **Safe by design** — `lionstone fx render` checks flash rate (≤ 3 per second), exposure, saturation and stale edits before it delivers.
 
-### 📱 New in v0.4: Lionstone Reels — brand-specific Instagram Reels, idea to finished video
+### 📱 Since v0.4: Lionstone Reels — brand-specific Instagram Reels, idea to finished video
 
 <img src="assets/reels/01-hero.jpg" alt="Lionstone Reels, new in Lionstone 0.4.0: raw footage in, a checked, on-brand Instagram Reel out. Open source, Apache-2.0, runs on your computer, nothing uploaded" width="100%">
 
@@ -78,14 +108,14 @@ Topic → Hook → Script → Shoot → Cut → Graphics → Sound → QA → Co
 - **Brand profile** — `lionstone reels brand init "Brand"`: audience, tone, products, honest promises, banned words, CTA, colours, font, edit style; links to an existing brand kit. Run many brands side by side.
 - **Topic, hook, script with Claude** — the [`lionstone-reels` skill](integrations/lionstone-reels) writes them from the brand profile. A **hook library in English and Turkish**: 60 original templates in each, across the same 10 angles, plus second hooks and CTAs (`lionstone reels hooks --lang en|tr|both`), and `lionstone reels lint` checks hook length, A/B hooks, script length, CTA ending, banned words, caption and hashtag limits.
 - **One command to deliver** — `lionstone reels make <reel>`: 9:16, word-by-word captions in the brand's language, hook title that fits vertical, brand colours, an original 31-sound SFX starter pack (bring your own packs too), music that ducks under the voice, −14 LUFS, three cover versions cropped for the profile grid, `caption.txt`.
-- **Checked before it says "done"** — the final file is re-measured: script vs. what is actually heard, leftover repeats, every cut point, estimated text overflow against the Reels UI safe area, loudness, picture. Three verdicts: **TESLİME HAZIR** (ready), **GÖZDEN GEÇİR** (a person must look: script match under 90 %, a repeat left, or no transcript) and **DÜZELTME GEREKİYOR** (fix needed). Skipped checks are listed, never passed.
-- **Editing room** — `kurgu/room.html`: video and every word side by side. Click a word to jump, click to cut or restore, double-click to fix a caption's spelling, then `lionstone reels make <reel> --keep-plan`. Local, nothing uploaded.
+- **Checked before it says "done"** — the final file is re-measured: script vs. what is actually heard, leftover repeats, every cut point, estimated text overflow against the Reels UI safe area, loudness, picture. Three verdicts: **READY TO DELIVER**, **NEEDS REVIEW** (a person must look: script match under 90 %, a repeat left, or no transcript) and **FIX NEEDED**. Skipped checks are listed, never passed.
+- **Editing room** — `edit/room.html`: video and every word side by side. Click a word to jump, click to cut or restore, double-click to fix a caption's spelling, then `lionstone reels make <reel> --keep-plan`. Local, nothing uploaded.
 - **Calendar** — `lionstone reels schedule` / `calendar --ics` from the reel folders themselves.
 - **No monthly fee, no per-video fee, no editing software** — runs in Claude Code on your Mac / Windows / Linux; render speed is your computer's.
 
-On macOS, Reels needs a full FFmpeg (`brew install ffmpeg-full` or conda-forge): Homebrew's plain `ffmpeg` can't draw captions, titles or cover text, and the report says so. Hooks, captions and speech recognition work in English and Turkish; command help, reports and the full guide are in Turkish today. Speech recognition needs `lionstone[whisper]`; music licensing stays with you. Full guide (Turkish): [docs/reels.md](docs/reels.md).
+On macOS, Reels needs a full FFmpeg (`brew install ffmpeg-full` or conda-forge): Homebrew's plain `ffmpeg` can't draw captions, titles or cover text, and the report says so. Hooks, captions and speech recognition work in English and Turkish. Speech recognition needs `lionstone[whisper]`; music licensing stays with you. So far it has been tested with synthetic speech and a fictional AI-generated character, not yet on real camera footage: please tell us what you find. Full guide: [docs/reels.md](docs/reels.md).
 
-### 🧭 New in v0.4.1: your brand identity, chosen from a visual catalogue
+### 🧭 Since v0.4.1: your brand identity, chosen from a visual catalogue
 
 Before the first Reel, Lionstone learns the brand and asks what to use. Afterwards it remembers.
 
@@ -350,6 +380,7 @@ Every feature is free and open source (Apache-2.0): no license key, no account, 
 | **Team tools**: brand kits, roles, versioned and locked presets, batch apply | `lionstone team` · `brand` · `preset` · `fx batch` |
 | **Vision QA**: graphics/captions covering faces | `pip install "lionstone[vision]"` |
 | **Lionstone Styles**: codes like `O4 W3 A3 G5 S4 P3` that map to real edit options | `lionstone styles --open` · `--cmd O4 W3 A3` |
+| **Lionstone Reels**: brand profiles, brand identity, numbered visual catalogue, hooks, script checks, one-command delivery, covers, editing room, calendar | `lionstone reels start` · `reels make` |
 
 Install everything with `pip install "lionstone[all] @ git+https://github.com/ismailarslantas/lionstone"`. Details: [docs/PRO.md](docs/PRO.md) and the [guides](docs/guides/creative-features.md).
 
