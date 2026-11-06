@@ -76,7 +76,9 @@ def registry(reload: bool = False) -> Registry:
     try:  # Reels workflow: standard library only, independent of the creative suite
         from .reels.checks import reels_qa
         from .reels.commands import register as _register_reels
+        from .reels.look_fx import register as _register_looks
         _register_reels(reg)
+        _register_looks()
         reg.qa_hooks.append(reels_qa)
         reg.loaded.append({"name": "reels", "module": "lionstone.reels", "status": "ok"})
     except Exception as e:  # pragma: no cover - defensive, like the block above

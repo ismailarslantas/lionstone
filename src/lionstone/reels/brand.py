@@ -15,6 +15,8 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any
 
+from . import memory
+
 HEX = re.compile(r"^#[0-9A-Fa-f]{6}$")
 
 
@@ -110,14 +112,20 @@ def path_for(name: str, root: Path | None = None) -> Path:
     return (root or brands_dir()) / slug(name) / "brand.json"
 
 
+def home(b: Brand, root: Path | None = None) -> Path:
+    """The brands folder this brand lives in; a loaded brand knows its own, from any cwd."""
+    return Path(root or getattr(b, "root", None) or brands_dir())
+
+
 def save(b: Brand, root: Path | None = None) -> Path:
-    p = path_for(b.name, root)
+    p = path_for(b.name, home(b, root))
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(json.dumps(b.to_dict(), ensure_ascii=False, indent=2), encoding="utf-8")
     md = p.parent / "brand.md"
     if not md.exists():
         tmpl = BRAND_MD if b.language == "tr" else BRAND_MD_EN
         md.write_text(tmpl.format(name=b.name), encoding="utf-8")
+    memory.remember(b.slug, b.name, home(b, root))
     return p
 
 
@@ -129,15 +137,21 @@ def load(name_or_path: str, root: Path | None = None) -> Brand:
         target = p / "brand.json"
     else:
         target = path_for(name_or_path, root)
+        remembered = memory.lookup(slug(name_or_path)) if not target.exists() and not root else None
+        if remembered:  # made in another folder: found through the memory
+            target = path_for(name_or_path, remembered)
     if not target.exists():
         raise FileNotFoundError(
             f"marka bulunamadı: {name_or_path!r} → `lionstone reels brand init \"{name_or_path}\"`")
-    return Brand.from_dict(json.loads(target.read_text(encoding="utf-8")))
+    b = Brand.from_dict(json.loads(target.read_text(encoding="utf-8")))
+    b.root = target.parent.parent.resolve()
+    return b
 
 
 def list_brands(root: Path | None = None) -> list[str]:
     r = root or brands_dir()
-    return sorted(p.parent.name for p in r.glob("*/brand.json")) if r.exists() else []
+    here = {p.parent.name for p in r.glob("*/brand.json")} if r.exists() else set()
+    return sorted(here if root else here | set(memory.entries()))
 
 
 BRAND_MD_EN = """# {name}: brand notes

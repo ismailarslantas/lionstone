@@ -1,0 +1,35 @@
+{
+  "id": "L01",
+  "name": "Editorial Stack",
+  "category": "title",
+  "tier": "pro",
+  "style": [
+    "social"
+  ],
+  "description": "Editorial Stack: Lionstone Reels look.",
+  "use": [
+    "keypoint"
+  ],
+  "duration": {
+    "enter": 0.4,
+    "hold": 3.0,
+    "exit": 0.4
+  },
+  "parameters": {},
+  "constraints": {
+    "minDuration": 1.0,
+    "maxDuration": 180,
+    "safeArea": true,
+    "minFontPx": 20
+  },
+  "renderEngine": "ffmpeg",
+  "fallbackEngine": "ffmpeg",
+  "composition": "",
+  "supportsPreview": true,
+  "fallback": "F01",
+  "preview": "",
+  "license": {
+    "code": "Apache-2.0",
+    "assets": "fonts bundled under the SIL OFL"
+  }
+}

@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import unicodedata
 from collections.abc import Callable
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 
 from .models import EditPlan, Word
@@ -40,6 +40,8 @@ class CaptionStyle:
     margin_v_ratio: float = 0.075  # keep inside title-safe area
     uppercase: bool = False
 
+
+VERTICAL_UI_MARGIN = 0.22  # Reels, Shorts and TikTok put their own UI over the bottom of the frame
 
 STYLES: dict[str, CaptionStyle] = {
     "clean": CaptionStyle("clean"),
@@ -227,6 +229,8 @@ def write_captions(plan: EditPlan, outdir: Path, width: int, height: int,
     words = output_words(plan)
     cues = build_cues(words, max_chars=16 if vertical else 42, max_lines=2)
     style = STYLES.get(style_name, STYLES["clean"])
+    if vertical and style.margin_v_ratio < VERTICAL_UI_MARGIN:
+        style = replace(style, margin_v_ratio=VERTICAL_UI_MARGIN)
     outdir.mkdir(parents=True, exist_ok=True)
     paths = {
         "srt": outdir / "captions.srt",

@@ -179,6 +179,9 @@ def lint(reel: Reel, brand: Brand) -> list[Finding]:
         add("hata", "script", "script yok")
     else:
         secs = speak_seconds(reel.script, brand.language)
+        measured = brand.style.get("words_per_second")
+        if measured:  # the speaker's own rate from `reels identity`
+            secs = len(tokens(reel.script)) / float(measured)
         lo, hi = brand.target_seconds
         if not lo * 0.8 <= secs <= hi * 1.15:
             add("uyarı", "script", f"tahmini süre {secs:.0f} sn; hedef {lo:.0f}–{hi:.0f} sn")

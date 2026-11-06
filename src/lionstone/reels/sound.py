@@ -127,11 +127,11 @@ def cta_time(plan: EditPlan) -> float | None:
     return None
 
 
-def auto_cues(plan: EditPlan, max_cues: int = 12) -> list[Cue]:
+def auto_cues(plan: EditPlan, max_cues: int = 12, density: str = "sparse") -> list[Cue]:
     """Sparse, intentional cues: a whoosh into the hook, pops on text graphics, a ding
-    on the CTA. Never more than one every 1.2 s."""
+    on the CTA. Never more than one every 1.2 s. "minimal" keeps the opening and the CTA."""
     cues = [Cue(0.0, "whoosh", 0.35, "opening")]
-    for g in sorted(plan.graphics, key=lambda g: g.at):
+    for g in (sorted(plan.graphics, key=lambda g: g.at) if density != "minimal" else []):
         kind = "ding" if any(k in (g.text + g.effect).lower() for k in ("cta", "takip", "kaydet")) \
             else ("whoosh" if g.layer == "titles" and g.at < 0.5 else "pop")
         cues.append(Cue(round(g.at, 3), kind, 0.45, f"graphic {g.id} {g.effect}"))
