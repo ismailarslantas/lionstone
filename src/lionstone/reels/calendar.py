@@ -31,6 +31,26 @@ def _esc(s: str) -> str:
     return s.replace("\\", "\\\\").replace(";", r"\;").replace(",", r"\,").replace("\n", r"\n")
 
 
+def _fold(line: str, limit: int = 75) -> str:
+    """RFC 5545 line folding: at most 75 octets per line, never inside a UTF-8 character."""
+    out, cur, size = [], "", 0
+    for ch in line:
+        n = len(ch.encode("utf-8"))
+        if size + n > limit:
+            out.append(cur)
+            cur, size = " ", 1
+        cur += ch
+        size += n
+    return "\r\n".join([*out, cur])
+
+
+def write_ics(path: Path | str, items: list[tuple[Path, Reel]]) -> Path:
+    """Write bytes as generated: text mode on Windows would turn CRLF into CR CR LF."""
+    p = Path(path)
+    p.write_bytes(to_ics(items).encode("utf-8"))
+    return p
+
+
 def to_ics(items: list[tuple[Path, Reel]], minutes: int = 30) -> str:
     stamp = dt.datetime.now(dt.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Lionstone//Reels//TR",
@@ -50,4 +70,4 @@ def to_ics(items: list[tuple[Path, Reel]], minutes: int = 30) -> str:
                   f"SUMMARY:{_esc(f'[{r.brand}] Reel: {r.topic}')}",
                   f"DESCRIPTION:{_esc(desc)}", "END:VEVENT"]
     lines.append("END:VCALENDAR")
-    return "\r\n".join(lines) + "\r\n"
+    return "\r\n".join(_fold(x) for x in lines) + "\r\n"

@@ -27,7 +27,8 @@ def room_words(plan: EditPlan) -> list[dict]:
 
 def write_room(plan: EditPlan, out: Path, title: str = "Düzenleme odası") -> Path:
     data = {"video": Path(plan.source).resolve().as_uri(), "words": room_words(plan),
-            "duration": plan.duration}
+            "duration": plan.duration,
+            "cuts": [[round(c.start, 3), round(c.end, 3)] for c in plan.cuts if c.enabled]}
     page = ROOM_HTML.replace("__TITLE__", html.escape(title)).replace(
         "__DATA__", json.dumps(data, ensure_ascii=False).replace("</", "<\\/"))
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -35,15 +36,20 @@ def write_room(plan: EditPlan, out: Path, title: str = "Düzenleme odası") -> P
     return out
 
 
-def _spans(idx: list[int], plan: EditPlan) -> list[tuple[float, float]]:
-    spans: list[list[float]] = []
+def _spans(idx: list[int], plan: EditPlan, pad: float = 0.02) -> list[tuple[float, float]]:
+    """Runs of removed words, padded into the surrounding gaps but never into a neighbour."""
+    runs: list[list[int]] = []
     for i in sorted(idx):
-        w = plan.words[i]
-        if spans and spans[-1][2] == i - 1:
-            spans[-1][1], spans[-1][2] = w.end, i
+        if runs and runs[-1][1] == i - 1:
+            runs[-1][1] = i
         else:
-            spans.append([w.start, w.end, i])
-    return [(a, b) for a, b, _ in spans]
+            runs.append([i, i])
+    words, out = plan.words, []
+    for first, last in runs:
+        lo = words[first - 1].end if first else 0.0
+        hi = words[last + 1].start if last + 1 < len(words) else plan.duration
+        out.append((max(lo, words[first].start - pad), min(hi, words[last].end + pad)))
+    return out
 
 
 def apply_edits(plan: EditPlan, edits: dict) -> dict:
@@ -52,9 +58,7 @@ def apply_edits(plan: EditPlan, edits: dict) -> dict:
     restore = [int(i) for i in edits.get("restore", []) if 0 <= int(i) < len(plan.words)]
     n = sum(1 for c in plan.cuts if c.kind == "manual")
     for a, b in _spans(remove, plan):
-        # pad into the gaps around the words, never into a neighbour word
-        plan.cuts.append(Cut(id=f"m{n:04d}", start=round(max(0.0, a - 0.02), 3),
-                             end=round(min(plan.duration, b + 0.02), 3), kind="manual",
+        plan.cuts.append(Cut(id=f"m{n:04d}", start=round(a, 3), end=round(b, 3), kind="manual",
                              reason="düzenleme odasında silindi"))
         n += 1
         stats["removed"] += 1
@@ -116,7 +120,9 @@ box.addEventListener('dblclick',e=>{const el=e.target.closest('.w');if(!el)retur
 const t=prompt('Altyazıda görünecek yazım:',w.t);if(t&&t.trim()&&t!==w.t){w.t=t.trim();el.textContent=w.t;text[w.i]=w.t;el.classList.add('edited');stat();}});
 document.getElementById('mode').onclick=e=>{cutMode=!cutMode;e.target.classList.toggle('on',cutMode);};
 document.getElementById('preview').onclick=e=>{preview=!preview;e.target.classList.toggle('on',preview);e.target.textContent='Önizleme: '+(preview?'açık':'kapalı');};
+const restored=()=>D.words.filter((w,i)=>!w.cut&&orig[i]);
 let last=null;v.addEventListener('timeupdate',()=>{const t=v.currentTime;
+if(preview){const c=D.cuts.find(c=>t>=c[0]&&t<c[1]&&!restored().some(w=>(w.s+w.e)/2>=c[0]&&(w.s+w.e)/2<=c[1]));if(c){v.currentTime=c[1];return;}}
 const w=D.words.find(w=>t>=w.s&&t<w.e);if(last&&last!==w)last.el.classList.remove('now');
 if(w){w.el.classList.add('now');last=w;if(preview&&w.cut){let j=w.i;while(j<D.words.length&&D.words[j].cut)j++;
 v.currentTime=j<D.words.length?D.words[j].s:D.duration;}}});

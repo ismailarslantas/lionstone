@@ -3,9 +3,9 @@
   "groups": [
     {"name": "Metin", "items": [
       {"text": "Konunun bu kitle için neden tutacağı yazılı", "auto": true},
-      {"text": "Ana kanca ≤ 14 kelime, ilk 2 saniyede okunuyor", "auto": true},
+      {"text": "Ana kanca ≤ 14 kelime", "auto": true},
       {"text": "En az 2 farklı açıdan kanca var (A/B)", "auto": true},
-      {"text": "İkinci kanca 3-6. saniyede geliyor", "auto": true},
+      {"text": "İkinci kanca yazılı", "auto": true},
       {"text": "Script hedef süreye uyuyor", "auto": true},
       {"text": "Script çağrıyla (CTA) bitiyor", "auto": true},
       {"text": "Markanın yasaklı ifadeleri yok", "auto": true},
@@ -19,7 +19,7 @@
       {"text": "Hiçbir kesim bir kelimenin içine düşmüyor", "auto": true},
       {"text": "Kesim noktalarında tık / patlama yok", "auto": true},
       {"text": "Senaryodaki her cümle videoda var", "auto": true},
-      {"text": "Düşük güvenli kesimler gözden geçirildi", "auto": true},
+      {"text": "Düşük güvenli kesimler raporda listelendi", "auto": true},
       {"text": "İlk kare boş ya da siyah değil", "auto": true},
       {"text": "Konuşmacının nefes / yutkunma anları rahatsız etmiyor", "auto": false},
       {"text": "Jump-cut ritmi markanın temposuna uygun", "auto": false}
@@ -31,18 +31,18 @@
       {"text": "Uzun kelimeler altyazıda taşmıyor", "auto": true},
       {"text": "Altyazı yazımı doğru (isim, marka, ürün adı)", "auto": false},
       {"text": "Marka renkleri ve fontu doğru", "auto": false},
-      {"text": "Yüz yazının altında kalmıyor", "auto": true},
-      {"text": "Renk ve pozlama sahneler arasında tutarlı", "auto": true}
+      {"text": "Yüz yazının altında kalmıyor (lionstone[vision] kuruluysa)", "auto": true},
+      {"text": "Renk ve pozlama sahneler arasında tutarlı", "auto": false}
     ]},
     {"name": "Ses", "items": [
       {"text": "Ses -14 LUFS civarında, tepe ≤ -1 dBTP", "auto": true},
-      {"text": "Müzik konuşmanın altında kalıyor (ducking)", "auto": true},
+      {"text": "Müzik konuşmanın altına çekiliyor (sidechain ducking uygulanır)", "auto": true},
       {"text": "Ses ve görüntü aynı uzunlukta, senkron", "auto": true},
       {"text": "Efektler seyrek ve anlamlı (en fazla 1,2 sn'de bir)", "auto": true},
       {"text": "Müziğin ticari kullanım lisansı var", "auto": false}
     ]},
     {"name": "Teslim", "items": [
-      {"text": "Kapak 3:4 grid kırpmasında okunuyor", "auto": true},
+      {"text": "Kapak yazısı 3:4 grid kırpmasının içine yerleşiyor", "auto": true},
       {"text": "Kapak versiyonları hazır", "auto": true},
       {"text": "caption.txt hazır", "auto": true},
       {"text": "Takvimde yayın tarihi var", "auto": false},

@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.4.0 — 2026-11-05
+## 0.4.0 — 2026-11-06
 Lionstone 0.4.0 is the whole Lionstone package — speech-aware editing, Creative Suite (145 presets incl. Reel FX), multicam, style learning, Shorts/Reels clips, brand kits, team tools, NLE export, Styles, MCP and QA — plus **Lionstone Reels**.
 
 - **Lionstone Reels** (`lionstone reels …`, `src/lionstone/reels/`, standard library + FFmpeg): a brand-specific Instagram Reels workflow from topic to calendar.
@@ -12,8 +12,14 @@ Lionstone 0.4.0 is the whole Lionstone package — speech-aware editing, Creativ
   - `room`, `room-apply`: a local editing-room page — click a word to seek, cut or restore it, double-click to fix caption spelling — exported as `room-edits.json` and applied to the plan.
   - `schedule`, `status`, `calendar [--ics]`: a content calendar built from the reel folders.
   - `cover`, `checklist` (37-item delivery checklist, auto vs. manual).
+  - Three report verdicts: TESLİME HAZIR, GÖZDEN GEÇİR (script match under 90 %, a repeat left, no transcript, or FFmpeg lacks `subtitles`/`drawtext`) and DÜZELTME GEREKİYOR. `make` exits 0 only on the first.
+  - `make --keep-plan` re-delivers after editing-room changes without re-planning.
+- Editing core (all videos):
+  - Whisper's invented lines over silence are dropped (`is_phantom_segment`), so captions don't show words nobody said.
+  - A sentence said twice (3-8 words, up to a 3 s pause) loses its first take.
+  - Karaoke captions moved up to 22 % from the bottom, above the Reels/Shorts UI.
 - Claude skill `integrations/lionstone-reels` and Turkish guide `docs/reels.md`.
-- Tests: `tests/test_reels.py`, including an end-to-end make that must report TESLİME HAZIR.
+- Tests: `tests/test_reels.py`, including an end-to-end make that must report TESLİME HAZIR, room edits through `--keep-plan`, and measured music ducking.
 
 ## 0.3.2 — 2026-11-01
 - **Reel FX Pack**: 12 original one-command effects for vertical Reels & Shorts (catalog category `reel-fx`, 145 presets in total). Creative: `stage-light`, `press-mono`, `frost-panels`, `duotone-pop`, `scan-line`, `afterimage`, `halo-orbit`, `neon-outline`. Brand-aware (colours as parameters, set by brand kits): `insight-split`, `brand-frame`, `progress-rail`, `pixel-resolve`. Pure FFmpeg (`pro/features/renderers/reel_fx.py`), relative geometry for 9:16 / 1:1 / 16:9, same builders for preview and export.

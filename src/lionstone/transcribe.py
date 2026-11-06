@@ -14,6 +14,7 @@ import json
 from pathlib import Path
 
 from .models import Word
+from .speech import is_phantom_segment
 
 
 class TranscriptionUnavailable(RuntimeError):
@@ -44,9 +45,10 @@ def transcribe(path: str | Path, *, model: str = "small", language: str | None =
     )
     words: list[Word] = []
     for seg in segments:
-        for w in seg.words or []:
-            words.append(Word(text=w.word.strip(), start=float(w.start), end=float(w.end),
-                              confidence=float(getattr(w, "probability", 1.0))))
+        said = [Word(text=w.word.strip(), start=float(w.start), end=float(w.end),
+                     confidence=float(getattr(w, "probability", 1.0))) for w in seg.words or []]
+        if not is_phantom_segment(said):
+            words.extend(said)
     return [w for w in words if w.text]
 
 

@@ -78,9 +78,9 @@ lionstone reels make projects/ornek-emlak/2026-11-05-kira-mi-ev-almak-mi
 
 | Adım | Ne olur |
 |---|---|
-| Kesim | Boşluk, dolgu sesi, tekrar ve yanlış başlangıç atılır; kesim kelimenin içine düşmez |
+| Kesim | Boşluk, dolgu sesi, tekrar eden kelime ve cümleler atılır; kesim kelimenin içine düşmez. Kesilemeyen tekrar raporda görünür |
 | Grafik | 9:16, Türkçe kelime kelime altyazı, kanca yazısı, marka rengi, brand kit |
-| Ses | Ses temizliği, efektler, müzik (ducking), -14 LUFS |
+| Ses | Efektler, müzik (ducking), -14 LUFS |
 | Kontrol | Bitmiş video yeniden ölçülür (aşağıda) |
 | Kapak | Ham görüntüden 3 versiyon, yazı 3:4 grid kırpmasına göre yerleşir |
 | Metin | `caption.txt` (caption + hashtag'ler), metin kontrol sonucu |
@@ -122,6 +122,14 @@ TESLİME HAZIR ✅
 
 Çalışmayan bir kontrol "geçti" sayılmaz: raporda "Atlandı" ve nedeniyle yazılır.
 
+Rapor üç karardan birini verir:
+
+| Karar | Anlamı | Çıkış kodu |
+|---|---|---|
+| **TESLİME HAZIR ✅** | Çalışan kontroller temiz, senaryo ≥ %90 uyuşuyor | 0 |
+| **GÖZDEN GEÇİR 👀** | Senaryo %75–90 uyuşuyor, tekrar kalmış ya da senaryo karşılaştırılamamış | 2 |
+| **DÜZELTME GEREKİYOR 🛑** | Senaryo < %75, açık yazı taşması, teknik hata ya da metin hatası | 2 |
+
 ## 4 · Düzenleme odası
 
 ```bash
@@ -135,8 +143,10 @@ ile gelen dosyayı uygula ve yeniden render et:
 
 ```bash
 lionstone reels room-apply projects/…/kurgu/plan.json ~/Downloads/room-edits.json
-lionstone render projects/…/kurgu/plan.json
+lionstone reels make projects/… --keep-plan
 ```
+
+`--keep-plan` planı yeniden üretmez: düzeltmelerin korunur; ses, kontrol ve kapaklar yeniden yapılır.
 
 Video internete yüklenmez; sayfa dosyayı diskinden oynatır.
 

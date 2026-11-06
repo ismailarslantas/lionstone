@@ -45,6 +45,8 @@ def _cfg(p) -> None:
     m.add_argument("--transcript", help="kelime zamanlı transcript JSON")
     m.add_argument("--no-asr", action="store_true")
     m.add_argument("--model", default=None, help="faster-whisper modeli (varsayılan small)")
+    m.add_argument("--keep-plan", action="store_true",
+                   help="kurgu/plan.json'u yeniden üretme (düzenleme odası değişiklikleri korunur)")
 
     r = sub.add_parser("room", help="düzenleme odası: kelimeye tıkla, kes, düzelt")
     r.add_argument("plan")
@@ -133,7 +135,8 @@ def _make(a) -> int:
     if a.model:
         extra += ["--model", a.model]
     res = make(b, folder=folder, footage=Path(a.video) if a.video else None, extra=extra,
-               fast=a.fast, covers=a.covers, music=a.music, sfx=False if a.no_sfx else None)
+               fast=a.fast, covers=a.covers, music=a.music, sfx=False if a.no_sfx else None,
+               keep_plan=a.keep_plan)
     print(json.dumps(res, ensure_ascii=False, indent=1))
     return 0 if res["ready"] else 2
 
@@ -184,14 +187,15 @@ def _run(a) -> int:
         from ..cli import _catalog
         replan_graphics(plan, _catalog())
         plan.save(a.plan)
-        print(f"{stats} → lionstone render {a.plan}")
+        print(f"{stats} → lionstone reels make <reel klasörü> --keep-plan")
         return 0
     if cmd == "cover":
         from .visual import cover_frames, make_cover
         b = brand_mod.load(a.brand)
         for k, at in enumerate(cover_frames(Path(a.video), a.n)):
             c = make_cover(Path(a.video), Path(a.out) / f"kapak-{k + 1}.jpg",
-                           a.text[k % len(a.text)], at=at, colors=b.colors, font=b.font)
+                           a.text[k % len(a.text)], at=at, colors=b.colors, font=b.font,
+                           language=b.language)
             print(f"{c['file']}  @{at}s  {c['font_size']}px")
         return 0
     if cmd == "sfx":
@@ -227,13 +231,13 @@ def _run(a) -> int:
         print(f"{r.topic}: {r.status} · {r.publish_at or 'tarih yok'}")
         return 0
     if cmd == "calendar":
-        from .calendar import entries, to_ics
+        from .calendar import entries, write_ics
         items = entries(brand_slug=brand_mod.slug(a.brand) if a.brand else None)
         for _folder, r in items:
             print(f"{(r.publish_at or '—').replace('T', ' '):16}  {r.status:8}  "
                   f"[{r.brand}] {r.topic}")
         if a.ics:
-            Path(a.ics).write_text(to_ics(items), encoding="utf-8")
+            write_ics(a.ics, items)
             print(f"Takvim → {a.ics}")
         return 0
     if cmd == "checklist":

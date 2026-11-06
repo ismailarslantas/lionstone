@@ -11,9 +11,11 @@ import tempfile
 import textwrap
 from pathlib import Path
 
+from ..effects.ffmpeg_fx import filter_path
 from ..ff import font_path, has_filter, run
 from ..ingest import probe
 from ..models import EditPlan
+from .content import tr_upper
 
 CHAR_W = 0.56  # average glyph width / font size for sans titles (estimate)
 UI_BOTTOM = 0.20  # Reels UI: caption, audio, buttons
@@ -42,9 +44,11 @@ def cover_frames(video: Path, n: int = 3) -> list[float]:
 
 
 def make_cover(video: Path, out: Path, text: str, *, at: float, colors: dict[str, str],
-               font: str | None = None, size: tuple[int, int] = (1080, 1920)) -> dict:
+               font: str | None = None, size: tuple[int, int] = (1080, 1920),
+               language: str = "tr") -> dict:
     W, H = size
-    lines = wrap(text.upper() if len(text) < 40 else text, 14 if len(text) < 40 else 18)
+    caps = tr_upper(text) if language == "tr" else text.upper()
+    lines = wrap(caps if len(text) < 40 else text, 14 if len(text) < 40 else 18)
     # grid-safe band: centre 3:4 crop is W x (W*4/3); keep text in its middle 70 %
     band_h = W * 4 / 3
     upper = text.isupper() or len(text) < 40
@@ -71,14 +75,14 @@ def make_cover(video: Path, out: Path, text: str, *, at: float, colors: dict[str
             for i, line in enumerate(lines):
                 tf = Path(td) / f"l{i}.txt"
                 tf.write_text(line, encoding="utf-8")
-                ff = f"fontfile='{fontfile}':" if fontfile else ""
+                ff = f"fontfile={filter_path(fontfile)}:" if fontfile else ""
                 vf.append(f"drawtext={ff}textfile={tf.name}:fontsize={fs}:fontcolor=0x{c_text}:"
                           f"x=(w-text_w)/2:y={y0 + i * line_h}")
         else:
             notes.append("ffmpeg has no drawtext: cover exported without text")
         run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-ss", f"{at:.2f}",
              "-i", str(Path(video).resolve()), "-frames:v", "1", "-vf", ",".join(vf),
-             "-q:v", "2", str(out.resolve())], cwd=td)
+             "-q:v", "2", "-update", "1", str(out.resolve())], cwd=td)
     return {"file": str(out), "at": at, "text": text, "font_size": fs, "lines": len(lines),
             "notes": notes}
 
@@ -135,5 +139,13 @@ def text_findings(plan: EditPlan, width: int = 1080, height: int = 1920,
 def cover_source_times(plan: EditPlan, n: int = 3) -> list[float]:
     """Cover frames from the raw footage (no burned captions or titles): the middle of
     the longest kept segments, in story order."""
-    segs = sorted(plan.segments, key=lambda s: s.duration, reverse=True)[:max(1, n)]
-    return sorted(round(s.start + s.duration * 0.5, 2) for s in segs)
+    n = max(1, n)
+    longest = sorted(plan.segments, key=lambda s: s.duration, reverse=True)
+    if not longest:
+        return []
+    shots = {i: 1 for i in range(min(n, len(longest)))}
+    for _ in range(n - len(shots)):  # fewer segments than covers: split the longest ones
+        i = max(shots, key=lambda k: longest[k].duration / shots[k])
+        shots[i] += 1
+    return sorted(round(longest[i].start + longest[i].duration * (k + 1) / (c + 1), 2)
+                  for i, c in shots.items() for k in range(c))

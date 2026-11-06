@@ -42,8 +42,9 @@ Read `<folder>/teslim/rapor.md`.
 - Report every "Bak"/"Düzelt" row and every skipped check honestly.
 - Script mismatch → show missing/changed words; ask whether to re-cut or accept.
 - Text overflow → shorten the hook / cover text in `reel.json`, re-run `make`.
+- **GÖZDEN GEÇİR** means a person must look: show the listed script differences and leftover repeats.
 - Spelling of names in captions → point the user to `kurgu/room.html` (double-click a word),
-  then `lionstone reels room-apply` + `lionstone render`.
+  then `lionstone reels room-apply` + `lionstone reels make <folder> --keep-plan`.
 
 ## 5 · Calendar
 `lionstone reels schedule <folder> "YYYY-MM-DD HH:MM"`, `lionstone reels calendar --brand <b>`,

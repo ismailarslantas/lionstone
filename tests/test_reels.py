@@ -171,6 +171,179 @@ def test_make_end_to_end(ws):
     assert "DTSTART:20261110T190000" in ics and "Kira mı ev mi" in ics
 
 
+    # room edits survive --keep-plan and reach the delivered file, with SFX and final QA
+    plan_file = folder / "kurgu" / "plan.json"
+    long_before = EditPlan.load(plan_file).output_duration
+    edits = ws / "edits.json"
+    edits.write_text(json.dumps({"remove": [5, 6], "text": {"0": "KİRA"}}), encoding="utf-8")
+    assert main(["reels", "room-apply", str(plan_file), str(edits)]) == 0
+    main(["reels", "make", str(folder), "--transcript", str(tr), "--fast", "--keep-plan"])
+    kept = EditPlan.load(plan_file)
+    assert kept.words[0].text == "KİRA" and any(c.kind == "manual" for c in kept.cuts)
+    assert kept.output_duration < long_before
+    rep = json.loads((deliver / "rapor.json").read_text(encoding="utf-8"))
+    checks = {c["name"]: c for c in rep["qa"]["checks"]}
+    assert checks["plan_duration"]["status"] == "passed"
+    assert "1080x1920" in checks["format"]["detail"]
+
+
+def test_turkish_capitals_on_covers():
+    from lionstone.reels.content import tr_upper
+    assert tr_upper("kira mı ev mi") == "KİRA MI EV Mİ"
+
+
+def test_covers_without_any_cut_still_give_three_frames():
+    from lionstone.reels.visual import cover_source_times
+    words = [Word("a", 0.0, 0.5)]
+    plan = EditPlan(source="/x.mp4", duration=30.0, intensity="dynamic", words=words)
+    from lionstone.speech import segments_from_cuts
+    plan.segments = segments_from_cuts([], 30.0, words)
+    times = cover_source_times(plan, 3)
+    assert len(set(times)) == 3 and all(0 < t < 30 for t in times)
+
+
+def test_ics_is_folded_and_written_as_bytes(tmp_path):
+    from lionstone.reels.calendar import write_ics
+    r = Reel(brand="Örnek", topic="ş" * 80, publish_at="2026-11-10T19:00",
+             hooks=["Kanca"], caption="Uzun açıklama, " * 20)
+    raw = write_ics(tmp_path / "t.ics", [(tmp_path, r)]).read_bytes()
+    assert b"\r\r\n" not in raw  # Windows text mode would double the CR
+    lines = raw.split(b"\r\n")
+    assert max(len(x) for x in lines) <= 75
+    for x in lines:
+        x.decode("utf-8")  # never split inside a UTF-8 character
+    assert b"\r\n " in raw
+
+
+def test_folder_named_like_a_category_is_not_a_sound(ws):
+    from lionstone.reels.sound import resolve
+    (ws / "pop").mkdir()
+    wav = ws / "lib.wav"
+    wav.write_bytes(b"x")
+    assert resolve("pop", {"pop/pop-01": wav}) == wav
+
+
+def test_ding_lands_on_the_spoken_cta():
+    from lionstone.reels.sound import auto_cues
+    from lionstone.speech import segments_from_cuts
+    text = "Bu evi kaçırma sakın bugün Kaydet lazım olacak".split()
+    words = [Word(t, i * 1.0, i * 1.0 + 0.8) for i, t in enumerate(text)]
+    plan = EditPlan(source="/x.mp4", duration=8.0, intensity="dynamic", words=words)
+    plan.segments = segments_from_cuts([], 8.0, words)
+    plan.meta["reels"] = {"cta": "Kaydet, lazım olacak."}
+    dings = [c for c in auto_cues(plan) if c.sound == "ding"]
+    assert len(dings) == 1 and abs(dings[0].at - 5.4) < 0.1
+
+
+def test_room_cut_never_pads_into_a_neighbour_word():
+    from lionstone.speech import segments_from_cuts
+    words = [Word("bir", 0.0, 0.5), Word("iki", 0.505, 1.0), Word("üç", 1.005, 1.5)]
+    plan = EditPlan(source="/x.mp4", duration=2.0, intensity="dynamic", words=words)
+    plan.segments = segments_from_cuts([], 2.0, words)
+    apply_edits(plan, {"remove": [1]})
+    cut = [c for c in plan.cuts if c.kind == "manual"][0]
+    assert cut.start >= 0.5 and cut.end <= 1.005
+
+
+@needs_ffmpeg
+def test_music_ducks_under_a_mono_voice(ws):
+    import re
+
+    from lionstone.reels.sound import mix
+    _ff("-f", "lavfi", "-i", "sine=f=300:d=3:r=48000", "-f", "lavfi", "-i",
+        "anullsrc=r=48000:cl=mono:d=3", "-filter_complex", "[0][1]concat=n=2:v=0:a=1", "-ac", "1",
+        str(ws / "voice.wav"))
+    _ff("-f", "lavfi", "-i", "testsrc2=s=108x192:r=30:d=6", "-i", str(ws / "voice.wav"),
+        "-shortest", "-c:v", "libx264", "-preset", "ultrafast", "-pix_fmt", "yuv420p", "-c:a", "aac",
+        str(ws / "v.mp4"))
+    _ff("-f", "lavfi", "-i", "sine=f=2000:d=2:r=44100", "-ac", "2", str(ws / "m.wav"))
+    res = mix(ws / "v.mp4", ws / "o.mp4", cues=[], music=str(ws / "m.wav"), music_volume=0.3)
+    assert res["music"]
+
+    def music_level(start, dur):
+        p = subprocess.run(
+            ["ffmpeg", "-hide_banner", "-ss", str(start), "-t", str(dur), "-i", str(ws / "o.mp4"),
+             "-af", "bandpass=f=2000:w=200,astats=measure_overall=RMS_level:measure_perchannel=none",
+             "-f", "null", "-"], capture_output=True, encoding="utf-8", errors="replace", check=True)
+        return float(re.findall(r"RMS level dB: (-?[\d.]+)", p.stderr)[-1])
+
+    assert music_level(1.5, 1.0) < music_level(4.0, 1.0) - 3  # quieter while the voice speaks
+
+
+def test_karaoke_captions_sit_above_the_reels_ui():
+    from lionstone.captions import STYLES
+    from lionstone.plugins import registry
+    from lionstone.reels.visual import UI_BOTTOM
+    registry()
+    assert STYLES["karaoke"].margin_v_ratio >= UI_BOTTOM
+
+
+def test_phantom_asr_segment_is_detected():
+    from lionstone.speech import is_phantom_segment
+    fake = [Word("Bir", 25.74, 27.54, 0.02), Word("sonraki", 27.54, 27.54, 0.72),
+            Word("videoda", 27.54, 27.54, 0.82), Word("görüşmek", 27.54, 27.54, 0.59),
+            Word("üzere.", 27.54, 28.06, 0.93)]
+    real = [Word("Kaydet,", 24.06, 24.9, 0.91), Word("lazım", 25.18, 25.4, 0.99),
+            Word("olacak.", 25.4, 25.74, 0.98)]
+    assert is_phantom_segment(fake) and not is_phantom_segment(real)
+
+
+def test_retake_removes_first_take_across_a_pause():
+    from lionstone.presets import INTENSITIES
+    from lionstone.speech import word_cuts
+    text = "önce bütçeni yaz önce bütçeni yaz sonra bölgeyi seç".split()
+    words, t = [], 0.0
+    for i, x in enumerate(text):
+        words.append(Word(x, t, t + 0.4))
+        t += 2.0 if i == 2 else 0.5  # a long pause between the takes
+    cuts = [c for c in word_cuts(words, INTENSITIES["dynamic"], t) if c.kind == "repeat"]
+    assert len(cuts) == 1 and cuts[0].end <= words[3].start and cuts[0].start <= words[0].start + 0.05
+
+
+def test_ding_survives_one_misheard_cta_word():
+    from lionstone.reels.sound import cta_time
+    from lionstone.speech import segments_from_cuts
+    words = [Word("Haydet,", 0.0, 0.5), Word("lazım", 0.6, 1.0), Word("olacak.", 1.1, 1.5)]
+    plan = EditPlan(source="/x.mp4", duration=2.0, intensity="dynamic", words=words)
+    plan.segments = segments_from_cuts([], 2.0, words)
+    plan.meta["reels"] = {"cta": "Kaydet, lazım olacak."}
+    assert cta_time(plan) is not None
+
+
+def test_verdict_needs_review_when_script_differs_or_could_not_run():
+    from lionstone.models import QACheck, QAReport
+    from lionstone.reels.deliver import report_md
+    b = brand_mod.Brand(name="M")
+    r = Reel(brand="M", topic="t", script="bir iki üç")
+    rep = QAReport(file="x.mp4")
+    rep.checks.append(QACheck("reels_script_match", "editorial", "warning", "match 77%"))
+    md, ready = report_md(b, r, rep, {})
+    assert not ready and "GÖZDEN GEÇİR" in md and "TESLİME HAZIR" not in md
+    rep = QAReport(file="x.mp4")
+    rep.checks.append(QACheck("reels_script_match", "editorial", "skipped", "no transcript"))
+    md, ready = report_md(b, r, rep, {})
+    assert not ready and "lionstone[whisper]" in md
+
+
+@needs_ffmpeg
+def test_cover_text_is_really_drawn(ws):
+    from lionstone.ff import has_filter
+    from lionstone.reels.visual import make_cover
+    if not has_filter("drawtext"):
+        pytest.skip("this FFmpeg has no drawtext")
+    _ff("-f", "lavfi", "-i", "color=c=gray:s=108x192:d=1", "-c:v", "libx264", "-pix_fmt", "yuv420p",
+        str(ws / "g.mp4"))
+    colors = {"primary": "#808080", "accent": "#808080", "text": "#FFFFFF"}
+    make_cover(ws / "g.mp4", ws / "a.jpg", "KİRA MI", at=0.1, colors=colors)
+    make_cover(ws / "g.mp4", ws / "b.jpg", "ŞĞÜÖÇ", at=0.1, colors=colors)
+    assert (ws / "a.jpg").read_bytes() != (ws / "b.jpg").read_bytes()
+
+
+def test_unknown_hook_angle_is_an_error(ws):
+    with pytest.raises(ValueError, match="bilinmeyen açı"):
+        hook_ideas(_brand(), "kira", ["yok-boyle"])
+
+
 def test_room_html_has_words(tmp_path):
     words = [Word("merhaba", 0, 0.4), Word("dünya", 0.5, 0.9)]
     plan = EditPlan(source=str(tmp_path / "v.mp4"), duration=1.0, intensity="dynamic",

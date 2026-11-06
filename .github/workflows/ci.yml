@@ -28,7 +28,12 @@ jobs:
           esac
       - run: pip install -e ".[dev,mcp]"
       - run: ruff check src tests
-      - run: pytest -q
+      - name: FFmpeg filters the Reels workflow relies on
+        shell: bash
+        run: |
+          ffmpeg -hide_banner -version | head -1
+          ffmpeg -hide_banner -filters | grep -E " (drawtext|subtitles|sidechaincompress|loudnorm) " || true
+      - run: pytest -q -rs
 
   remotion:
     runs-on: ubuntu-latest

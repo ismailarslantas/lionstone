@@ -95,6 +95,10 @@ def hook_ideas(brand: Brand, topic: str, angles: list[str] | None = None,
               "ürün": brand.products[0] if brand.products else "",
               "sonuç": brand.promises[0] if brand.promises else "",
               "hata": brand.pains[0] if brand.pains else "", **(extra or {})}
+    unknown = [a for a in angles or [] if a not in lib["angles"]]
+    if unknown:
+        raise ValueError(f"bilinmeyen açı: {', '.join(unknown)} (geçerli: "
+                         f"{', '.join(lib['angles'])})")
     out = {}
     for a in angles or brand.hook_angles or list(lib["angles"]):
         if a in lib["angles"]:
@@ -107,6 +111,11 @@ def hook_ideas(brand: Brand, topic: str, angles: list[str] | None = None,
 # --- lint -----------------------------------------------------------------------------
 def tr_lower(s: str) -> str:
     return unicodedata.normalize("NFC", s).replace("I", "ı").replace("İ", "i").lower()
+
+
+def tr_upper(s: str) -> str:
+    """Turkish capitals: i → İ, ı → I (Python's str.upper maps both to I)."""
+    return s.replace("i", "İ").replace("ı", "I").upper()
 
 
 def tokens(text: str) -> list[str]:

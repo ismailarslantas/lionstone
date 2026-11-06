@@ -14,6 +14,7 @@ from pathlib import Path
 from .. import qa as qa_mod
 from ..cli import _catalog
 from ..cli import main as cli_main
+from ..ff import has_filter
 from ..ingest import probe
 from ..models import EditPlan, QAReport
 from . import sound, visual
@@ -29,7 +30,8 @@ ROWS = [  # report row → QA checks behind it
     ("Senaryo karşılaştırması", ["reels_script_match"]),
     ("Yazı taşması", ["reels_text_fit", "graphics_rules"]),
     ("Ses seviyesi", ["loudness", "true_peak"]),
-    ("Görüntü", ["decode_full", "format", "black_frames", "frozen_frames", "av_length"]),
+    ("Görüntü", ["decode_full", "format", "plan_duration", "black_frames", "frozen_frames",
+                 "av_length"]),
 ]
 
 
@@ -75,11 +77,33 @@ def _row_status(report: QAReport, names: list[str]) -> tuple[str, str]:
     return "Temiz", ""
 
 
+def review_reasons(report: QAReport, reel: Reel | None) -> list[str]:
+    """Not broken, but a person must look before this is called ready: the video may not
+    say what the script says, or the check that would tell could not run."""
+    by_name = {c.name: c for c in report.checks}
+    out = []
+    for name, label in (("reels_script_match", "senaryo farkı"), ("reels_repeats", "kalan tekrar")):
+        c = by_name.get(name)
+        if c and c.status == "warning":
+            out.append(f"{label} ({c.detail})")
+    c = by_name.get("reels_script_match")
+    no_words = by_name.get("reels_repeats") and by_name["reels_repeats"].status == "skipped"
+    if no_words or (reel and reel.script.strip() and (c is None or c.status == "skipped")):
+        out.append("konuşma tanıma yok: altyazı yok, senaryo karşılaştırılamadı "
+                   "(pip install \"lionstone[whisper]\")")
+    return out
+
+
 def report_md(brand: Brand, reel: Reel | None, report: QAReport, extras: dict) -> tuple[str, bool]:
     high = [i for i in report.issues if i.severity in ("critical", "high")]
-    ready = report.deliverable and not high and not extras.get("lint_errors")
+    blocked = not report.deliverable or bool(high) or bool(extras.get("lint_errors"))
+    review = [*review_reasons(report, reel), *extras.get("review", [])]
+    ready = not blocked and not review
+    verdict = ("DÜZELTME GEREKİYOR 🛑" if blocked else
+               "GÖZDEN GEÇİR 👀" if review else "TESLİME HAZIR ✅")
     lines = [f"# {brand.name} · {reel.topic if reel else Path(report.file).stem}", "",
-             f"**{'TESLİME HAZIR ✅' if ready else 'DÜZELTME GEREKİYOR 🛑'}**", "",
+             f"**{verdict}**", "",
+             *([f"Teslim etmeden önce bak: {'; '.join(review)}.", ""] if review else []),
              "| Kontrol | Durum | Not |", "|---|---|---|"]
     for label, names in ROWS:
         s, note = _row_status(report, names)
@@ -105,7 +129,8 @@ def report_md(brand: Brand, reel: Reel | None, report: QAReport, extras: dict) -
 
 def make(brand: Brand, *, folder: Path | None = None, footage: Path | None = None,
          extra: list[str] | None = None, fast: bool = False, covers: int = 3,
-         music: str | None = None, sfx: bool | None = None, log=print) -> dict:
+         music: str | None = None, sfx: bool | None = None, keep_plan: bool = False,
+         log=print) -> dict:
     reel = Reel.load(folder) if folder and (folder / "reel.json").exists() else None
     base = folder or Path(footage).parent
     src = Path(footage) if footage else find_footage(base, reel)
@@ -114,21 +139,34 @@ def make(brand: Brand, *, folder: Path | None = None, footage: Path | None = Non
     deliver.mkdir(parents=True, exist_ok=True)
 
     log(f"🎬 {brand.name} · {src.name}")
-    code = cli_main(plan_args(brand, reel, src, out, list(extra or [])))
-    if code != 0:
-        raise RuntimeError(f"plan adımı başarısız (kod {code})")
     plan_path = out / "plan.json"
-    if brand.kit:
-        cli_main(["brand", "apply", str(plan_path), brand.kit])
+    if keep_plan and not plan_path.exists():
+        raise FileNotFoundError(f"--keep-plan: plan yok: {plan_path}")
+    if not keep_plan:  # --keep-plan: the room's cuts and caption fixes live in plan.json
+        code = cli_main(plan_args(brand, reel, src, out, list(extra or [])))
+        if code != 0:
+            raise RuntimeError(f"plan adımı başarısız (kod {code})")
+        if brand.kit:
+            code = cli_main(["brand", "apply", str(plan_path), brand.kit])
+            if code != 0:
+                raise RuntimeError(f"brand kit uygulanamadı: {brand.kit}")
     plan = EditPlan.load(plan_path)
-    w, h = 1080, 1920
-    plan.meta["reels"] = {"brand": brand.name, "script": reel.script if reel else "",
-                          "topic": reel.topic if reel else "", "width": w, "height": h}
+    plan.meta.setdefault("reels", {}).update({
+        "brand": brand.name, "script": reel.script if reel else "",
+        "topic": reel.topic if reel else "", "cta": (reel.cta if reel else "") or brand.cta,
+        "width": 1080, "height": 1920})
     plan.save(plan_path)
 
     render_path = out / "render.mp4"
+    render_path.unlink(missing_ok=True)  # never mix a stale render if this one fails
     cli_main(["render", str(plan_path), "-o", str(render_path), *(["--fast"] if fast else [])])
+    if not render_path.exists():
+        raise RuntimeError("render adımı çıktı üretmedi")
     plan = EditPlan.load(plan_path)
+    rv = probe(render_path).video
+    if rv:  # measure text against the size that was really rendered
+        plan.meta["reels"].update(width=rv.width, height=rv.height)
+        plan.save(plan_path)
 
     stem = slug(reel.topic)[:40] if reel and reel.topic else src.stem
     final = deliver / f"{brand.slug}-{stem}.mp4"
@@ -146,10 +184,12 @@ def make(brand: Brand, *, folder: Path | None = None, footage: Path | None = Non
                       music_volume=float(brand.style.get("music_volume", 0.18)))
 
     info = probe(final)
-    vs = info.video
-    report = qa_mod.run_qa(final, plan, catalog=_catalog(), expect={
-        "duration": info.duration, "width": vs.width if vs else w,
-        "height": vs.height if vs else h, "fps": vs.fps if vs else 30})
+    # the target comes from the plan and the 9:16 promise, not from the file under test
+    target = {"duration": plan.output_duration, "width": 1080, "height": 1920,
+              "fps": rv.fps if rv else 30}
+    if brand.style.get("aspect", "9:16") != "9:16" and rv:
+        target.update(width=rv.width, height=rv.height)
+    report = qa_mod.run_qa(final, plan, catalog=_catalog(), expect=target)
     qa_mod.save(report, deliver, "qa")
 
     cover_files = []
@@ -160,7 +200,8 @@ def make(brand: Brand, *, folder: Path | None = None, footage: Path | None = Non
             break
         txt = texts[k % len(texts)]
         c = visual.make_cover(Path(plan.source), deliver / f"kapak-{k + 1}.jpg", txt, at=at,
-                              colors=brand.colors, font=brand.font)
+                              colors=brand.colors, font=brand.font,
+                              language=brand.language)
         cover_files.append(c)
 
     lint_errors = []
@@ -174,8 +215,11 @@ def make(brand: Brand, *, folder: Path | None = None, footage: Path | None = Non
             json.dumps([asdict(f) for f in findings], ensure_ascii=False, indent=1), "utf-8")
 
     write_room(plan, out / "room.html", f"{brand.name} · düzenleme odası")
+    missing = [f"FFmpeg'de {flt} yok: {what}" for flt, what, needed in (
+        ("subtitles", "altyazı videoya yakılamadı", bool(plan.words)),
+        ("drawtext", "kapak ve başlık yazıları çizilemedi", True)) if needed and not has_filter(flt)]
     extras = {"covers": cover_files, "cues": mixed["cues"], "music": mixed["music"],
-              "duration": info.duration, "lint_errors": lint_errors}
+              "duration": info.duration, "lint_errors": lint_errors, "review": missing}
     md, ready = report_md(brand, reel, report, extras)
     (deliver / "rapor.md").write_text(md, encoding="utf-8")
     (deliver / "rapor.json").write_text(json.dumps(
@@ -184,6 +228,6 @@ def make(brand: Brand, *, folder: Path | None = None, footage: Path | None = Non
     if reel:
         reel.status = "hazır" if ready else "kontrol"
         reel.save(folder / "reel.json")
-    log(("✅ TESLİME HAZIR" if ready else "🛑 DÜZELTME GEREKİYOR") + f" → {deliver / 'rapor.md'}")
+    log(md.split("**")[1] + f" → {deliver / 'rapor.md'}")
     return {"ready": ready, "video": str(final), "deliver": str(deliver),
             "room": str(out / "room.html"), "plan": str(plan_path)}

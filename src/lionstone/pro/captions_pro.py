@@ -68,5 +68,5 @@ def karaoke_dialogue(accent: str = "#E8B04B"):
 
 def register_karaoke(accent: str = "#E8B04B") -> None:
     register_style(CaptionStyle("karaoke", size_ratio=0.058, outline=4.0, shadow=0.0,
-                                margin_v_ratio=0.08))
+                                margin_v_ratio=0.22))
     register_dialogue("karaoke", karaoke_dialogue(accent))

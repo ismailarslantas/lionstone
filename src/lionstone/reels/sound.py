@@ -21,6 +21,8 @@ from ..ff import run
 from ..ingest import probe
 from ..models import EditPlan
 from ..presets import LOUDNESS
+from ..render import _script_flag
+from .content import tokens
 
 AUDIO_EXT = {".wav", ".mp3", ".m4a", ".aac", ".ogg", ".flac"}
 
@@ -96,7 +98,7 @@ def library(root: Path | None = None) -> dict[str, Path]:
 def resolve(sound: str, lib: dict[str, Path]) -> Path | None:
     if sound in lib:
         return lib[sound]
-    if Path(sound).exists():
+    if Path(sound).is_file():  # a folder named "pop" in the cwd is not a sound
         return Path(sound)
     cat = sound.split("/")[0]  # "pop" → first pop in the library
     return next((p for k, p in lib.items() if k.split("/")[0] == cat or k.endswith("/" + sound)),
@@ -111,6 +113,20 @@ class Cue:
     reason: str = ""
 
 
+def cta_time(plan: EditPlan) -> float | None:
+    """Output time where the spoken CTA starts (last match of its first words), if heard."""
+    want = tokens((plan.meta.get("reels") or {}).get("cta") or "")[:3]
+    if not want:
+        return None
+    kept = [w for w in plan.words if plan.source_to_output((w.start + w.end) / 2) is not None]
+    toks = [(tokens(w.text) or [""])[0] for w in kept]
+    need = max(1, len(want) - 1)  # ASR may mishear one word ("Kaydet" → "Haydet")
+    for i in range(len(toks) - len(want), -1, -1):
+        if sum(a == b for a, b in zip(toks[i:i + len(want)], want)) >= need:
+            return plan.source_to_output((kept[i].start + kept[i].end) / 2)
+    return None
+
+
 def auto_cues(plan: EditPlan, max_cues: int = 12) -> list[Cue]:
     """Sparse, intentional cues: a whoosh into the hook, pops on text graphics, a ding
     on the CTA. Never more than one every 1.2 s."""
@@ -119,6 +135,10 @@ def auto_cues(plan: EditPlan, max_cues: int = 12) -> list[Cue]:
         kind = "ding" if any(k in (g.text + g.effect).lower() for k in ("cta", "takip", "kaydet")) \
             else ("whoosh" if g.layer == "titles" and g.at < 0.5 else "pop")
         cues.append(Cue(round(g.at, 3), kind, 0.45, f"graphic {g.id} {g.effect}"))
+    at_cta = cta_time(plan)
+    if at_cta is not None:
+        cues = [c for c in cues if abs(c.at - at_cta) >= 1.2]  # the CTA ding wins its slot
+        cues.append(Cue(round(at_cta, 3), "ding", 0.4, "spoken CTA"))
     out: list[Cue] = []
     for c in sorted(cues, key=lambda c: c.at):
         if not out or c.at - out[-1].at >= 1.2:
@@ -137,6 +157,8 @@ def mix(video: Path, out: Path, *, cues: list[Cue], music: str | None = None,
     """Voice + SFX + ducked music → loudness-normalised AAC; video copied."""
     lib = lib if lib is not None else library()
     info = probe(video)
+    if info.audio is None:
+        raise ValueError(f"videoda ses yok, karıştırılamaz: {video}")
     inputs: list[str] = ["-i", str(video)]
     graph, labels, used, skipped = [], [], [], []
     graph.append("[0:a]aresample=48000,asplit=2[voice][key]")
@@ -165,15 +187,17 @@ def mix(video: Path, out: Path, *, cues: list[Cue], music: str | None = None,
         n += 1
     tgt = LOUDNESS.get(profile) or LOUDNESS["social"]
     lufs, tp, lra = tgt.integrated, tgt.true_peak, tgt.lra
+    end = (info.video.duration if info.video and info.video.duration else info.duration)
     graph.append(f"{''.join(labels)}amix=inputs={len(labels)}:duration=first:normalize=0,"
-                 f"loudnorm=I={lufs}:TP={tp}:LRA={lra}[aout]")
+                 f"loudnorm=I={lufs}:TP={tp}:LRA={lra},aresample=48000,"
+                 f"atrim=end={end:.3f},asetpts=PTS-STARTPTS[aout]")
     out.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory() as td:
         gfile = Path(td) / "graph.txt"
         gfile.write_text(";".join(graph), encoding="utf-8")
         tmp = Path(td) / out.name
         run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", *inputs,
-             "-filter_complex_script", str(gfile), "-map", "0:v", "-map", "[aout]",
+             _script_flag(), str(gfile), "-map", "0:v", "-map", "[aout]",
              "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-ar", "48000",
              "-movflags", "+faststart", str(tmp)])
         shutil.move(str(tmp), out)
