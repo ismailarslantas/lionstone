@@ -44,7 +44,7 @@ def number_of(question: str, value: str) -> int:
 
 
 def parse_picks(picks: list[str]) -> dict[str, str]:
-    """``["101", "205", "602=muzik.mp3", "0"]`` → answers. One number per question."""
+    """``["101", "205", "602=track.mp3", "0"]`` → answers. One number per question."""
     by_number = {e["number"]: e for e in entries()}
     answers: dict[str, str] = {}
     all_auto = False
@@ -52,20 +52,20 @@ def parse_picks(picks: list[str]) -> dict[str, str]:
         for item in raw.replace(",", " ").split():
             num, _, extra = item.partition("=")
             if not num.isdigit():
-                raise ValueError(f"katalog numarası değil: {item}")
+                raise ValueError(f"not a catalogue number: {item}")
             n = int(num)
             if n == ALL_AUTO:
                 all_auto = True
                 continue
             if n not in by_number:
-                raise ValueError(f"katalogda böyle bir numara yok: {n} (`lionstone reels catalog`)")
+                raise ValueError(f"no such number in the catalogue: {n} (`lionstone reels catalog`)")
             e = by_number[n]
             if e["question"] in answers:
-                raise ValueError(f"{e['question']} için iki numara verildi: {n}")
+                raise ValueError(f"two numbers given for {e['question']}: {n}")
             value = e["value"]
             if value == "file:<path>":
                 if not extra:
-                    raise ValueError(f"{n} için dosya gerekli: {n}=muzik.mp3")
+                    raise ValueError(f"{n} needs a file: {n}=track.mp3")
                 value = f"file:{extra}"
             answers[e["question"]] = value
     if all_auto:
@@ -145,7 +145,7 @@ const brand=__BRAND__,picked={};let all=false;const cmd=document.getElementById(
 function draw(){const nums=[...(all?['0']:[]),...Object.values(picked)];cmd.textContent=`lionstone reels setup "${brand}" --pick ${nums.join(' ')}`;}
 document.querySelectorAll('.card').forEach(c=>c.onclick=()=>{const q=c.dataset.q,on=c.classList.contains('on');
 document.querySelectorAll(`.card[data-q="${q}"]`).forEach(x=>x.classList.remove('on'));
-if(on){delete picked[q];}else{c.classList.add('on');picked[q]=c.dataset.n+(c.dataset.file?'=muzik.mp3':'');}draw();});
+if(on){delete picked[q];}else{c.classList.add('on');picked[q]=c.dataset.n+(c.dataset.file?'=track.mp3':'');}draw();});
 document.getElementById('all').onclick=e=>{all=!all;e.target.style.borderColor=all?'#E8B04B':'';draw();};
 document.getElementById('copy').onclick=()=>navigator.clipboard.writeText(cmd.textContent);draw();
 </script></body></html>

@@ -128,7 +128,7 @@ def _clip(path: Path, role: str, out_dir: Path, name: str, asr: bool, model: str
           language: str) -> dict[str, Any]:
     info = probe(path)
     if not info.video:
-        raise ValueError(f"{role}: video akışı yok: {path}")
+        raise ValueError(f"{role}: no video stream: {path}")
     d = info.duration
     v = info.video
     has_audio = bool(info.audio)
@@ -155,27 +155,27 @@ def _clip(path: Path, role: str, out_dir: Path, name: str, asr: bool, model: str
 def analyze(brand: Brand, footage: Path, examples: list[Path], *, asr: bool = True,
             model: str = "small", root: Path | None = None, log=print) -> dict[str, Any]:
     if not MIN_EXAMPLES <= len(examples) <= MAX_EXAMPLES:
-        raise ValueError(f"{MIN_EXAMPLES}-{MAX_EXAMPLES} örnek Reel gerekli, "
-                         f"{len(examples)} verildi")
+        raise ValueError(f"{MIN_EXAMPLES}-{MAX_EXAMPLES} example Reels needed, "
+                         f"{len(examples)} given")
     for p in [footage, *examples]:
         if not Path(p).is_file():
-            raise FileNotFoundError(f"dosya yok: {p}")
+            raise FileNotFoundError(f"file not found: {p}")
     # everything is checked above, so a typo can't cost the identity already on disk
     previous = archive(brand, root)
     if previous:
-        log(f"🗄️ Önceki kimlik arşivlendi → {previous}")
+        log(f"🗄️ Previous identity archived → {previous}")
     out = identity_dir(brand, root)
     out.mkdir(parents=True, exist_ok=True)
     lang = brand.language
-    log(f"🎥 Kafa çekimi: {Path(footage).name}")
+    log(f"🎥 Talking-head take: {Path(footage).name}")
     head = _clip(Path(footage), "footage", out, "footage", asr, model, lang)
     if not head["has_audio"]:
-        raise ValueError(f"kafa çekiminde ses yok: {footage}")
+        raise ValueError(f"the talking-head take has no audio: {footage}")
     clips = []
     for i, ex in enumerate(examples, 1):
-        log(f"🎞️ Örnek {i}/{len(examples)}: {Path(ex).name}")
+        log(f"🎞️ Example {i}/{len(examples)}: {Path(ex).name}")
         clips.append(_clip(Path(ex), "example", out, f"example-{i}", asr, model, lang))
-    log("📐 Ritim, ses ve renk ölçülüyor")
+    log("📐 Measuring rhythm, sound and colour")
     profile = learn([str(p) for p in examples], name=brand.slug)
     profile.save(out / "style.json")
     secs = [c["seconds"] for c in clips]

@@ -129,17 +129,17 @@ def text_findings(plan: EditPlan, width: int = 1080, height: int = 1920,
                     out.append({"check": "text_overflow", "at": g.at, "graphic": g.id,
                                 "severity": "high" if need > usable * 1.15 else "medium",
                                 "message": f"'{line[:40]}' ≈{need:.0f}px > {usable:.0f}px "
-                                           f"güvenli genişlik (tahmin)"})
+                                           f"safe width (estimate)"})
         y = g.params.get("y")
         if isinstance(y, (int, float)) and y > 1 - UI_BOTTOM:
             out.append({"check": "safe_zone", "at": g.at, "graphic": g.id, "severity": "medium",
-                        "message": "yazı Reels arayüzünün altında kalıyor (alt %20)"})
+                        "message": "text sits under the Reels UI (bottom 20%)"})
     cap_fs = height * caption_ratio
     max_chars = int(usable / (cap_fs * CHAR_W))
     for w in [w for w in plan.words if len(w.text) > max_chars][:5]:
         out.append({"check": "caption_overflow", "at": plan.source_to_output(w.start),
                     "severity": "medium",
-                    "message": f"'{w.text}' tek satıra sığmayabilir (≤{max_chars} karakter)"})
+                    "message": f"'{w.text}' may not fit on one line (≤{max_chars} characters)"})
     return out
 
 

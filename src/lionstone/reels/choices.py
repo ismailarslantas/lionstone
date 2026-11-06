@@ -106,25 +106,25 @@ def questions(language: str = "tr") -> list[dict[str, Any]]:
 
 def validate(qid: str, value: str) -> str:
     if qid not in BY_ID:
-        raise ValueError(f"bilinmeyen soru: {qid} (geçerli: {', '.join(BY_ID)})")
+        raise ValueError(f"unknown question: {qid} (valid: {', '.join(BY_ID)})")
     if value == AUTO:
         return value
     if qid == "music" and value.startswith("file:"):
         path = value[5:]
         if not Path(path).is_file():
-            raise FileNotFoundError(f"müzik dosyası yok: {path}")
+            raise FileNotFoundError(f"music file not found: {path}")
         return value
     if qid == "colors" and value.startswith("#"):
         if not HEX.match(value):
-            raise ValueError(f"renk #RRGGBB olmalı: {value}")
+            raise ValueError(f"colour must be #RRGGBB: {value}")
         return value
     if qid == "effects" and value.startswith("fx:"):
         return value  # any usable catalog preset; checked against the catalog when applied
     if qid == "framing" and value == "face" and not _face_tracking_available():
-        raise ValueError('yüz takibi için: pip install "lionstone[vision]"')
+        raise ValueError('face tracking needs: pip install "lionstone[vision]"')
     allowed = [o["value"] for o in BY_ID[qid]["options"]]
     if value not in allowed:
-        raise ValueError(f"{qid} için geçersiz değer: {value} (geçerli: {', '.join(allowed)}, auto)")
+        raise ValueError(f"invalid value for {qid}: {value} (valid: {', '.join(allowed)}, auto)")
     return value
 
 
@@ -218,8 +218,8 @@ def resolve(brand: Brand, answers: dict[str, str], root: Path | None = None
         value = validate(qid, value)
         if value == AUTO:
             if not identity:
-                raise ValueError("'auto' için marka kimliği gerekli: önce `lionstone reels "
-                                 "identity` çalıştır")
+                raise ValueError("'auto' needs a brand identity: run `lionstone reels "
+                                 "identity` first")
             val, why = decide(qid, identity, brand)
             chosen[qid] = {"value": val, "by": "auto", "reason": why}
         else:
@@ -298,7 +298,7 @@ def ask(brand: Brand, input_fn=input, print_fn=print, root: Path | None = None) 
             if pick is None:
                 continue
             if pick == "file:<path>":
-                pick = "file:" + input_fn("Müzik dosyası / Music file: ").strip().strip('"')
+                pick = "file:" + input_fn("Music file: ").strip().strip('"')
             try:
                 answers[q["id"]] = validate(q["id"], pick)
                 break

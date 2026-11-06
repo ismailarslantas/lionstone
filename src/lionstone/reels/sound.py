@@ -158,7 +158,7 @@ def mix(video: Path, out: Path, *, cues: list[Cue], music: str | None = None,
     lib = lib if lib is not None else library()
     info = probe(video)
     if info.audio is None:
-        raise ValueError(f"videoda ses yok, karıştırılamaz: {video}")
+        raise ValueError(f"the video has no audio, nothing to mix: {video}")
     inputs: list[str] = ["-i", str(video)]
     graph, labels, used, skipped = [], [], [], []
     graph.append("[0:a]aresample=48000,asplit=2[voice][key]")

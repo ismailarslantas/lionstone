@@ -1,12 +1,12 @@
 ---
 name: lionstone-reels
-description: Produce brand-specific Instagram Reels end to end with Lionstone — find a topic for the brand's sector, write hooks and a spoken script, then turn the raw footage into a captioned, sound-designed, QA-checked Reel with covers, caption and a calendar slot. Use when the user says "Reels", "reel çıkar", "konu bul", "hook yaz", "script yaz", gives raw footage for a brand, or asks for a content calendar.
+description: Produce brand-specific Instagram Reels end to end with Lionstone — find a topic for the brand's sector, write hooks and a spoken script, then turn the raw footage into a captioned, sound-designed, QA-checked Reel with covers, caption and a calendar slot. Use when the user says "Reels", "reel çıkar", "konu bul", "hook yaz", "script yaz", "write a hook", gives raw footage for a brand, or asks for a content calendar.
 ---
 
 # Lionstone Reels
 
-You run the creative steps; Lionstone runs and measures the production steps. Work in the
-brand's language (Turkish by default) and in the folder that holds `brands/` and `projects/`.
+You run the creative steps; Lionstone runs and measures the production steps. Write copy in the
+brand's language (`language` in `brand.json`), talk to the user in theirs, and in the folder that holds `brands/` and `projects/`.
 
 ## 0 · Start
 Always run `lionstone reels start --json` first.
@@ -29,7 +29,7 @@ The man in the catalogue is a fictional example. The Reel is always made from th
 ## Brand
 `lionstone reels brand list`. If the brand is missing, ask for: name, @handle, sector, audience,
 tone, products, results the brand can honestly claim, audience problems, banned words, CTA,
-colours. Then `lionstone reels brand init …` and fill `brands/<slug>/brand.json` + `brand.md`.
+colours. Then `lionstone reels brand init … --language <en|tr>` and fill `brands/<slug>/brand.json` + `brand.md`.
 `lionstone reels brand check <name>` must pass. Always read `brand.json` and `brand.md` before writing.
 
 ## 1 · Topic (per reel)
@@ -46,7 +46,7 @@ Use them as raw material, not final copy. Write at least two hooks from **differ
 
 ## 3 · Script
 Spoken, not written: short sentences, the brand's tone, opens with the main hook, delivers one
-idea, ends with the CTA. Fit `target_seconds` at ~2.5 words/s. Put stage directions in
+idea, ends with the CTA. Fit `target_seconds` at ~2.7 words/s in English, ~2.5 in Turkish. Put stage directions in
 [brackets]; they are ignored by timing and by the script check.
 
 Fill `reel.json`: `why`, `angle`, `hooks`, `second_hook`, `script`, `cta`, `caption`,
@@ -54,19 +54,19 @@ Fill `reel.json`: `why`, `angle`, `hooks`, `second_hook`, `script`, `cta`, `capt
 Run `lionstone reels lint <folder>` and fix every 🔴 before showing the user.
 
 ## 4 · Production
-The user puts footage into `<folder>/ham/`. Then:
+The user puts footage into `<folder>/raw/` (older reels: `ham/`). Then:
 `lionstone reels make <folder> --identity same` (add `--music <file>` only if the user owns the licence).
-Read `<folder>/teslim/rapor.md`.
-- Only say the Reel is ready if it says **TESLİME HAZIR**.
-- Report every "Bak"/"Düzelt" row and every skipped check honestly.
+Read `<folder>/delivery/report.md` (older reels: `teslim/`).
+- Only say the Reel is ready if it says **READY TO DELIVER**.
+- Report every "Review"/"Fix" row and every skipped check honestly.
 - Script mismatch → show missing/changed words; ask whether to re-cut or accept.
 - Text overflow → shorten the hook / cover text in `reel.json`, re-run `make`.
-- **GÖZDEN GEÇİR** means a person must look: show the listed script differences and leftover repeats.
-- Spelling of names in captions → point the user to `kurgu/room.html` (double-click a word),
+- **NEEDS REVIEW** means a person must look: show the listed script differences and leftover repeats.
+- Spelling of names in captions → point the user to `edit/room.html` (double-click a word),
   then `lionstone reels room-apply` + `lionstone reels make <folder> --keep-plan`.
 
 ## 5 · Calendar
 `lionstone reels schedule <folder> "YYYY-MM-DD HH:MM"`, `lionstone reels calendar --brand <b>`,
-`--ics takvim.ics` to export. Mark published reels with `lionstone reels status <folder> yayında`.
+`--ics calendar.ics` to export. Mark published reels with `lionstone reels status <folder> published`.
 
 Never overwrite the user's footage. Never promise virality; promise a clean, on-brand, checked video.

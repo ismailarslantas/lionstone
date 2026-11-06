@@ -62,8 +62,8 @@ def to_ics(items: list[tuple[Path, Reel]], minutes: int = 30) -> str:
         end = start + dt.timedelta(minutes=minutes)
         uid = hashlib.sha1(str(folder.resolve()).encode()).hexdigest()[:16]
         desc = "\n".join(x for x in [
-            f"Kanca: {r.hooks[0]}" if r.hooks else "", f"Durum: {r.status}",
-            f"Klasör: {folder}", "", r.caption[:900]] if x is not None)
+            f"Hook: {r.hooks[0]}" if r.hooks else "", f"Status: {r.status}",
+            f"Folder: {folder}", "", r.caption[:900]] if x is not None)
         lines += ["BEGIN:VEVENT", f"UID:{uid}@lionstone", f"DTSTAMP:{stamp}",
                   f"DTSTART:{start.strftime('%Y%m%dT%H%M%S')}",
                   f"DTEND:{end.strftime('%Y%m%dT%H%M%S')}",

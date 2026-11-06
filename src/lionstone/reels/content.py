@@ -40,7 +40,7 @@ class Reel:
     hashtags: list[str] = field(default_factory=list)
     cover_text: list[str] = field(default_factory=list)  # 1-3 cover variants
     footage: list[str] = field(default_factory=list)
-    status: str = "fikir"  # fikir · script · çekim · kurgu · kontrol · hazır · yayında
+    status: str = "idea"  # idea · script · shoot · edit · review · ready · published
     publish_at: str = ""  # ISO local datetime
     created: str = field(default_factory=lambda: dt.date.today().isoformat())
     meta: dict[str, Any] = field(default_factory=dict)
@@ -56,10 +56,27 @@ class Reel:
         if p.is_dir():
             p = p / "reel.json"
         d = json.loads(p.read_text(encoding="utf-8"))
+        if "status" in d:
+            d["status"] = normalize_status(d["status"])
         return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
 
 
-STATUSES = ("fikir", "script", "çekim", "kurgu", "kontrol", "hazır", "yayında")
+STATUSES = ("idea", "script", "shoot", "edit", "review", "ready", "published")
+# reel.json files and folders written before 0.4.2 used Turkish names; they keep working
+LEGACY_STATUS = {"fikir": "idea", "çekim": "shoot", "kurgu": "edit", "kontrol": "review",
+                 "hazır": "ready", "yayında": "published"}
+RAW_DIR, EDIT_DIR, DELIVERY_DIR = "raw", "edit", "delivery"
+LEGACY_DIRS = {RAW_DIR: "ham", EDIT_DIR: "kurgu", DELIVERY_DIR: "teslim"}
+
+
+def normalize_status(status: str) -> str:
+    return LEGACY_STATUS.get(status, status)
+
+
+def reel_dir(folder: Path, name: str) -> Path:
+    """A reel's sub-folder: the older Turkish name only if that is what's on disk."""
+    new, old = Path(folder) / name, Path(folder) / LEGACY_DIRS[name]
+    return old if old.exists() and not new.exists() else new
 
 
 def projects_dir(brand: Brand, root: Path | None = None) -> Path:
@@ -69,7 +86,7 @@ def projects_dir(brand: Brand, root: Path | None = None) -> Path:
 def new_reel(brand: Brand, topic: str, root: Path | None = None) -> Path:
     folder = projects_dir(brand, root) / f"{dt.date.today().isoformat()}-{slug(topic)[:32]}"
     folder.mkdir(parents=True, exist_ok=True)
-    (folder / "ham").mkdir(exist_ok=True)
+    (folder / RAW_DIR).mkdir(exist_ok=True)
     r = Reel(brand=brand.name, topic=topic, cta=brand.cta, hashtags=list(brand.hashtags[:5]))
     return r.save(folder / "reel.json")
 
@@ -120,7 +137,7 @@ def hook_ideas(brand: Brand, topic: str, angles: list[str] | None = None,
              (angles or brand.hook_angles or list(lib["angles"]))}
     unknown = [a for a, name in known.items() if name not in lib["angles"]]
     if angles and unknown:
-        raise ValueError(f"bilinmeyen açı: {', '.join(unknown)} (geçerli: "
+        raise ValueError(f"unknown angle: {', '.join(unknown)} (valid: "
                          f"{', '.join(lib['angles'])})")
     out = {}
     for name in known.values():
@@ -143,7 +160,7 @@ def tr_upper(s: str) -> str:
 
 
 def tokens(text: str) -> list[str]:
-    text = re.sub(r"\[[^\]]*\]|\([^)]*\)", " ", text)  # stage directions [B-roll] (gülümse)
+    text = re.sub(r"\[[^\]]*\]|\([^)]*\)", " ", text)  # stage directions [B-roll] (smile)
     return [t for t in (re.sub(r"[^\wçğıöşü'-]", "", w) for w in tr_lower(text).split()) if t]
 
 
@@ -153,7 +170,7 @@ def speak_seconds(text: str, language: str = "tr") -> float:
 
 @dataclass
 class Finding:
-    level: str  # hata | uyarı | bilgi
+    level: str  # error | warning | info
     field: str
     message: str
 
@@ -162,21 +179,21 @@ def lint(reel: Reel, brand: Brand) -> list[Finding]:
     f: list[Finding] = []
     add = lambda lvl, fld, msg: f.append(Finding(lvl, fld, msg))
     if not reel.why:
-        add("uyarı", "why", "konunun neden tutacağı yazılmamış")
+        add("warning", "why", "no reason written for why this topic will work")
     if not reel.hooks:
-        add("hata", "hooks", "kanca yok")
+        add("error", "hooks", "no hook")
     for i, h in enumerate(reel.hooks):
         n = len(tokens(h))
         if n > HOOK_MAX_WORDS:
-            add("uyarı", f"hooks[{i}]", f"{n} kelime; ilk 2 saniyede okunmaz (≤{HOOK_MAX_WORDS})")
+            add("warning", f"hooks[{i}]", f"{n} words; not readable in the first 2 seconds (≤{HOOK_MAX_WORDS})")
         if "{" in h:
-            add("hata", f"hooks[{i}]", "doldurulmamış şablon alanı var")
+            add("error", f"hooks[{i}]", "unfilled template slot")
     if len(reel.hooks) < 2:
-        add("bilgi", "hooks", "A/B için en az 2 farklı açıdan kanca önerilir")
+        add("info", "hooks", "at least 2 hooks from different angles are recommended for A/B")
     if not reel.second_hook:
-        add("uyarı", "second_hook", "ikinci kanca yok (3-6. saniye tutma)")
+        add("warning", "second_hook", "no second hook (holds attention in seconds 3-6)")
     if not reel.script:
-        add("hata", "script", "script yok")
+        add("error", "script", "no script")
     else:
         secs = speak_seconds(reel.script, brand.language)
         measured = brand.style.get("words_per_second")
@@ -184,28 +201,28 @@ def lint(reel: Reel, brand: Brand) -> list[Finding]:
             secs = len(tokens(reel.script)) / float(measured)
         lo, hi = brand.target_seconds
         if not lo * 0.8 <= secs <= hi * 1.15:
-            add("uyarı", "script", f"tahmini süre {secs:.0f} sn; hedef {lo:.0f}–{hi:.0f} sn")
+            add("warning", "script", f"estimated length {secs:.0f} s; target {lo:.0f}-{hi:.0f} s")
         first = reel.script.strip().splitlines()[0] if reel.script.strip() else ""
         if reel.hooks and tokens(reel.hooks[0])[:3] != tokens(first)[:3]:
-            add("bilgi", "script", "script ana kancayla başlamıyor")
+            add("info", "script", "the script does not open with the main hook")
         last = tokens(reel.script.strip().splitlines()[-1])
         cta = tokens(reel.cta or brand.cta)
         if cta and not set(cta[:4]) & set(last):
-            add("uyarı", "script", "script çağrıyla (CTA) bitmiyor")
+            add("warning", "script", "the script does not end with the CTA")
     text_all = " ".join([*reel.hooks, reel.second_hook, reel.script, reel.caption])
     low = tr_lower(text_all)
     for w in brand.banned_words:
         if w and tr_lower(w) in low:
-            add("hata", "marka", f"yasaklı ifade kullanılmış: {w!r}")
+            add("error", "brand", f"banned phrase used: {w!r}")
     if len(reel.caption) > CAPTION_MAX:
-        add("hata", "caption", f"{len(reel.caption)} karakter (Instagram sınırı {CAPTION_MAX})")
+        add("error", "caption", f"{len(reel.caption)} characters (Instagram limit {CAPTION_MAX})")
     tags = [t for t in reel.hashtags if t] + re.findall(r"#\w+", reel.caption)
     if len(set(tags)) > HASHTAG_MAX:
-        add("hata", "hashtags", f"{len(set(tags))} hashtag (sınır {HASHTAG_MAX})")
+        add("error", "hashtags", f"{len(set(tags))} hashtags (limit {HASHTAG_MAX})")
     elif len(set(tags)) > HASHTAG_SOFT:
-        add("bilgi", "hashtags", f"{len(set(tags))} hashtag; 3-5 odaklı etiket genelde yeter")
+        add("info", "hashtags", f"{len(set(tags))} hashtags; 3-5 focused tags are usually enough")
     if not reel.cover_text:
-        add("uyarı", "cover_text", "kapak yazısı yok")
+        add("warning", "cover_text", "no cover text")
     return f
 
 

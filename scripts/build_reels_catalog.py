@@ -156,15 +156,15 @@ class Builder:
         d = json.loads(b.read_text(encoding="utf-8"))
         d["target_seconds"] = [5, 40]
         b.write_text(json.dumps(d, ensure_ascii=False, indent=2), encoding="utf-8")
-        (self.folder / "ham").mkdir(parents=True)
+        (self.folder / "raw").mkdir(parents=True)
         reel = {"brand": BRAND, "topic": "Rent or buy", "why": "fear of rent",
                 "hooks": [HOOK, "Watch this first."], "second_hook": "But that's not the real problem.",
                 "script": SCRIPT, "cta": SENTENCES[-1], "caption": "Budget first.",
                 "cover_text": ["Rent or buy?", "Budget first", "Don't guess"]}
         (self.folder / "reel.json").write_text(json.dumps(reel, ensure_ascii=False, indent=2), "utf-8")
-        shutil.copy("portrait.mp4", self.folder / "ham" / "take.mp4")
+        shutil.copy("portrait.mp4", self.folder / "raw" / "take.mp4")
         self.run("reels", "make", str(self.folder), "--identity", "same", "--fast", "--no-sfx")
-        plan = json.loads((self.folder / "kurgu/plan.json").read_text(encoding="utf-8"))
+        plan = json.loads((self.folder / "edit/plan.json").read_text(encoding="utf-8"))
         said = SCRIPT.split()  # the script is known: keep Whisper's timing, not its spelling
         heard = plan["words"]
         if len(said) != len(heard):
@@ -194,12 +194,12 @@ class Builder:
 
     def make(self, footage: str = "portrait.mp4", **overrides) -> Path:
         self.style(**overrides)
-        shutil.copy(footage, self.folder / "ham" / "take.mp4")
-        for old in (self.folder / "teslim").glob("*.mp4"):
+        shutil.copy(footage, self.folder / "raw" / "take.mp4")
+        for old in (self.folder / "delivery").glob("*.mp4"):
             old.unlink()
         self.run("reels", "make", str(self.folder), "--identity", "same", "--fast",
                  "--transcript", "words.json")
-        return next((self.folder / "teslim").glob("*.mp4"))
+        return next((self.folder / "delivery").glob("*.mp4"))
 
     @staticmethod
     def frame(video: Path, t: float, name: str = "frame.png") -> Image.Image:
@@ -237,7 +237,7 @@ class Builder:
         if q == "effects":
             video = self.make(effects=v, hook_title=False)
             if v.startswith("look:"):
-                plan = json.loads((self.folder / "kurgu/plan.json").read_text(encoding="utf-8"))
+                plan = json.loads((self.folder / "edit/plan.json").read_text(encoding="utf-8"))
                 moments = [g["at"] + 1.2 for g in plan["graphics"] if g["id"].startswith("look-") and g["at"] > 0]
                 return self.frame(video, moments[0] if moments else 3.0)
             return self.frame(video, 2.6) if v == "none" else self.strongest(video, base)
@@ -253,11 +253,11 @@ class Builder:
             return self.frame(self.make(accent=accent), 1.2)
         if q == "covers":
             self.style(covers=int(v))
-            for x in (self.folder / "teslim").glob("kapak-*.jpg"):
+            for x in (self.folder / "delivery").glob("cover-*.jpg"):
                 x.unlink()
             self.run("reels", "make", str(self.folder), "--identity", "same", "--fast", "--transcript",
                      "words.json", "--covers", v)
-            covers = sorted((self.folder / "teslim").glob("kapak-*.jpg"))
+            covers = sorted((self.folder / "delivery").glob("cover-*.jpg"))
             n = len(covers)
             cols = 1 if n == 1 else 2
             rows = (n + 1) // 2 if n > 1 else 1

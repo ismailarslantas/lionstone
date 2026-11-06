@@ -1,0 +1,60 @@
+name: Brand setup request
+description: Ask Kreatif Hizmetler for a quote to set up Lionstone Reels for your brand (optional service; the software is free)
+title: "[Brand setup] "
+labels: ["brand-setup"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Lionstone is free and you can set it up yourself with [the Reels guide](https://github.com/ismailarslantas/lionstone/blob/main/docs/reels.md). This form is for teams who want it done for them. See [what's included](https://github.com/ismailarslantas/lionstone/blob/main/docs/brand-setup.md).
+
+        **This issue is public.** Leave out anything confidential; we can move to a private channel when we reply.
+  - type: input
+    id: brand
+    attributes:
+      label: Brand or agency
+      description: The name, plus a website or Instagram handle if you like.
+    validations:
+      required: true
+  - type: dropdown
+    id: brands
+    attributes:
+      label: How many brands would you run?
+      options: ["1", "2-5", "More than 5"]
+    validations:
+      required: true
+  - type: input
+    id: volume
+    attributes:
+      label: About how many Reels a month?
+    validations:
+      required: false
+  - type: dropdown
+    id: language
+    attributes:
+      label: Language of your Reels
+      options: ["English", "Turkish", "Both", "Another language"]
+    validations:
+      required: true
+  - type: dropdown
+    id: system
+    attributes:
+      label: Computers your team uses
+      multiple: true
+      options: ["Windows", "macOS", "Linux"]
+    validations:
+      required: false
+  - type: textarea
+    id: goal
+    attributes:
+      label: What would you like to get done?
+      description: Where you are today, and what you'd like set up.
+    validations:
+      required: true
+  - type: input
+    id: contact
+    attributes:
+      label: Preferred way to reach you (optional)
+      description: This will be public. Leave it empty and we'll reply here.
+    validations:
+      required: false

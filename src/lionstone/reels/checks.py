@@ -51,7 +51,7 @@ def reels_qa(report: QAReport, ctx: dict) -> None:
                     f"{len(rep)} leftover repeat(s)" if rep else "no leftover repeats",
                     {"repeats": [r for r, _ in rep][:10]}))
         for r, at in rep[:5]:
-            issue(QAIssue("reels_repeats", "medium", f"tekrar kalmış: '{r}'", at))
+            issue(QAIssue("reels_repeats", "medium", f"repeat left in: '{r}'", at))
         script = meta.get("script") or ""
         if not script.strip():
             add(QACheck("reels_script_match", "editorial", "skipped", "no script in reel.json"))
@@ -64,10 +64,10 @@ def reels_qa(report: QAReport, ctx: dict) -> None:
                         {"ratio": d.ratio, "missing": d.missing[:10], "extra": d.extra[:10],
                          "changed": d.changed[:10]}))
             for m in d.missing[:5]:
-                issue(QAIssue("reels_script_match", "medium", f"senaryoda var, videoda yok: '{m}'"))
+                issue(QAIssue("reels_script_match", "medium", f"in the script, not in the video: '{m}'"))
             if status == "failed":
                 issue(QAIssue("reels_script_match", "high",
-                              f"senaryo ile video %{d.ratio * 100:.0f} uyuşuyor"))
+                              f"script and video match {d.ratio * 100:.0f}%"))
 
     W = int(meta.get("width") or 1080)
     H = int(meta.get("height") or 1920)
