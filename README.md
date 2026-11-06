@@ -57,11 +57,23 @@ Most "AI editors" either chop every silence (and your sentences with it) or send
 
 ### 📱 New in v0.4: Lionstone Reels — brand-specific Instagram Reels, idea to finished video
 
+<img src="assets/reels/01-hero.jpg" alt="Lionstone Reels, new in Lionstone 0.4.0: raw footage in, a checked, on-brand Instagram Reel out. Open source, Apache-2.0, runs on your computer, nothing uploaded" width="100%">
+
 Give Claude the raw footage; every Reel comes back cut, captioned, sound-designed, checked and in the brand's own style. One flow per brand — topic, hook, script, edit, QA, cover, caption, calendar — in plain files you can read and undo.
 
 ```
 Topic → Hook → Script → Shoot → Cut → Graphics → Sound → QA → Cover + caption → Calendar
 ```
+
+<img src="assets/reels/02-flow.jpg" alt="One flow per brand, topic to calendar. Claude writes topic, hook, script and caption; you shoot the footage; Lionstone does the rest and measures it, in plain files you can read, change and undo" width="100%">
+
+<img src="assets/reels/03-brand-copy.jpg" alt="Brand profile and copy checks: lionstone reels brand init, many brands side by side, a hook library in English and Turkish with 60 templates each across 10 angles, lionstone reels hooks --lang en|tr|both, and lint for hook length, A/B hooks, script length, CTA ending, banned words, caption and hashtag limits" width="100%">
+
+<img src="assets/reels/04-deliver.jpg" alt="One command to deliver: lionstone reels make gives 9:16 1080x1920, cuts silences, filler words and repeated sentences, karaoke captions above the Reels UI, hook title in brand colours, 31 original sound effects, music that ducks under the voice, -14 LUFS, 3 cover versions and caption.txt" width="100%">
+
+<img src="assets/reels/05-qa.jpg" alt="It checks before it says done. Three verdicts: READY, REVIEW and FIX. Measured: script vs. words heard, leftover repeats, every cut point, estimated text overflow, loudness and true peak, black or frozen frames, A/V length and format. A check that can't run is listed as skipped, never passed" width="100%">
+
+<img src="assets/reels/06-room-sound-calendar.jpg" alt="Editing room: a local page with video and every word, click to jump, cut or restore, double-click to fix a caption. Sound: lionstone reels sfx build, synthesised by FFmpeg. Calendar: lionstone reels schedule and calendar --ics for Google, Apple and Outlook calendars" width="100%">
 
 - **Brand profile** — `lionstone reels brand init "Brand"`: audience, tone, products, honest promises, banned words, CTA, colours, font, edit style; links to an existing brand kit. Run many brands side by side.
 - **Topic, hook, script with Claude** — the [`lionstone-reels` skill](integrations/lionstone-reels) writes them from the brand profile. A **hook library in English and Turkish**: 60 original templates in each, across the same 10 angles, plus second hooks and CTAs (`lionstone reels hooks --lang en|tr|both`), and `lionstone reels lint` checks hook length, A/B hooks, script length, CTA ending, banned words, caption and hashtag limits.
