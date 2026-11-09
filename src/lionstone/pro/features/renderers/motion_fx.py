@@ -601,7 +601,7 @@ def paper_cut(p, wins, c):
         top, bot, o1, o2, out = (c.L(x) for x in ("pt", "pq", "p1", "p2", "pc"))
         g = [f"[{b}]gblur=sigma={_f(max(1.0, 2 * c.k))},format=yuv444p,"
              f"lutyuv=y='min(235,floor(val/{_f(q)})*{_f(q)}+{_f(q / 2)})':"
-             f"u='128+floor((val-128)/24)*24':v='128+floor((val-128)/24)*24',"
+             f"u='128+round((val-128)/24)*24':v='128+round((val-128)/24)*24',"
              f"eq=saturation={_f(1 + 0.3 * p['intensity'])},noise=alls=10:allf=u[{o1}]",
              _torn(c, W, sh, p["paper"], True, 1.3) + f"[{top}]",
              _torn(c, W, sh, p["paper2"], False, 4.1) + f"[{bot}]",

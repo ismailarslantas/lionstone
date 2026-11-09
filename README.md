@@ -1,9 +1,12 @@
 <p align="center">
-  <a href="https://github.com/ismailarslantas/lionstone/releases/latest"><img src="assets/launch/13-launch.jpg" alt="Lionstone v0.4.2: the free AI video editor that runs on your computer. Raw footage in, a checked, on-brand Instagram Reel out. 100% free, open source, Apache-2.0, no license key, no watermark, no upload" width="100%"></a>
+  <a href="https://github.com/ismailarslantas/lionstone/releases/latest"><img src="docs/img/motionfx-banner.jpg" alt="Lionstone v1.0.0 Motion FX Pack: 17 effects, one command each, an AI person matte puts you in front of the frame. 100% free, open source, runs on your computer" width="100%"></a>
 </p>
 
 <p align="center">
   <a href="https://github.com/ismailarslantas/lionstone/actions"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/ismailarslantas/lionstone/ci.yml?branch=main&label=tests&style=flat-square"></a>
+  <a href="https://github.com/ismailarslantas/lionstone/actions/workflows/codeql.yml"><img alt="CodeQL" src="https://img.shields.io/github/actions/workflow/status/ismailarslantas/lionstone/codeql.yml?branch=main&label=CodeQL&style=flat-square"></a>
+  <a href="https://scorecard.dev/viewer/?uri=github.com/ismailarslantas/lionstone"><img alt="OpenSSF Scorecard" src="https://api.scorecard.dev/projects/github.com/ismailarslantas/lionstone/badge"></a>
+  <a href="SECURITY.md"><img alt="Signed releases" src="https://img.shields.io/badge/releases-attested%20%2B%20SHA256-E8B04B?style=flat-square"></a>
   <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/license-Apache--2.0-E8B04B?style=flat-square"></a>
   <img alt="Python" src="https://img.shields.io/badge/python-3.10%2B-3776AB?style=flat-square">
   <img alt="FFmpeg" src="https://img.shields.io/badge/FFmpeg-powered-007808?style=flat-square">
@@ -49,7 +52,9 @@ Five of them know where you are in the shot: a small AI model (U²-Net, CPU, cac
 
 <img src="docs/img/motionfx-real-renders.jpg" alt="Real Lionstone renders of the 17 Motion FX effects on a fictional example character" width="100%">
 
-Full guide with every parameter: [docs/motion-fx.md](docs/motion-fx.md).
+Full guide with every parameter: [docs/motion-fx.md](docs/motion-fx.md). Apply one effect to any clip with `lionstone fx clip glass-type talk.mp4 -o out.mp4`, or use them from [OpenMontage](docs/openmontage.md).
+
+**Security:** CodeQL and OpenSSF Scorecard on every change, pinned and read-only CI, and releases built by GitHub Actions with SHA256SUMS and a signed provenance attestation. See [SECURITY.md](SECURITY.md) to verify a download or report a problem privately.
 
 ### 🌍 Since v0.4.2: Lionstone Reels speaks English
 
