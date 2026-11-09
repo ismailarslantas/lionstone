@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.0.1 — 2026-11-10
+**A render fix for recordings whose video outlasts the audio, plus fuzzing and stricter supply-chain checks.**
+
+- **Fix: audio and video stay in sync when the video is longer than the audio** (encoder flush, phone recordings). Segments no longer run past the end of the source audio, so the output's video and audio lengths match and QA `av_length` passes (`render._snap_src`, new end-to-end test).
+- **Fuzzing**: an Atheris fuzzer for the parsers that take user text (`fuzz/parsers_fuzzer.py`) runs in ClusterFuzzLite on every pull request that touches `src/`, and Hypothesis property tests (`tests/test_fuzz.py`) run with the unit tests. `hypothesis` joins the `dev` extra.
+- **Pinned CI dependencies**: CI and the release workflow install exact, hash-checked versions from `.github/requirements/`; Dependabot keeps them current.
+- CI jobs have time limits and retrying package downloads, so a stuck mirror no longer holds a runner for hours.
+- Remotion 4.0.541 and related packages (Dependabot).
+- Tests: the Synfig install-hint test checks the full message (fixes a CodeQL false positive).
+
 ## 1.0.0 — 2026-11-09
 **Lionstone 1.0: the Motion FX Pack. Twenty-five motion-design effects, one command each, and a person matte that puts you in front of the frame. Free as ever.**
 
