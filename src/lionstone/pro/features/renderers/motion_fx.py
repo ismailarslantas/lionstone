@@ -17,6 +17,7 @@ Text goes through ``textfile=`` (no filtergraph escaping of user text).
 
 from __future__ import annotations
 
+import atexit
 import hashlib
 import math
 import shutil
@@ -46,8 +47,9 @@ def _esc_path(p: Path | str) -> str:
 
 @lru_cache(maxsize=1)
 def _text_dir() -> Path:
-    d = Path(tempfile.gettempdir()) / "lionstone-motion-text"
-    d.mkdir(parents=True, exist_ok=True)
+    """Private per-process folder (mkdtemp, mode 0700) for text files and font copies."""
+    d = Path(tempfile.mkdtemp(prefix="lionstone-text-"))
+    atexit.register(shutil.rmtree, d, ignore_errors=True)
     return d
 
 
