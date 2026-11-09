@@ -11,12 +11,12 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@remotion/cli": "4.0.537",
-    "@remotion/zod-types": "4.0.537",
+    "@remotion/cli": "4.0.541",
+    "@remotion/zod-types": "4.0.541",
     "@theatre/core": "0.7.2",
     "react": "19.3.1",
     "react-dom": "19.3.1",
-    "remotion": "4.0.537",
+    "remotion": "4.0.541",
     "zod": "4.6.7"
   },
   "devDependencies": {
