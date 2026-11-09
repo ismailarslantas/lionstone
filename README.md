@@ -26,7 +26,7 @@ pip install "lionstone[all] @ git+https://github.com/ismailarslantas/lionstone"
 lionstone doctor
 ```
 
-<img src="assets/launch/00-whats-new-v1.jpg" alt="What's in Lionstone v1.0.0: Motion FX Pack with 25 new one-command effects, AI person matte, Reel FX Pack with 12 effects, Lionstone Reels, Lionstone Styles, Creative Suite with 133 looks, effects and motion presets, Pro and Studio free in the core, OpenMontage tool for AI agents, signed releases with SHA256SUMS and build provenance. Everything from v0.3 and v0.4 in one free release, Apache-2.0" width="100%">
+<img src="assets/launch/00-whats-new-v1.jpg" alt="What's in Lionstone v1.0.0: Motion FX Pack with 25 new one-command effects, AI person matte, Reel FX Pack with 12 effects, Lionstone Reels, Lionstone Styles, Creative Suite with 133 looks, effects and motion presets, Pro and Studio free in the core, Lionstone Editing: brief in, checked video out, signed releases with SHA256SUMS and build provenance. Everything from v0.3 and v0.4 in one free release, Apache-2.0" width="100%">
 
 ---
 
