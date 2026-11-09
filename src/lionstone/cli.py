@@ -60,11 +60,11 @@ def _add_edit_options(p: argparse.ArgumentParser) -> None:
     g.add_argument("--lut", help=".cube LUT applied after correction")
     g.add_argument("--denoise", choices=["off", "light", "strong"], default="light")
     g.add_argument("--reframe", default="center",
-                   help="aspect reframing: center · face (Pro, needs OpenCV)")
+                   help="aspect reframing: center · face (needs OpenCV)")
     g.add_argument("--renderer", choices=["auto", "ffmpeg", "remotion"], default="auto",
                    help="title renderer: Remotion when installed, FFmpeg otherwise")
     p.add_argument("--x", action="append", default=[], metavar="KEY=VALUE",
-                   help="plugin option, e.g. --x style=mystyle.json (Lionstone Pro)")
+                   help="plugin option, e.g. --x style=mystyle.json")
 
 
 def _edit_options(a: argparse.Namespace) -> EditOptions:
@@ -104,7 +104,7 @@ def _check_tiers(opts: EditOptions, catalog: Catalog) -> None:
             raise EffectError(
                 f"{fx.id} {fx.name} is a {fx.tier.upper()} effect. Free effects: "
                 f"{', '.join(e.id for e in catalog.filter(tier='free'))}. "
-                "Unlock Pro: https://github.com/ismailarslantas/lionstone/blob/main/docs/PRO.md")
+                "Run `lionstone doctor` to see which features are available.")
 
 
 # --- commands ------------------------------------------------------------------------
@@ -291,12 +291,34 @@ def cmd_doctor(a: argparse.Namespace) -> int:
     line(bool(shutil.which("node")), "node (Remotion)", shutil.which("node") or
          "optional — needed only for Remotion previews/renders")
     reg = registry()
-    line(True, "tiers", ", ".join(sorted(reg.tiers)))
+    line(True, "edition", "Lionstone Pro & Studio (every feature unlocked)")
     for p in reg.loaded:
         line(p["status"] == "ok", f"plugin {p['name']}", p["status"])
     if not reg.loaded:
-        line(True, "plugins", "none (Pro not installed)")
+        line(True, "plugins", "none")
     return 0 if ok else 1
+
+
+def cmd_editing(a: argparse.Namespace) -> int:
+    from . import editing
+    if a.action == "init":
+        fields = {k: getattr(a, k) for k in ("platform", "language", "intensity")
+                  if getattr(a, k)}
+        path = editing.init(a.folder, a.footage or "", **fields)
+        print(f"Brief → {path}\nWrite the goal, title and effects, then: "
+              f"lionstone editing run {a.folder}")
+        return 0
+    st = editing.run(a.folder, a.start) if a.action == "run" else editing.status(a.folder)
+    if a.action == "status" and a.json:
+        print(json.dumps(st, indent=2, ensure_ascii=False))
+        return 0
+    for name, s in st["stages"].items():
+        print(f"  {name:<7} {s['status']:<8} {s.get('note', '')}")
+    if st["next"]:
+        print(f"Next: {st['next']}")
+    ok = st["deliverable"]
+    print(f"Deliverable: {'yes' if ok else 'NO' if ok is False else 'not checked yet'}")
+    return 0 if ok or a.action == "status" or st["next"] == "review" else 2
 
 
 def cmd_mcp(a: argparse.Namespace) -> int:
@@ -380,6 +402,18 @@ def build_parser() -> argparse.ArgumentParser:
 
     d = sub.add_parser("doctor", help="check FFmpeg, ASR, fonts and plugins")
     d.set_defaults(fn=cmd_doctor)
+
+    ed = sub.add_parser("editing", help="Lionstone Editing: brief.json → plan → look → render "
+                                        "→ fx → QA → report (docs/editing.md)")
+    ed.add_argument("action", choices=["init", "run", "status"])
+    ed.add_argument("folder", help="production folder")
+    ed.add_argument("--footage", help="init: footage file")
+    ed.add_argument("--platform", help="init: reels · shorts · tiktok · youtube · podcast")
+    ed.add_argument("--language", help="init: speech language, e.g. en or tr")
+    ed.add_argument("--intensity", help="init: natural · balanced · dynamic")
+    ed.add_argument("--from", dest="start", help="run: redo from this stage")
+    ed.add_argument("--json", action="store_true", help="status: JSON output")
+    ed.set_defaults(fn=cmd_editing)
 
     m = sub.add_parser("mcp", help="run as an MCP server (Claude, Cursor, any MCP client)")
     m.set_defaults(fn=cmd_mcp)

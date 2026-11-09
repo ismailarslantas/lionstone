@@ -5,6 +5,13 @@ on:
     branches: [main]
   pull_request:
 
+permissions:
+  contents: read  # least privilege; jobs that need more ask for it
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     strategy:
@@ -16,8 +23,10 @@ jobs:
     # a stuck package mirror can otherwise hold a runner for the 6 h default
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: ${{ matrix.python }}
       - name: Install FFmpeg
@@ -27,12 +36,22 @@ jobs:
           APT="-o Acquire::Retries=3 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30"
           case "$RUNNER_OS" in
             Linux) sudo apt-get $APT update && sudo apt-get $APT install -y ffmpeg fonts-dejavu-core ;;
-            macOS) brew install ffmpeg ;;
+            macOS)
+              if [ "${{ matrix.python }}" = "3.10" ]; then
+                brew install ffmpeg  # plain formula: no drawtext/libass, must degrade honestly
+              else
+                brew install ffmpeg-full && echo "$(brew --prefix ffmpeg-full)/bin" >> "$GITHUB_PATH"
+              fi ;;
             Windows) choco install ffmpeg -y --no-progress ;;
           esac
       - run: pip install -e ".[dev,mcp]"
-      - run: ruff check src tests
-      - run: pytest -q
+      - run: ruff check src tests tools integrations
+      - name: FFmpeg filters the Reels workflow relies on
+        shell: bash
+        run: |
+          ffmpeg -hide_banner -version | head -1
+          ffmpeg -hide_banner -filters | grep -E " (drawtext|subtitles|sidechaincompress|loudnorm) " || true
+      - run: pytest -q -rs
 
   remotion:
     runs-on: ubuntu-latest
@@ -41,8 +60,8 @@ jobs:
       run:
         working-directory: remotion
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 22
           cache: npm

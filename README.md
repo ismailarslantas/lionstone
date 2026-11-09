@@ -1,9 +1,12 @@
 <p align="center">
-  <img src="assets/banner.svg" alt="Lionstone — open-source AI editing agent" width="100%">
+  <a href="https://github.com/ismailarslantas/lionstone/releases/latest"><img src="docs/img/motionfx-banner.jpg" alt="Lionstone v1.0.0 Motion FX Pack: 25 effects, one command each, an AI person matte puts you in front of the frame. 100% free, open source, runs on your computer" width="100%"></a>
 </p>
 
 <p align="center">
   <a href="https://github.com/ismailarslantas/lionstone/actions"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/ismailarslantas/lionstone/ci.yml?branch=main&label=tests&style=flat-square"></a>
+  <a href="SECURITY.md"><img alt="CodeQL" src="https://img.shields.io/badge/CodeQL-code%20scanning-2ea44f?style=flat-square"></a>
+  <a href="https://scorecard.dev/viewer/?uri=github.com/ismailarslantas/lionstone"><img alt="OpenSSF Scorecard" src="https://api.scorecard.dev/projects/github.com/ismailarslantas/lionstone/badge"></a>
+  <a href="SECURITY.md"><img alt="Signed releases" src="https://img.shields.io/badge/releases-attested%20%2B%20SHA256-E8B04B?style=flat-square"></a>
   <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/license-Apache--2.0-E8B04B?style=flat-square"></a>
   <img alt="Python" src="https://img.shields.io/badge/python-3.10%2B-3776AB?style=flat-square">
   <img alt="FFmpeg" src="https://img.shields.io/badge/FFmpeg-powered-007808?style=flat-square">
@@ -12,13 +15,255 @@
 </p>
 
 <p align="center">
-  <b>Turn a raw podcast, interview or talk into a publish-ready video — with an edit plan you can read, undo and verify.</b><br>
-  Local-first · no upload · no watermark · works offline · <a href="README.tr.md">Türkçe</a>
+  <b>Lionstone v1.0.0 is 100% free: the complete AI video editor, now with 25 Motion FX.</b><br>
+  Motion FX Pack with a person matte, brand-specific Reels workflow, brand identity, visual catalogue, multicam, Creative Suite, Shorts generator, NLE export, team tools and Lionstone Styles, all in one open-source package.<br>
+  Local-first · no upload · no license key · no watermark · works offline<br>
+  <a href="https://github.com/ismailarslantas/lionstone/releases/latest">Latest release</a> · <a href="docs/motion-fx.md">Motion FX</a> · <a href="docs/reels.md">Reels guide</a> · <a href="docs/handbook/README.md">Reel Handbook (free PDF)</a> · <a href="docs/brand-setup.md">Brand setup</a>
 </p>
+
+```bash
+pip install "lionstone[all] @ git+https://github.com/ismailarslantas/lionstone"
+lionstone doctor
+```
+
+<img src="assets/launch/00-whats-new-v1.jpg" alt="What's in Lionstone v1.0.0: Motion FX Pack with 25 new one-command effects, AI person matte, Reel FX Pack with 12 effects, Lionstone Reels, Lionstone Styles, Creative Suite with 133 looks, effects and motion presets, Pro and Studio free in the core, Lionstone Editing: brief in, checked video out, signed releases with SHA256SUMS and build provenance. Everything from v0.3 and v0.4 in one free release, Apache-2.0" width="100%">
 
 ---
 
-Most "AI editors" either chop every silence (and your sentences with it) or send your footage to a cloud you don't control. **Lionstone edits like a careful human editor**: it understands the words, keeps meaningful pauses, never cuts inside a word, explains every cut, and **refuses to say "done" until QA has actually checked the file.**
+## 🎉 Everything is free. Really.
+
+<img src="assets/launch/14-free.jpg" alt="Free means free: Lionstone software $0, monthly fee $0, per-video fee $0, license key none, watermark none, upload none. Apache-2.0. Writing hooks and scripts with Claude uses your own Claude plan" width="100%">
+
+There is no paid tier to find out about later. Every feature on this page ships in this repository under Apache-2.0: no license key, no account, no watermark, no per-video fee, and nothing leaves your computer. The one cost outside Lionstone: writing hooks and scripts with Claude uses your own Claude plan. Editing, QA and rendering run on your machine.
+
+<img src="assets/launch/15-everything.jpg" alt="Everything in one free package: speech-aware editing, Lionstone Reels, brand identity, AI person matte, Creative Suite, Reel FX and Motion FX with 37 one-command effects, Shorts generator, multicam, style learning, NLE export, team tools, QA and MCP" width="100%">
+
+### 🎬 New in v1.0.0: Motion FX Pack, 25 effects with a person matte
+
+<img src="docs/img/motionfx-banner.jpg" alt="Lionstone 1.0 Motion FX Pack: 25 motion-design effects for talking-head video, one command each" width="100%">
+
+Orbit, Couch Wall, UI World, Frame Break, Digital Zoom, Phone Mockup, Checklist, Headline Wall, Zoom-through Cut, Chart Grow, Pull-back Reveal, Green Screen, Paper Cut, Doodle Boil, Vertigo, Cover Story and Glass Type. One command each, on 9:16, 1:1 and 16:9:
+
+```bash
+lionstone fx preview glass-type --input talk.mp4 --start 3 --param text=FOCUS
+lionstone fx apply plan.json frame-break --source 0-3
+lionstone fx showcase vertigo talk.mp4
+```
+
+Five of them know where you are in the shot: a small AI model (U²-Net, CPU, cached) cuts you out, so your head breaks over the frame, big glass type sits behind you and any room becomes a brand stage without a green screen. It's automatic with `lionstone[all]`, and everything still renders without it.
+
+<img src="docs/img/motionfx-real-renders.jpg" alt="Real Lionstone renders of the 17 Motion FX effects on a fictional example character" width="100%">
+
+Full guide with every parameter: [docs/motion-fx.md](docs/motion-fx.md). Apply one effect to any clip with `lionstone fx clip glass-type talk.mp4 -o out.mp4`, or let an AI assistant run a whole production with [Lionstone Editing](docs/editing.md).
+
+#### Also in v1.0.0: Motion FX 2, 8 more effects
+
+<img src="docs/img/motionfx2-real-renders.jpg" alt="Real Lionstone renders of the 8 Motion FX 2 effects: split-flap board, count-up stat, beat type, day grid, particle reveal, receipt, notification stack and before/after" width="100%">
+
+Split-flap Board, Count-up Stat, Beat Type, Day Grid, Particle Reveal, Receipt, Notification Stack and Before/After, plus Theatre.js keyframes for Remotion titles and an optional Synfig backend (`lionstone fx synfig overlay.sif --input talk.mp4 -o out.mp4`). Guide: [docs/motion-fx-2.md](docs/motion-fx-2.md).
+
+**Security:** CodeQL and OpenSSF Scorecard on every change, pinned and read-only CI, and releases built by GitHub Actions with SHA256SUMS and a signed provenance attestation. See [SECURITY.md](SECURITY.md) to verify a download or report a problem privately.
+
+### 🌍 Since v0.4.2: Lionstone Reels speaks English
+
+<img src="assets/launch/16-english.jpg" alt="Lionstone Reels now speaks English: command help, delivery reports, editing room and the full guide. Three clear verdicts: READY TO DELIVER, NEEDS REVIEW, FIX NEEDED. Hooks, captions and speech recognition work in English and Turkish" width="100%">
+
+Command help, messages, delivery reports, the editing room and [the full guide](docs/reels.md) are in English. Hooks, captions and speech recognition work in English and Turkish. Projects from 0.4.0 and 0.4.1 keep working. New brands default to `--language en`; Turkish brands add `--language tr`.
+
+### 📘 The Reel Handbook: a free, designed PDF
+
+<a href="docs/handbook/README.md"><img src="assets/launch/17-handbook.jpg" alt="The Reel Handbook: a designed A4 guide to every feature, free PDF, in English and Turkish" width="100%"></a>
+
+Lionstone Reels from idea to delivery, your brand identity and the catalogue, every look, effect and text style with real renders, and one Reel built step by step with every command. **[English PDF](docs/handbook/lionstone-reel-handbook-v0.4.1-en.pdf) · [Türkçe PDF](docs/handbook/lionstone-reel-handbook-v0.4.1-tr.pdf)**
+
+### 🤝 Want it set up for you?
+
+<a href="docs/brand-setup.md"><img src="assets/launch/18-setup.jpg" alt="Want it set up for you? The software stays free. Setup is an optional service: installation, brand profile, brand identity, catalogue choices, first Reel, handover. Creative Services, by quote" width="100%"></a>
+
+You can do all of this yourself, and nothing is held back if you do. For brands and agencies who'd rather have it done, **Kreatif Hizmetler** (Creative Services) sets up Lionstone Reels by quote: installation, brand profile, identity, catalogue choices and your first Reel, then your team runs it alone. [See what's included](docs/brand-setup.md) or [fill in the form](https://github.com/ismailarslantas/lionstone/issues/new?template=brand_setup.yml).
+
+---
+
+## 🦁 Lionstone Pro & Studio — now free
+
+Lionstone Pro ($12/month) and Lionstone Studio ($39/month) used to be a separate, paid plugin. Since **v0.3** every one of their features ships in this repository under Apache-2.0. There is nothing to buy, activate or renew, and nothing leaves your computer.
+
+<img src="assets/pro-studio/02-what-changed.jpg" alt="What changed: paid Pro and Studio plans are now completely free and built into the core" width="100%">
+
+| Before | Now |
+|---|---|
+| Lionstone Pro — $12/month | **Free**, built into the core |
+| Lionstone Studio — $39/month (5 seats) | **Free**, for any team size |
+| License keys, activation, renewal | **None** |
+| Locked premium presets and watermarked previews | **Every preset unlocked** |
+| Separate `lionstone-pro` package | **One package**: `lionstone` |
+
+Coming from the paid plugin? Run `pip uninstall lionstone-pro`, then install as above. `lionstone pro whoami` is now `lionstone whoami`; `activate`, `status` and `renew` are gone.
+
+### ✂️ Edits that understand speech
+
+<img src="assets/pro-studio/03-smart-editing.jpg" alt="Smart editing: speech-aware cuts, explainable plan.json, edit via transcript, one-command restore" width="100%">
+
+Most "AI editors" either chop every silence (and your sentences with it) or send your footage to a cloud you don't control. **Lionstone edits like a careful human editor.** It transcribes your video locally with word timestamps, removes fillers (`um`, `uh`, `ııı`, `eee`), stutters, repeated phrases and false starts, keeps the pauses that carry meaning, and **never cuts inside a word**. Every decision is written to `plan.json` with its reason, so you can read the edit, change it by editing `transcript.md`, or undo any cut with `lionstone cuts plan.json --restore c0004`. Your original files are never touched.
+
+### 🎨 Creative Suite — 122 presets ready to render, 25 animated text styles
+
+- **122 original presets ready to render** (162 in the catalogue; the rest are listed as planned, never shipped as buttons that do nothing) — looks, effects, transitions, motion and text. Browse with `lionstone fx list`, inspect with `lionstone fx show soft-bloom`.
+- **Real previews before you commit** — `lionstone fx preview soft-bloom --before-after --gif` renders a low-res before/after with the same code the final export uses.
+- **25 animated text presets** — Word Pop, Counter Up, Price Reveal, Stat Emphasis, Location and Speaker labels, Call to Action, Type-on, Signature End Card — plus karaoke captions that highlight each word as it is spoken.
+- **Lionstone Agent** — `lionstone fx auto plan.json --content vlog --style social` picks one consistent look, emphasis zooms and transitions on real topic changes, stays within budgets, and gives a reason for every choice.
+- **Safe by design** — `lionstone fx render` checks flash rate (≤ 3 per second), exposure, saturation and stale edits before it delivers.
+
+### 📱 Since v0.4: Lionstone Reels — brand-specific Instagram Reels, idea to finished video
+
+<img src="assets/reels/01-hero.jpg" alt="Lionstone Reels, included in Lionstone v1.0.0: raw footage in, a checked, on-brand Instagram Reel out. Open source, Apache-2.0, runs on your computer, nothing uploaded" width="100%">
+
+Give Claude the raw footage; every Reel comes back cut, captioned, sound-designed, checked and in the brand's own style. One flow per brand — topic, hook, script, edit, QA, cover, caption, calendar — in plain files you can read and undo.
+
+```
+Topic → Hook → Script → Shoot → Cut → Graphics → Sound → QA → Cover + caption → Calendar
+```
+
+<img src="assets/reels/02-flow.jpg" alt="One flow per brand, topic to calendar. Claude writes topic, hook, script and caption; you shoot the footage; Lionstone does the rest and measures it, in plain files you can read, change and undo" width="100%">
+
+<img src="assets/reels/03-brand-copy.jpg" alt="Brand profile and copy checks: lionstone reels brand init, many brands side by side, a hook library in English and Turkish with 60 templates each across 10 angles, lionstone reels hooks --lang en|tr|both, and lint for hook length, A/B hooks, script length, CTA ending, banned words, caption and hashtag limits" width="100%">
+
+<img src="assets/reels/04-deliver.jpg" alt="One command to deliver: lionstone reels make gives 9:16 1080x1920, cuts silences, filler words and repeated sentences, karaoke captions above the Reels UI, hook title in brand colours, 31 original sound effects, music that ducks under the voice, -14 LUFS, 3 cover versions and caption.txt" width="100%">
+
+<img src="assets/reels/05-qa.jpg" alt="It checks before it says done. Three verdicts: READY, REVIEW and FIX. Measured: script vs. words heard, leftover repeats, every cut point, estimated text overflow, loudness and true peak, black or frozen frames, A/V length and format. A check that can't run is listed as skipped, never passed" width="100%">
+
+<img src="assets/reels/06-room-sound-calendar.jpg" alt="Editing room: a local page with video and every word, click to jump, cut or restore, double-click to fix a caption. Sound: lionstone reels sfx build, synthesised by FFmpeg. Calendar: lionstone reels schedule and calendar --ics for Google, Apple and Outlook calendars" width="100%">
+
+- **Brand profile** — `lionstone reels brand init "Brand"`: audience, tone, products, honest promises, banned words, CTA, colours, font, edit style; links to an existing brand kit. Run many brands side by side.
+- **Topic, hook, script with Claude** — the [`lionstone-reels` skill](integrations/lionstone-reels) writes them from the brand profile. A **hook library in English and Turkish**: 60 original templates in each, across the same 10 angles, plus second hooks and CTAs (`lionstone reels hooks --lang en|tr|both`), and `lionstone reels lint` checks hook length, A/B hooks, script length, CTA ending, banned words, caption and hashtag limits.
+- **One command to deliver** — `lionstone reels make <reel>`: 9:16, word-by-word captions in the brand's language, hook title that fits vertical, brand colours, an original 31-sound SFX starter pack (bring your own packs too), music that ducks under the voice, −14 LUFS, three cover versions cropped for the profile grid, `caption.txt`.
+- **Checked before it says "done"** — the final file is re-measured: script vs. what is actually heard, leftover repeats, every cut point, estimated text overflow against the Reels UI safe area, loudness, picture. Three verdicts: **READY TO DELIVER**, **NEEDS REVIEW** (a person must look: script match under 90 %, a repeat left, or no transcript) and **FIX NEEDED**. Skipped checks are listed, never passed.
+- **Editing room** — `edit/room.html`: video and every word side by side. Click a word to jump, click to cut or restore, double-click to fix a caption's spelling, then `lionstone reels make <reel> --keep-plan`. Local, nothing uploaded.
+- **Calendar** — `lionstone reels schedule` / `calendar --ics` from the reel folders themselves.
+- **No monthly fee, no per-video fee, no editing software** — runs in Claude Code on your Mac / Windows / Linux; render speed is your computer's.
+
+On macOS, Reels needs a full FFmpeg (`brew install ffmpeg-full` or conda-forge): Homebrew's plain `ffmpeg` can't draw captions, titles or cover text, and the report says so. Hooks, captions and speech recognition work in English and Turkish. Speech recognition needs `lionstone[whisper]`; music licensing stays with you. So far it has been tested with synthetic speech and a fictional AI-generated character, not yet on real camera footage: please tell us what you find. Full guide: [docs/reels.md](docs/reels.md).
+
+### 🧭 Since v0.4.1: your brand identity, chosen from a visual catalogue
+
+Before the first Reel, Lionstone learns the brand and asks what to use. Afterwards it remembers.
+
+<img src="assets/reels/07-identity.jpg" alt="Your brand identity from your own videos: one talking-head take and 3-5 example Reels; Lionstone measures tempo, cuts, pauses, loudness, colour, palette, length, speech rate and opening lines, and estimates music" width="100%">
+
+<img src="assets/reels/08-catalogue.jpg" alt="Choose from a visual catalogue: every option has a number and a picture, then lionstone reels setup --pick. The man in the catalogue is a fictional example; your Reel is made from your own footage" width="100%">
+
+<img src="assets/reels/09-numbers.jpg" alt="What the numbers choose: 1xx hook title, 2xx captions, 3xx colour, 4xx pace, 5xx effects, 6xx music, 7xx music level, 8xx sound effects, 9xx framing, 10xx noise cleanup, 11xx covers, 12xx accent colour" width="100%">
+
+<img src="assets/reels/10-decide.jpg" alt="Or let it decide from your brand identity: x00 decides a group, 0 decides everything; each automatic choice records its reason and it never invents music" width="100%">
+
+<img src="assets/reels/11-memory.jpg" alt="It remembers your brand: produce with my saved brand identity, or prepare with a new brand identity. Found from any folder; a new identity archives the old one" width="100%">
+
+<img src="assets/reels/12-looks.jpg" alt="Two editing looks, mix them freely. Editorial: staggered title in a large italic serif, quiet captions with one word set large, glass notification card, neon pills, countdown clock. Bold: glowing heavy headline, heavy captions with a glowing key word, dashed card, emphasis zooms" width="100%">
+
+```bash
+lionstone reels brand init "Brand" --language en
+lionstone reels identity "Brand" --footage talk.mp4 --example a.mp4 --example b.mp4 --example c.mp4
+lionstone reels catalog "Brand" --open
+lionstone reels setup "Brand" --pick 0 205 503     # your numbers, or 0: decide the rest for me
+lionstone reels new "Brand" "Topic"
+lionstone reels make projects/brand/<reel>
+```
+
+- **Brand identity from your own videos** — one talking-head take and 3-5 example Reels. Measured: tempo, cuts per minute, pauses, loudness, colour, palette, length, speech rate, opening lines, and an estimate of whether they use music. Contact sheets let Claude look at what can't be measured, and anything skipped is listed with the reason.
+- **A numbered visual catalogue** — every option has a number and a picture: hook title, captions, colour, pace, effects (Lionstone Agent styles and 11 Reel FX), music, music level, sound effects, framing, noise cleanup, covers and accent colour. Picture options are real Lionstone renders; sound options are waveforms or spectrograms of real output. Click cards on the local page and copy the command, or type the numbers. The man in the catalogue is a fictional example: **your Reel is always made from your own footage.**
+- **Two editing looks you can mix** — *Editorial*: staggered titles in a large italic serif, quiet captions with one word set large, a glass notification card, neon pills, a countdown clock. *Bold*: heavy captions with a glowing key word, a glowing headline, a dashed card for one number or word, emphasis zooms. Each piece is also its own option. Words come from your script and hooks; Poppins and DM Serif Display ship under the SIL OFL, so it looks the same everywhere.
+- **"Decide for me from my brand identity"** — on every group (`100`, `200`, …), or `0` for everything. Each automatic choice records its reason, and the delivery report lists them. It never invents music: if your examples have music, it asks for your own licensed file.
+- **It remembers** — a brand is found from any folder. `lionstone reels start` and `make` offer **produce with my saved brand identity** or **prepare with a new brand identity**. A new identity archives the old one; nothing is deleted.
+
+**From the real catalogue** (real Lionstone renders on a fictional example character):
+
+<img src="src/lionstone/data/reels/catalog/sheets/opening.jpg" alt="Catalogue group 1xx: hook title options on the example character" width="100%">
+
+<img src="src/lionstone/data/reels/catalog/sheets/captions.jpg" alt="Catalogue group 2xx: caption options on the example character" width="100%">
+
+<img src="src/lionstone/data/reels/catalog/sheets/effects.jpg" alt="Catalogue group 5xx: effect options on the example character" width="100%">
+
+### 🎞️ Reel FX Pack — 12 one-command effects for Reels & Shorts
+
+<img src="docs/img/reelfx-banner-1280x640.png" alt="Reel FX Pack: 12 one-command effects for Reels and Shorts — stage-light, insight-split, pixel-resolve and more" width="100%">
+
+- **8 creative effects** — `stage-light` (the room goes dark, you stay lit), `press-mono`, `frost-panels`, `duotone-pop`, `scan-line`, `afterimage`, `halo-orbit`, `neon-outline`.
+- **4 brand-aware effects** — `insight-split` (your numbers on top, you below), `brand-frame`, `progress-rail`, `pixel-resolve`; colours come from your brand kit.
+- **One command each**, on the whole video, a segment or a time range: `lionstone fx apply plan.json stage-light --source 0-3.5`. Works on 9:16, 1:1 and 16:9; pure FFmpeg, same code for preview and export.
+- **FX Showcase Reel** — `lionstone fx showcase stage-light talk.mp4` renders a 6.4 s 1080×1920 "one command, one clip, one effect" reel: the command types itself, the clip dissolves through a pixel dither, and the real render fills the screen.
+
+<img src="docs/img/reelfx-real-renders-1280x720.png" alt="Real Lionstone renders of the 12 Reel FX effects on the same clip" width="100%">
+
+Full guide with parameters, use cases and recipes: [docs/reel-fx.md](docs/reel-fx.md).
+
+### 🎬 Pro workflow — multicam, style learning, Shorts, Reel FX, NLE export
+
+<img src="assets/pro-studio/05-pro-workflow-032-1280x640.jpg" alt="Lionstone v1.0.0 Pro &amp; Studio workflow, now free: multicam, style learn, clips and Reel FX for Shorts and Reels, FCPXML and EDL export" width="100%">
+
+- **Multicam** — `lionstone multicam` syncs two or more cameras and isolated mics on their audio, re-checks sync to catch clock drift, gates mic bleed and cuts to the active speaker with sensible shot lengths and wide shots for crosstalk.
+- **Style learning** — `lionstone style learn ref1.mp4 ref2.mp4` learns cut rhythm, pause behaviour, loudness and colour from videos you like, then applies them to new edits.
+- **Shorts & Reels** — `lionstone clips plan.json -n 5` finds self-contained moments with a strong first line and renders them 9:16 with face-tracked reframing, a kinetic hook title and word-highlight captions.
+- **Hand off to your editor** — `lionstone export plan.json` writes FCPXML for DaVinci Resolve and Final Cut Pro, and EDL for Premiere Pro, pointing at your original media.
+
+### ✅ QA, team tools and agents
+
+<img src="assets/pro-studio/06-qa-teams-get-it.jpg" alt="Quality assurance, team workflows, Lionstone Styles and Claude/MCP integration" width="100%">
+
+- **QA before delivery** — every render is decoded end to end and checked for A/V sync, black and frozen frames, EBU R128 loudness and true peak, clicks at every join, caption timing and, with `lionstone[vision]`, titles or captions covering a face. Skipped checks are reported as skipped, never as passed.
+- **Team tools (formerly Studio)** — roles per person (`lionstone team`), brand kits with colours, fonts, logo, lower third and end card (`lionstone brand`), versioned and locked team presets with history, and `lionstone fx batch` to apply one look to a whole season.
+- **Agent-ready** — the built-in MCP server lets Claude, Cursor or any MCP client plan, review and render edits for you.
+
+### 🧭 New: Lionstone Styles — your edit, as a code
+
+<img src="assets/pro-studio/07-styles-hero.jpg" alt="Lionstone Styles: the code O6 W3 A3 G5 S4 P3 (Kinetic Hook, Word Highlight, Vertical Follow, Punchy, Social -14 Tight, Tight) becomes lionstone styles --cmd O6 W3 A3 G5 S4 P3" width="100%">
+
+Describing a look in words ("fast, vertical, punchy, captions that pop") is vague; Lionstone Styles makes it exact. Each style is an original recipe with a short code, and you build a whole edit by picking **one code per group** — opening, words, aspect, grade, sound, pace and labels. A code is not a filter or a black box: every code maps to real Lionstone edit options, so you can read exactly what it will do, share it with your team, and reuse it on every episode.
+
+```bash
+lionstone styles --cmd O6 W3 A3 G5 S4 P3
+# → lionstone edit video.mp4 --title-effect P05 --captions burn --caption-style social
+#     --aspect 9:16 --reframe face --color punchy --profile social --denoise light --intensity dynamic
+```
+
+<img src="assets/pro-studio/08-styles-opening-words-aspect.jpg" alt="Lionstone Styles groups Opening (O1-O7), Words (W1-W5) and Aspect (A1-A6)" width="100%">
+
+**Opening** decides how the title enters — from a calm Quiet Fade for interviews to a Kinetic Hook built for Shorts. **Words** decides how speech appears on screen: clean or bold burned-in captions, social-style word highlighting, no captions at all, or sidecar `.srt`/`.vtt` files only. **Aspect** sets the frame: keep the source shape, go 16:9, or go vertical, square or 4:5 — with or without a crop that follows the speaker's face.
+
+<img src="assets/pro-studio/09-styles-grade-sound-pace-labels.jpg" alt="Lionstone Styles groups Grade (G1-G6), Sound (S1-S5), Pace (P1-P3) and Labels (L1-L3)" width="100%">
+
+**Grade** picks the colour look, from untouched to warm, cool, punchy or film. **Sound** sets the loudness target for the platform — YouTube −14, podcast −16, broadcast −23 LUFS, a tighter social mix — or rescues a noisy room with strong de-noise. **Pace** decides how tightly pauses and fillers are cut, and **Labels** chooses the chapter cards and speaker lower thirds.
+
+<img src="assets/pro-studio/10-styles-recipes.jpg" alt="Lionstone Styles starting recipes: Podcast clip, Talking-head Reel, Cinematic talk and Corporate explainer" width="100%">
+
+Not sure where to start? Use a ready recipe and change one code at a time.
+
+| Group | Controls | Codes |
+|---|---|---|
+| **O** Opening | how the title enters | O1 Quiet Fade · O2 Slow Rise · O3 Hairline Reveal · O4 Light Sweep · O5 Film Grain Open · O6 Kinetic Hook · O7 Signature Stamp |
+| **W** Words | how speech shows on screen | W1 Clean Lines · W2 Bold Punch · W3 Word Highlight · W4 Silent Frame · W5 Sidecar Only |
+| **A** Aspect | frame shape and speaker follow | A1 Native · A2 Wide Stage · A3 Vertical Follow · A4 Vertical Centre · A5 Square Follow · A6 Portrait Feed |
+| **G** Grade | colour look | G1 Untouched · G2 Natural · G3 Warm Room · G4 Cool Studio · G5 Punchy · G6 Film |
+| **S** Sound | loudness and de-noise | S1 YouTube −14 · S2 Podcast −16 · S3 Broadcast −23 · S4 Social −14 Tight · S5 Rescue |
+| **P** Pace | how tightly pauses are cut | P1 Breathing Room · P2 Tidy · P3 Tight |
+| **L** Labels | chapter cards and lower thirds | L1 Editorial Labels · L2 Spaced Chapters · L3 Line Chapters |
+
+| Recipe | Code | Feel |
+|---|---|---|
+| **Podcast clip** | `O1 W1 A2 G2 S2 P2 L1` | calm, readable, loudness for audio apps |
+| **Talking-head Reel** | `O6 W3 A3 G5 S4 P3` | fast hook, highlighted words, phone-friendly sound |
+| **Cinematic talk** | `O4 W4 A2 G6 S1 P1 L2` | slow, premium, no captions on the picture |
+| **Corporate explainer** | `O3 W1 A2 G4 S1 P2 L3` | clean, cool and tidy |
+
+```bash
+lionstone styles                          # list every style
+lionstone styles --group O                # one group
+lionstone styles --cmd O6 W3 A3 G5 S4 P3  # print the exact edit command
+lionstone styles --open                   # open the visual style guide
+```
+
+A Claude skill in [`integrations/lionstone-styles`](integrations/lionstone-styles) edits your videos with these codes — just ask for "a Talking-head Reel, but with a film grade".
+
+---
 
 <p align="center">
   <img src="assets/demo-terminal.svg" alt="lionstone edit run" width="88%">
@@ -33,7 +278,7 @@ Most "AI editors" either chop every silence (and your sentences with it) or send
 | 📝 **Edit video by editing text** | Delete a line in `transcript.md` → that sentence is cut. Move lines → scenes reorder. Uncomment → it's back. |
 | 🔊 **Broadcast-grade audio** | Two-pass EBU R128 loudness (YouTube −14, podcast −16, broadcast −23 LUFS), true-peak ceiling, de-noise, 8 ms micro-fades at every join (no clicks). |
 | 🎨 **Color & look** | Auto-exposure, tasteful looks (`natural`, `warm`, `film`, `punchy`…), your own `.cube` LUT. |
-| 🔤 **Titles, lower thirds, captions** | 6 free title effects, SRT/VTT/ASS captions, burned-in captions that move out of the way of lower thirds. Turkish casing (`i → İ`) and right-to-left scripts handled. |
+| 🔤 **Titles, lower thirds, captions** | 12 title effects, SRT/VTT/ASS captions, burned-in captions that move out of the way of lower thirds. Turkish casing (`i → İ`) and right-to-left scripts handled. |
 | ✅ **QA before delivery** | Full decode, A/V length, black/frozen frames, loudness + true peak, clicks at every join, word-clipping, caption timing, graphics overlap/readability. **Skipped checks are reported as skipped — never as passed.** Auto-fixes what it can, then re-checks. |
 | 🤖 **Agent-ready** | Built-in **MCP server**: let Claude, Cursor or any MCP client plan, review and render edits for you. |
 | 🧩 **Plugin system** | Effects, commands, exporters, QA hooks, caption styles and reframers are all plugins. |
@@ -45,11 +290,12 @@ Most "AI editors" either chop every silence (and your sentences with it) or send
 sudo apt install ffmpeg                  # Ubuntu / Debian (full build)
 winget install ffmpeg                    # Windows (full build)
 conda install -c conda-forge ffmpeg      # macOS / anywhere (full build)
+# or on macOS: brew install ffmpeg-full, then add $(brew --prefix ffmpeg-full)/bin to PATH
 # brew install ffmpeg also works; if `lionstone doctor` reports drawtext/subtitles
 # missing, Lionstone still edits but skips titles & burn-in (and says so in qa.md)
 
 # 2. Lionstone (+ local Whisper transcription)
-pip install "lionstone[whisper] @ git+https://github.com/ismailarslantas/lionstone"
+pip install "lionstone[whisper,vision] @ git+https://github.com/ismailarslantas/lionstone"
 
 # 3. Edit
 lionstone edit podcast.mp4 --title "Episode 12" --speaker "Ayşe Yılmaz|Founder"
@@ -71,9 +317,9 @@ Check your setup any time with `lionstone doctor`.
 
 | | Guide | You'll learn |
 |---|---|---|
-| ![](docs/guides/img/free-timeline.png) | **[Your first video (free)](docs/guides/free.md)** | install, one-command edit, captions, reading the QA report, editing by text, restoring cuts |
-| ![](docs/guides/img/pro-shorts.png) | **[Finishing with Pro](docs/guides/pro.md)** | the agent, looks / transitions / animated text, previews, Shorts & Reels, Resolve / Final Cut / Premiere export |
-| ![](docs/guides/img/studio-result.jpg) | **[Teams with Studio](docs/guides/studio.md)** | roles per person, brand kits, locked presets with history, batch apply for a season |
+| ![](docs/guides/img/first-video-timeline.png) | **[Your first video](docs/guides/first-video.md)** | install, one-command edit, captions, reading the QA report, editing by text, restoring cuts |
+| ![](docs/guides/img/creative-features-shorts.png) | **[Creative features](docs/guides/creative-features.md)** | the agent, looks / transitions / animated text, previews, Shorts & Reels, Resolve / Final Cut / Premiere export |
+| ![](docs/guides/img/team-tools-result.jpg) | **[Team tools](docs/guides/team-tools.md)** | roles per person, brand kits, locked presets with history, batch apply for a season |
 
 ## 🧭 How it works
 
@@ -101,7 +347,7 @@ lionstone cuts  talk_lionstone/plan.json --restore c0004 c0011   # undo specific
 lionstone apply-transcript talk_lionstone/plan.json talk_lionstone/transcript.md
 lionstone render talk_lionstone/plan.json         # render + QA
 lionstone qa    any_video.mp4                     # QA any file
-lionstone effects list --style cinematic          # browse effects (🔒 = Pro)
+lionstone effects list --style cinematic          # browse effects 
 lionstone effects preview F03 --text "Chapter 2" --gif
 ```
 
@@ -110,7 +356,7 @@ lionstone effects preview F03 --text "Chapter 2" --gif
 
 ```
 --intensity natural|balanced|dynamic   --profile youtube|podcast|social|broadcast
---aspect 16:9|9:16|1:1|4:5             --reframe center|face(Pro)
+--aspect 16:9|9:16|1:1|4:5             --reframe center|face (needs OpenCV)
 --title / --subtitle / --outro         --speaker "Name|Title[|SPEAKER_00]" (repeatable)
 --chapter "00:12:30 Pricing"           --title-effect F01 … --lower-third-effect F05
 --captions burn|file|none              --caption-style clean|bold|social
@@ -124,7 +370,7 @@ lionstone effects preview F03 --text "Chapter 2" --gif
 
 Every effect is a JSON definition (timing, parameters, constraints, license tier, fallback) + a **Remotion** component (reference look, alpha channel) + a native **FFmpeg** renderer (zero-dependency fallback). If an effect can't render, its declared fallback runs and the report says so.
 
-| Free | | | Pro 🔒 | | |
+| Classic | | | Premium | | |
 |:-:|:-:|:-:|:-:|:-:|:-:|
 | <img src="assets/effects/F01.gif" width="200"><br>**F01** Cinematic Fade | <img src="assets/effects/F02.gif" width="200"><br>**F02** Slow Rise | <img src="assets/effects/F03.gif" width="200"><br>**F03** Line Reveal | <img src="assets/effects/P01.gif" width="200"><br>**P01** Light Sweep | <img src="assets/effects/P02.gif" width="200"><br>**P02** Footage Mask | <img src="assets/effects/P03.gif" width="200"><br>**P03** Depth Parallax |
 | <img src="assets/effects/F04.gif" width="200"><br>**F04** Chapter Card | <img src="assets/effects/F05.gif" width="200"><br>**F05** Lower Third | <img src="assets/effects/F06.gif" width="200"><br>**F06** Letter Spacing | <img src="assets/effects/P04.gif" width="200"><br>**P04** Film Grain | <img src="assets/effects/P05.gif" width="200"><br>**P05** Kinetic Words | <img src="assets/effects/P06.gif" width="200"><br>**P06** Brand Reveal |
@@ -145,44 +391,38 @@ pip install "lionstone[mcp,whisper] @ git+https://github.com/ismailarslantas/lio
 
 Then just ask: *"Edit ~/Videos/ep12.mp4 for YouTube, keep it natural, introduce Ayşe as Founder, and show me any cut you're unsure about."* The agent gets tools to `plan_edit`, read/`edit_transcript`, `restore_cuts`, `render_plan` and read the QA verdict — it can't claim success unless QA says `deliverable: true`.
 
-## 💎 Free vs Pro vs Studio
+For a whole production, use **Lionstone Editing**: the assistant writes a short `brief.json` (goal, platform, title, effects) and Lionstone runs plan → review → look → render → effects → QA → report in one folder (`lionstone editing run my-video`, or the `editing_init` / `editing_run` MCP tools). Guide: [docs/editing.md](docs/editing.md).
 
-The free version is a complete editor — not a demo. Pro is for people who edit every week; Studio for teams and agencies.
+## 💎 Feature reference — everything is free
 
-| | **Free** (Apache-2.0) | **Pro** | **Studio** |
-|---|:-:|:-:|:-:|
-| Speech-aware cutting, 3 intensities | ✅ | ✅ | ✅ |
-| Edit by text · restore cuts · plan.json | ✅ | ✅ | ✅ |
-| Loudness, de-noise, color, LUTs | ✅ | ✅ | ✅ |
-| Captions SRT/VTT/burn-in · RTL · Turkish | ✅ | ✅ | ✅ |
-| 6 title effects (Remotion + FFmpeg) | ✅ | ✅ | ✅ |
-| Technical + editorial QA, auto-fix | ✅ | ✅ | ✅ |
-| MCP server · plugin API | ✅ | ✅ | ✅ |
-| **Multicam**: audio sync with drift check, active-speaker switching, mic bleed gating | | ✅ | ✅ |
-| **Style learning** from 1–3 reference videos (tempo, color, loudness) | | ✅ | ✅ |
-| **Shorts/Reels generator**: best moments → 9:16, face-tracked reframe, hook titles, word-highlight captions, optional LLM ranking | | ✅ | ✅ |
-| **6 Pro title effects** (light sweep, footage mask, parallax, film grain, kinetic, brand reveal) | | ✅ | ✅ |
-| **Project export**: FCPXML (Resolve / Final Cut) + EDL (Premiere) | | ✅ | ✅ |
-| **Vision QA**: graphics/captions covering faces | | ✅ | ✅ |
-| Natural / Cinematic / Dynamic variants side by side | | ✅ | ✅ |
-| **Creative Suite (new in 0.2)**: 28 looks, 19 effects, 11 transitions, 6 motion presets, 25 animated text presets, karaoke captions, real previews | | ✅ | ✅ |
-| **Lionstone Agent** picks looks, emphasis and transitions — and explains every choice | | ✅ | ✅ |
-| **Brand kits**, versioned & locked team presets, roles, batch apply across episodes | | | ✅ |
-| Seats | | 1 | 5 |
+Every feature is free and open source (Apache-2.0): no license key, no account, no watermark, no upload, no telemetry. The former Pro and Studio features are part of the core.
 
-![Pick your plan: Free, Pro, Studio](docs/img/plans-022-1280x720.png)
+| Feature | Command |
+|---|---|
+| Speech-aware cutting, edit by text, restore cuts, plan.json | `lionstone edit` · `plan` · `apply-transcript` |
+| Loudness, de-noise, color, LUTs, captions, RTL, Turkish | `lionstone edit` |
+| 12 title effects (F01-F06 + P01-P06) and 12 animated text presets | `lionstone effects list` |
+| **Creative Suite**: 122 ready-to-render looks, effects, transitions, motion and text presets with previews, keyframes and an agent that picks them | `lionstone fx list` · `fx preview` · `fx auto` |
+| **Multicam**: audio sync with drift check, active-speaker switching | `lionstone multicam` |
+| **Style learning** from 1-3 reference videos | `lionstone style learn` |
+| **Shorts/Reels generator**: best moments → 9:16, face-tracked reframe, hook titles | `lionstone clips` |
+| **Motion FX Pack** (1.0): 25 motion-design effects (17 + Motion FX 2), person matte for 5 of them, Theatre.js keyframes, Synfig backend | `lionstone fx list --category motion-fx` · `fx matte` |
+| **Reel FX Pack**: 12 one-command Reels/Shorts effects + 6.4 s showcase reels | `lionstone fx list --category reel-fx` · `fx showcase` |
+| **Project export**: FCPXML (Resolve / Final Cut) + EDL (Premiere) | `lionstone export` |
+| **Team tools**: brand kits, roles, versioned and locked presets, batch apply | `lionstone team` · `brand` · `preset` · `fx batch` |
+| **Vision QA** and the Motion FX person matte | `pip install "lionstone[vision]"` |
+| **Lionstone Styles**: codes like `O4 W3 A3 G5 S4 P3` that map to real edit options | `lionstone styles --open` · `--cmd O4 W3 A3` |
+| **Lionstone Reels**: brand profiles, brand identity, numbered visual catalogue, hooks, script checks, one-command delivery, covers, editing room, calendar | `lionstone reels start` · `reels make` |
 
-![Lionstone Pro 0.2 — same shot, six looks](docs/img/pro-looks-1280x720.png)
-
-Pro runs **on your machine** with an offline license key — no account, no upload, no telemetry. → **[Get Lionstone Pro](docs/PRO.md)**
+Install everything with `pip install "lionstone[all] @ git+https://github.com/ismailarslantas/lionstone"`. Details: [docs/PRO.md](docs/PRO.md) and the [guides](docs/guides/creative-features.md).
 
 ## 🗺️ Roadmap
 
-See [ROADMAP.md](ROADMAP.md). Next up: speaker diarization in the free tier, segment-level re-render, browser review UI (player + transcript + timeline), filler detection without ASR, more languages for filler lexicons.
+See [ROADMAP.md](ROADMAP.md). Next up: built-in speaker diarization, segment-level re-render, browser review UI (player + transcript + timeline), filler detection without ASR, more languages for filler lexicons.
 
 ## 🤝 Contributing
 
-PRs welcome — especially filler lexicons for your language, new free effects, and QA checks. Start with [CONTRIBUTING.md](CONTRIBUTING.md); AI coding agents should read [AGENTS.md](AGENTS.md).
+PRs welcome — especially filler lexicons for your language, new effects, and QA checks. Start with [CONTRIBUTING.md](CONTRIBUTING.md); AI coding agents should read [AGENTS.md](AGENTS.md).
 
 ```bash
 git clone https://github.com/ismailarslantas/lionstone && cd lionstone
@@ -191,6 +431,6 @@ pip install -e ".[dev,whisper]" && pytest
 
 ## 📄 License
 
-Core: [Apache-2.0](LICENSE). Pro/Studio plugin: commercial license. Effect assets ship with OFL/system fonts only — check the license of any font, LUT or footage you add.
+Everything: [Apache-2.0](LICENSE). Effect assets ship with OFL/system fonts only — check the license of any font, LUT or footage you add.
 
 <p align="center"><sub>Built in İzmir by <a href="https://www.linkedin.com/in/ismailarslantas/">İsmail Arslantaş</a> · If Lionstone saved you an evening of editing, a ⭐ helps others find it.</sub></p>

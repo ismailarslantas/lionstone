@@ -17,7 +17,7 @@ from pathlib import Path
 from .captions import write_captions
 from .color import color_chain, measure_luma
 from .effects import Catalog
-from .effects.ffmpeg_fx import FxContext, build_graphics
+from .effects.ffmpeg_fx import FxContext, build_graphics, filter_path
 from .ff import font_path, has_filter, run
 from .ingest import probe
 from .models import EditPlan, MediaInfo
@@ -114,8 +114,8 @@ def video_sources(plan: EditPlan) -> dict[str, dict]:
 def _denoise(level: str) -> str:
     return {
         "off": "",
-        "light": "afftdn=nr=8:nf=-45:tn=1",
-        "strong": "afftdn=nr=16:nf=-40:tn=1,anlmdn=s=0.0005",
+        "light": "afftdn=nr=10:nf=-45",
+        "strong": "afftdn=nr=20:nf=-30",
     }.get(level, "")
 
 
@@ -134,7 +134,8 @@ def output_geometry(info: MediaInfo, aspect: str | None) -> tuple[int, int, floa
 
 def build_graph(plan: EditPlan, info: MediaInfo, opts: RenderOptions, workdir: Path,
                 *, catalog: Catalog, loudnorm: str, audio_only: bool = False,
-                prerendered: dict[str, int] | None = None) -> tuple[str, dict]:
+                prerendered: dict[str, int] | None = None,
+                matte_input: int | None = None) -> tuple[str, dict]:
     prerendered = prerendered or {}
     reg = registry()
     W, H, fps = output_geometry(info, opts.aspect)
@@ -165,8 +166,11 @@ def build_graph(plan: EditPlan, info: MediaInfo, opts: RenderOptions, workdir: P
             else:
                 parts.append(f"[0:v]trim=start={a:.6f}:end={b:.6f},setpts=PTS-STARTPTS[v{i}]")
             labels.append(f"[v{i}]")
+        # apad: a segment that runs past the end of the source audio (audio shorter than
+        # video) is padded with silence so audio and video keep the same length.
         parts.append(
             f"[0:a]atrim=start={a:.6f}:end={b:.6f},asetpts=PTS-STARTPTS,"
+            f"apad=whole_dur={dur:.6f},"
             f"afade=t=in:d={FADE}:curve=qsin,afade=t=out:st={fade_out:.6f}:d={FADE}:curve=qsin[a{i}]"
         )
         labels.append(f"[a{i}]")
@@ -217,6 +221,10 @@ def build_graph(plan: EditPlan, info: MediaInfo, opts: RenderOptions, workdir: P
             cinfo["style_filter"] = plan.color["filter"]
     vchain += opts.extra_video_filters
     vchain.append("format=yuv420p")
+    if matte_input is not None and plan.color.get("matte"):  # person matte for Motion FX
+        from .pro.matte import graph_inputs
+        parts.append(graph_inputs(matte_input, int(plan.color["matte"]["uses"]), W, H, fps,
+                                  trims=segs))
     parts.append(f"[vc]{','.join(vchain)}[vb]")
     cur = "vb"
 
@@ -258,7 +266,8 @@ def build_graph(plan: EditPlan, info: MediaInfo, opts: RenderOptions, workdir: P
         burn = False
     meta["captions_burned"] = bool(burn)
     if burn:
-        parts.append(f"[{cur}]subtitles=filename='captions.ass'[vout]")
+        fonts = Path(__file__).resolve().parent / "data" / "fonts"
+        parts.append(f"[{cur}]subtitles=filename='captions.ass':fontsdir={filter_path(fonts)}[vout]")
     else:
         parts.append(f"[{cur}]null[vout]")
     return ";\n".join(parts), meta
@@ -350,8 +359,17 @@ def render(plan: EditPlan, output: str | Path, opts: RenderOptions | None = None
     prerendered, extra_inputs, pre_notes = _prerender_graphics(plan, opts, catalog, wd, W, H,
                                                                base=1 + len(cams))
     extra_inputs = cam_inputs + extra_inputs
+    matte_input = None
+    if plan.color.get("matte") and plan.color.get("filter"):
+        from .pro.matte import ensure
+        mf = ensure(plan.source)  # cached; rebuilt if the cache was cleared
+        if mf is None:
+            raise RuntimeError("this plan uses the person matte but it can't be built here: "
+                               'pip install "lionstone[vision]" or recompile with LIONSTONE_MATTE=0')
+        matte_input = 1 + len(extra_inputs) // 2
+        extra_inputs += ["-i", str(mf)]
     graph, meta = build_graph(plan, info, opts, wd, catalog=catalog, loudnorm=ln,
-                              prerendered=prerendered)
+                              prerendered=prerendered, matte_input=matte_input)
     meta["notes"] = pre_notes + meta["notes"]
     script = wd / "graph_render.txt"
     script.write_text(graph, encoding="utf-8")

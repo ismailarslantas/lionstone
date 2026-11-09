@@ -237,7 +237,8 @@ def check_editorial(plan: EditPlan, r: QAReport, catalog: Catalog | None, durati
         r.checks.append(QACheck("caption_timing", "editorial", "skipped", "no transcript"))
 
     g = sorted(plan.graphics, key=lambda e: e.at)
-    overlaps = [(a.id, b.id) for a, b in zip(g, g[1:]) if b.at < a.at + a.duration]
+    stacked = [e for e in g if e.layer != "overlays"]  # overlays sit beside titles on purpose
+    overlaps = [(a.id, b.id) for a, b in zip(stacked, stacked[1:]) if b.at < a.at + a.duration]
     short = [e for e in g if e.duration < reading_time(f"{e.text} {e.subtext}") * 0.8]
     outside = [e for e in g if e.at + e.duration > duration + 0.05]
     ok = not overlaps and not short and not outside
@@ -250,7 +251,7 @@ def check_editorial(plan: EditPlan, r: QAReport, catalog: Catalog | None, durati
         r.issues.append(QAIssue("graphics_rules", "medium",
                                 f'"{e.text}" is on screen too briefly to read', at=e.at))
     r.checks.append(QACheck("faces_covered", "editorial", "skipped",
-                            "needs face detection (Lionstone Pro vision QA)"))
+                            "needs face detection (vision QA, needs OpenCV)"))
     r.checks.append(QACheck("camera_choice", "editorial", "skipped",
                             "single-camera edit" if not plan.meta.get("multicam") else
                             "verified by multicam plugin"))

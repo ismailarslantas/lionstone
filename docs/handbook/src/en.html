@@ -1,0 +1,796 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lionstone v0.4.1 — Reel Handbook</title>
+<link rel="stylesheet" href="handbook.css">
+</head>
+<body>
+
+<!-- 1 · COVER -->
+<section class="page cover">
+  <img class="bg" src="img/01-cover.jpg" alt="">
+  <div class="shade"></div>
+  <div class="inner">
+    <div class="brand">
+      <svg viewBox="-130 -130 260 260"><g stroke="#E8A33D" stroke-width="12" stroke-linecap="round"><line x1="0" y1="-95" x2="0" y2="-125"/><line x1="67" y1="-67" x2="88" y2="-88"/><line x1="95" y1="0" x2="125" y2="0"/><line x1="67" y1="67" x2="88" y2="88"/><line x1="0" y1="95" x2="0" y2="125"/><line x1="-67" y1="67" x2="-88" y2="88"/><line x1="-95" y1="0" x2="-125" y2="0"/><line x1="-67" y1="-67" x2="-88" y2="-88"/></g><polygon points="0,-78 68,-39 68,39 0,78 -68,39 -68,-39" fill="#16181d" stroke="#E8A33D" stroke-width="9"/><polygon points="-18,-30 32,0 -18,30" fill="#F5C400"/></svg>
+      LIONSTONE
+    </div>
+    <span class="badge">LIONSTONE v0.4.1 · FREE</span>
+    <h1>The Reel<br>Handbook</h1>
+    <p class="sub">Every feature, every look, every effect, and a step-by-step guide to building a Reel with them.</p>
+    <div class="bottom">
+      <div>Free · Open source · Apache-2.0<br>Local-first · no license key · no watermark</div>
+      <div><b>English edition</b><br>November 2026</div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 · CONTENTS -->
+<section class="page dark">
+  <div class="run"><span><b>Lionstone</b> · Reel Handbook</span><span>v0.4.1</span></div>
+  <span class="kicker">Inside</span>
+  <h2>Contents</h2>
+  <ol class="toc mt4">
+    <li><span class="n">01</span><span class="t">What's in v0.4.1</span><span class="d">The package, the numbers, installing</span><span class="p" data-to="01">0</span></li>
+    <li><span class="n">02</span><span class="t">Lionstone Reels</span><span class="d">One flow per brand, idea to delivery</span><span class="p" data-to="02">0</span></li>
+    <li><span class="n">03</span><span class="t">Your brand identity</span><span class="d">Measure, choose from the catalogue, remember</span><span class="p" data-to="03">0</span></li>
+    <li><span class="n">04</span><span class="t">The workflow</span><span class="d">plan.json, anchors, preview = export</span><span class="p" data-to="04">0</span></li>
+    <li><span class="n">05</span><span class="t">Lionstone Styles</span><span class="d">Your whole edit as a six-code recipe</span><span class="p" data-to="05">0</span></li>
+    <li><span class="n">06</span><span class="t">Looks &amp; colour</span><span class="d">28 grades, colour controls, your own LUT</span><span class="p" data-to="06">0</span></li>
+    <li><span class="n">07</span><span class="t">Effects, transitions, motion</span><span class="d">The finishing toolbox</span><span class="p" data-to="07">0</span></li>
+    <li><span class="n">08</span><span class="t">Text &amp; captions</span><span class="d">25 animated text presets, 3 caption styles</span><span class="p" data-to="08">0</span></li>
+    <li><span class="n">09</span><span class="t">Reel FX Pack</span><span class="d">12 one-command effects for Reels &amp; Shorts</span><span class="p" data-to="09">0</span></li>
+    <li><span class="n">10</span><span class="t">Build a Reel, step by step</span><span class="d">A real 30-second Reel, every command</span><span class="p" data-to="10">0</span></li>
+    <li><span class="n">11</span><span class="t">Recipes by content type</span><span class="d">Podcast, real estate, product, tutorial…</span><span class="p" data-to="11">0</span></li>
+    <li><span class="n">12</span><span class="t">Beyond the Reel</span><span class="d">Agent, multicam, style learning, export, teams</span><span class="p" data-to="12">0</span></li>
+    <li><span class="n">13</span><span class="t">Rules, QA &amp; honest limits</span><span class="d">Why your render is safe to post</span><span class="p" data-to="13">0</span></li>
+    <li><span class="n">14</span><span class="t">Command cheat sheet</span><span class="d">Everything on one page</span><span class="p" data-to="14">0</span></li>
+  </ol>
+  <div class="grid4 mt6">
+    <div class="stat"><b>145</b><span>presets in the catalog</span></div>
+    <div class="stat"><b>104</b><span>ready to render today</span></div>
+    <div class="stat"><b>79</b><span>catalogue options with pictures</span></div>
+    <div class="stat"><b>0</b><span>keys, uploads or watermarks</span></div>
+  </div>
+  <p class="cap mt6">How to read this handbook: chapters 1–9 explain each tool; chapter 10 puts them together in one Reel you can rebuild on your own footage. Commands are shown exactly as you type them. The illustrations are concept art; pages marked “real render” show actual Lionstone output.</p>
+  <div class="foot"><span>Lionstone v0.4.1</span><span class="pn">2</span></div>
+</section>
+
+<!-- 3 · WHAT'S IN 0.4.1 -->
+<section data-ch="01" class="page">
+  <div class="run"><span><b>01</b> · What's in v0.4.1</span><span>Lionstone Reel Handbook</span></div>
+  <div class="chapter-no">01</div>
+  <h2>What's in v0.4.1</h2>
+  <p class="lead">Lionstone is an AI editing agent that runs on your computer. Pro and Studio used to be a paid plugin; since v0.3 every one of their features ships free in the open-source package. v0.4 adds Lionstone Reels, and v0.4.1 adds your brand identity and a visual catalogue. All of it is free: no license key, no account, no watermark, no upload.</p>
+  <div class="grid2">
+    <div>
+      <h3 class="mt0">The package at a glance</h3>
+      <ul>
+        <li><b>Smart editing</b>: speech-aware cuts, an explainable <code>plan.json</code>, editing by transcript, one-command restore.</li>
+        <li><b>Creative Suite</b>: looks, effects, transitions, motion and animated text, previewed with the same code that exports.</li>
+        <li><b>Lionstone Reels</b> <span class="pill">new in 0.4</span>: a brand-specific Reels flow from topic to calendar.</li>
+        <li><b>Brand identity + catalogue</b> <span class="pill">new in 0.4.1</span>: measured from your own videos, chosen by number and picture.</li>
+        <li><b>Reel FX Pack</b>: 12 effects built for vertical video, plus a 6.4-second showcase reel.</li>
+        <li><b>Shorts &amp; Reels</b>: finds self-contained moments and renders them 9:16 with face-tracked framing.</li>
+        <li><b>Pro workflow</b>: multicam, style learning, FCPXML/EDL export.</li>
+        <li><b>Team tools</b>: brand kits, roles, locked presets, batch apply.</li>
+        <li><b>QA before delivery</b>: every render is decoded and checked before it's called deliverable.</li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="mt0">Catalog by kind</h3>
+      <table>
+        <tr><th>Kind</th><th class="nowrap">Ready</th><th>Planned</th></tr>
+        <tr><td>Looks (colour grades)</td><td>28</td><td>2</td></tr>
+        <tr><td>Effects</td><td>19</td><td>15</td></tr>
+        <tr><td>Reel FX</td><td>12</td><td>0</td></tr>
+        <tr><td>Transitions</td><td>11</td><td>14</td></tr>
+        <tr><td>Motion</td><td>6</td><td>7</td></tr>
+        <tr><td>Animated text</td><td>25</td><td>3</td></tr>
+        <tr><td>Caption styles</td><td>3</td><td>0</td></tr>
+        <tr><td><b>Total</b></td><td><b>104</b></td><td><b>41</b></td></tr>
+      </table>
+      <p class="cap">“Planned” presets are listed in the catalog but never shipped as buttons that do nothing.</p>
+    </div>
+  </div>
+  <h3>Install and check</h3>
+<pre><span class="c"># everything: creative presets, face tracking, MCP server</span>
+pip install "lionstone[all] @ git+https://github.com/ismailarslantas/lionstone"
+lionstone doctor          <span class="c"># FFmpeg, speech recognition, fonts, optional extras</span>
+lionstone --version       <span class="c"># Lionstone · AI editing agent · v0.4.2</span></pre>
+  <div class="note"><b>Labels, not locks.</b> You'll see <span class="pill">pro</span> and <span class="pill studio">studio</span> on presets. They're catalog labels from the old plans; everything is free for individuals and teams alike. Coming from the paid plugin? <code>pip uninstall lionstone-pro</code>.</div>
+  <div class="foot"><span>Lionstone v0.4.1</span><span class="pn">3</span></div>
+</section>
+
+<!-- LIONSTONE REELS -->
+<section data-ch="02" class="page">
+  <div class="run"><span><b>02</b> · Lionstone Reels</span><span>Lionstone Reel Handbook</span></div>
+  <div class="chapter-no">02</div>
+  <h2>Lionstone Reels: idea to delivery</h2>
+  <p class="lead">One flow per brand, in plain files you can read and undo. Claude writes the words, you shoot, Lionstone does the rest and measures it. No monthly fee, no per-video fee, no editing software.</p>
+<pre>Topic → Hook → Script → Shoot → Cut → Graphics → Sound → QA → Cover + caption → Calendar</pre>
+  <div class="grid2">
+    <div>
+      <h3 class="mt0">The commands</h3>
+<pre style="margin:0;font-size:6.2pt">lionstone reels start
+lionstone reels brand init "Acme" --language en
+lionstone reels new "Acme" "Rent or buy"
+lionstone reels hooks "Acme" "rent" --angle mistake
+lionstone reels lint projects/acme/&lt;reel&gt;
+<span class="c"># put the footage in &lt;reel&gt;/raw/</span>
+lionstone reels make projects/acme/&lt;reel&gt;
+lionstone reels schedule &lt;reel&gt; "2026-11-10 19:00"
+lionstone reels calendar --brand "Acme" --ics cal.ics</pre>
+      <h4>What you get in delivery/</h4>
+<pre style="margin:0;font-size:6.2pt">acme-rent-or-buy.mp4      <span class="c"># 9:16, -14 LUFS</span>
+cover-1.jpg … cover-3.jpg <span class="c"># for the 3:4 grid</span>
+caption.txt               <span class="c"># caption + hashtags</span>
+report.md · qa.md         <span class="c"># the verdict and why</span></pre>
+    </div>
+    <div>
+      <h3 class="mt0">Who does what</h3>
+      <table>
+        <tr><th>Who</th><th>Step</th></tr>
+        <tr><td>🧠 Claude</td><td>Topic, hooks (60 English and 60 Turkish templates, 10 angles), spoken script, caption. Lionstone checks them; it never invents copy.</td></tr>
+        <tr><td>🎥 You</td><td>The footage.</td></tr>
+        <tr><td>🤖 Lionstone</td><td>Cuts silences, fillers and repeats, word-by-word captions, hook title, brand colours, 31 original sound effects, music that ducks under the voice, covers, calendar.</td></tr>
+      </table>
+      <h4>Three verdicts</h4>
+      <table>
+        <tr><th>Report says</th><th>Means</th></tr>
+        <tr><td><b>READY TO DELIVER</b></td><td>Every check that ran is clean, script matches ≥ 90%</td></tr>
+        <tr><td><b>NEEDS REVIEW</b></td><td>Script matches 75-90%, a repeat left, or no transcript to compare</td></tr>
+        <tr><td><b>FIX NEEDED</b></td><td>Script under 75%, clear text overflow, a technical fault or a copy error</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="note"><b>Editing room.</b> <code>edit/room.html</code> is a local page with the video and every word. Click a word to jump, cut it or restore it, double-click to fix a caption's spelling, then <code>lionstone reels make &lt;reel&gt; --keep-plan</code>. Nothing is uploaded.</div>
+  <p class="cap">File names shown are from 0.4.2, the patch that put help, reports and the guide in English. Reel folders from 0.4.0 and 0.4.1 (<code>ham/</code>, <code>kurgu/</code>, <code>teslim/</code>) keep working. On macOS, use a full FFmpeg: <code>brew install ffmpeg-full</code>.</p>
+  <div class="foot"><span>Lionstone v0.4.1</span><span class="pn">0</span></div>
+</section>
+
+<!-- BRAND IDENTITY -->
+<section data-ch="03" class="page dark">
+  <div class="run"><span><b>03</b> · Brand identity</span><span>Lionstone Reel Handbook</span></div>
+  <div class="chapter-no">03</div>
+  <h2>Your brand identity <span class="sun">· new in 0.4.1</span></h2>
+  <p class="lead">Before the first Reel, Lionstone learns the brand and asks what to use. Afterwards it remembers.</p>
+  <div class="grid2">
+    <div>
+      <h3 class="mt0">1 · Measure your own videos</h3>
+<pre style="margin:0;font-size:6.2pt">lionstone reels identity "Acme" --footage talk.mp4 \
+  --example a.mp4 --example b.mp4 --example c.mp4</pre>
+      <p class="small">One talking-head take and 3-5 example Reels. Measured: tempo, cuts per minute, pauses, loudness, colour, palette, length, speech rate, opening lines. Music is an estimate. Contact sheets let Claude look at what can't be measured, and anything skipped is listed with the reason.</p>
+      <h3>2 · Choose from the catalogue</h3>
+<pre style="margin:0">lionstone reels catalog "Acme" --open
+lionstone reels setup "Acme" --pick 0 205 503</pre>
+      <p class="small">Every option has a number and a picture. Click cards on the local page and copy the command, or type the numbers.</p>
+      <h3>3 · Or let it decide</h3>
+      <p class="small"><code>x00</code> decides a group, <code>0</code> decides everything. Each automatic choice records its reason in the report. It never invents music: if your examples have music, it asks for your own licensed file.</p>
+      <h3>4 · It remembers</h3>
+      <p class="small"><code>lionstone reels start</code> and <code>make</code> offer <b>produce with my saved brand identity</b> or <b>prepare with a new brand identity</b>. A new identity archives the old one; nothing is deleted.</p>
+    </div>
+    <div>
+      <h3 class="mt0">What the numbers choose</h3>
+      <table>
+        <tr><td><b>1xx</b> Hook title</td><td><b>7xx</b> Music level</td></tr>
+        <tr><td><b>2xx</b> Captions</td><td><b>8xx</b> Sound effects</td></tr>
+        <tr><td><b>3xx</b> Colour</td><td><b>9xx</b> Framing</td></tr>
+        <tr><td><b>4xx</b> Pace</td><td><b>10xx</b> Noise cleanup</td></tr>
+        <tr><td><b>5xx</b> Effects</td><td><b>11xx</b> Covers</td></tr>
+        <tr><td><b>6xx</b> Music</td><td><b>12xx</b> Accent colour</td></tr>
+      </table>
+      <h4>Two looks you can mix</h4>
+      <p class="small"><b>Editorial:</b> staggered titles in a large italic serif, quiet captions with one word set large, glass notification card, neon pills, countdown clock.<br><b>Bold:</b> heavy captions with a glowing key word, glowing headline, dashed card, emphasis zooms.</p>
+      <figure class="figure short"><img src="img/real/catalog-captions.jpg" alt=""><figcaption>Real render: catalogue group 2xx. The man is a fictional example; your Reel is always made from your own footage.</figcaption></figure>
+    </div>
+  </div>
+  <div class="foot"><span>Lionstone v0.4.1</span><span class="pn">0</span></div>
+</section>
+
+<section class="page">
+  <div class="run"><span><b>03</b> · Brand identity</span><span>Lionstone Reel Handbook</span></div>
+  <span class="kicker">The catalogue · <span class="realtag">Real render</span></span>
+  <h2>Choose by looking</h2>
+  <p class="small">Hook titles (1xx) and effects (5xx) from the real catalogue. 79 cards in all: picture options are real Lionstone renders, sound options are waveforms or spectrograms of real output.</p>
+  <figure class="figure"><img src="img/real/catalog-opening.jpg" alt=""><figcaption>Group 1xx: hook title.</figcaption></figure>
+  <div class="foot"><span>Lionstone v0.4.1</span><span class="pn">0</span></div>
+</section>
+
+<section class="page">
+  <div class="run"><span><b>03</b> · Brand identity</span><span>Lionstone Reel Handbook</span></div>
+  <span class="kicker">The catalogue · <span class="realtag">Real render</span></span>
+  <h2>Effects · 5xx</h2>
+  <figure class="figure"><img src="img/real/catalog-effects.jpg" alt=""><figcaption>Group 5xx: effects, including Lionstone Agent styles and 11 Reel FX.</figcaption></figure>
+  <div class="foot"><span>Lionstone v0.4.1</span><span class="pn">0</span></div>
+</section>
+
+<!-- 4 · WORKFLOW -->
+<section data-ch="04" class="page">
+  <div class="run"><span><b>04</b> · The workflow</span><span>Lionstone Reel Handbook</span></div>
+  <div class="chapter-no">04</div>
+  <h2>The workflow</h2>
+  <p class="lead">Every Lionstone edit is a plan first and a video second. You change the plan; the render follows.</p>
+  <figure class="figure"><img src="img/02-workflow.jpg" alt=""><figcaption>Concept illustration: one recording becomes an edit, Reels and project files.</figcaption></figure>
+  <div class="grid2">
+    <ol class="steps">
+      <li><b>Edit</b>: <code>lionstone edit talk.mp4</code> analyses speech, removes dead air and writes <code>talk_lionstone/plan.json</code>.</li>
+      <li><b>Finish</b>: <code>lionstone fx …</code> adds looks, effects, text and transitions to that plan.</li>
+      <li><b>Render + QA</b>: <code>lionstone fx render plan.json</code> compiles, renders and checks the result.</li>
+      <li><b>Reuse</b>: <code>lionstone clips</code> cuts vertical Reels; <code>lionstone export</code> writes FCPXML/EDL.</li>
+    </ol>
+    <div>
+      <h4>Where a preset goes: anchors</h4>
+      <table>
+        <tr><th>Anchor</th><th>Means</th></tr>
+        <tr><td><code>--global</code></td><td>the whole video (looks, grain, captions)</td></tr>
+        <tr><td><code>--segment N</code></td><td>one kept segment</td></tr>
+        <tr><td><code>--join N</code></td><td>the cut after segment N (transitions)</td></tr>
+        <tr><td><code>--source A-B</code></td><td>seconds in the original recording</td></tr>
+        <tr><td><code>--at S</code></td><td>seconds in the finished video (text)</td></tr>
+      </table>
+      <p class="small"><code>lionstone fx segments plan.json</code> lists the numbered segments and cuts.</p>
+    </div>
+  </div>
+  <div class="note"><b>Preview = export.</b> <code>lionstone fx preview &lt;id&gt; --before-after --gif</code> renders a real low-res sample with the same builder the export uses, so what you approve is what you get.</div>
+  <div class="foot"><span>Lionstone v0.4.1</span><span class="pn">4</span></div>
+</section>
+
+<!-- 5 · STYLES -->
+<section data-ch="05" class="page">
+  <div class="run"><span><b>05</b> · Lionstone Styles</span><span>Lionstone Reel Handbook</span></div>
+  <div class="chapter-no">05</div>
+  <h2>Lionstone Styles: your edit as a code</h2>
+  <p class="lead">Seven groups, one letter each. Pick one option per group, and <code>lionstone styles --cmd</code> turns the code into the exact edit command.</p>
+  <table>
+    <tr><th>Group</th><th>Options</th></tr>
+    <tr><td><b>O</b> Opening</td><td>O1 Quiet Fade · O2 Slow Rise · O3 Hairline Reveal · O4 Light Sweep · O5 Film Grain Open · <b>O6 Kinetic Hook</b> · O7 Signature Stamp</td></tr>
+    <tr><td><b>W</b> Words</td><td>W1 Clean Lines · W2 Bold Punch · <b>W3 Word Highlight</b> · W4 Silent Frame · W5 Sidecar Only (.srt/.vtt)</td></tr>
+    <tr><td><b>A</b> Aspect</td><td>A1 Native · A2 Wide Stage 16:9 · <b>A3 Vertical Follow 9:16</b> · A4 Vertical Centre · A5 Square Follow · A6 Portrait Feed 4:5</td></tr>
+    <tr><td><b>G</b> Grade</td><td>G1 Untouched · G2 Natural · G3 Warm Room · G4 Cool Studio · <b>G5 Punchy</b> · G6 Film</td></tr>
+    <tr><td><b>S</b> Sound</td><td>S1 YouTube −14 · S2 Podcast −16 · S3 Broadcast −23 · <b>S4 Social −14 Tight</b> · S5 Rescue</td></tr>
+    <tr><td><b>P</b> Pace</td><td>P1 Breathing Room · P2 Tidy · <b>P3 Tight</b></td></tr>
+    <tr><td><b>L</b> Labels</td><td>L1 Editorial Labels · L2 Spaced Chapters · L3 Line Chapters</td></tr>
+  </table>
+  <h3>The Reel code: O6 W3 A3 G5 S4 P3</h3>
+<pre>lionstone styles --cmd O6 W3 A3 G5 S4 P3
+<span class="c"># prints:</span>
+lionstone edit video.mp4 --title-effect P05 --captions burn --caption-style social \
+  --aspect 9:16 --reframe face --color punchy --profile social \
+  --denoise light --intensity dynamic</pre>
+  <h3>Starting recipes</h3>
+  <div class="grid2">
+    <div class="card"><h4>Talking-head Reel</h4><p class="mono small gold">O6 W3 A3 G5 S4 P3</p><p class="small">Fast hook, highlighted words, phone-friendly sound.</p></div>
+    <div class="card"><h4>Podcast clip</h4><p class="mono small gold">O1 W1 A2 G2 S2 P2 L1</p><p class="small">Calm, readable, loudness for audio apps.</p></div>
+    <div class="card"><h4>Cinematic talk</h4><p class="mono small gold">O4 W4 A2 G6 S1 P1 L2</p><p class="small">Slow, premium, no captions on the picture.</p></div>
+    <div class="card"><h4>Corporate explainer</h4><p class="mono small gold">O3 W1 A2 G4 S1 P2 L3</p><p class="small">Clean, cool and tidy.</p></div>
+  </div>
+  <p class="cap mt2"><code>lionstone styles --open</code> opens the visual guide. A3 and A5 need face tracking: <code>pip install "lionstone[vision]"</code>.</p>
+  <div class="foot"><span>Lionstone v0.4.1</span><span class="pn">5</span></div>
+</section>
+
+<!-- 6 · LOOKS -->
+<section data-ch="06" class="page">
+  <div class="run"><span><b>06</b> · Looks &amp; colour</span><span>Lionstone Reel Handbook</span></div>
+  <div class="chapter-no">06</div>
+  <h2>Looks &amp; colour</h2>
+  <p class="lead">A look is one consistent grade for the whole video. Every look has an <code>intensity</code> that scales all its adjustments, and saturation is capped to protect skin tones.</p>
+  <figure class="figure short"><img src="img/03-looks.jpg" alt=""><figcaption>Concept illustration: one frame, six grades.</figcaption></figure>
+  <table>
+    <tr><th>Family</th><th>Looks</th><th>Best for</th></tr>
+    <tr><td>Natural</td><td>Natural Neutral · Clean Daylight · True-to-Life · Low Saturation</td><td>interviews, documentary</td></tr>
+    <tr><td>Cinematic</td><td>Warm Cinema · Cool Cinema · Muted Film</td><td>stories, brand films</td></tr>
+    <tr><td>Editorial</td><td>Soft Contrast · Matte Editorial</td><td>magazine-style talks</td></tr>
+    <tr><td>Warm / cool</td><td>Golden Hour · Warm Interior · Steel Blue · Cool Shadow</td><td>mood, tech topics</td></tr>
+    <tr><td>Retro &amp; night</td><td>Analog Soft · Vintage Fade · Night Detail · Neon Balance</td><td>nostalgia, nightlife, music</td></tr>
+    <tr><td>Monochrome</td><td>Classic B&amp;W · High-Contrast Mono</td><td>quotes, drama</td></tr>
+    <tr><td>Product &amp; property</td><td>Product Neutral · Detail Pop · Bright Interior · Window Balance · Natural Exterior</td><td>e-commerce, real estate</td></tr>
+    <tr><td>Social</td><td><b>Punchy Social</b> · Soft Skin-Safe</td><td>Reels, Shorts, TikTok</td></tr>
+  </table>
+<pre>lionstone fx list --kind look
+lionstone fx preview look-golden-hour --input talk.mp4 --start 20 --before-after
+lionstone fx apply plan.json look-punchy-social --global --param intensity=0.7
+lionstone fx apply plan.json color-controls --global   <span class="c"># manual: exposure, curves, temp/tint, vibrance…</span>
+lionstone fx apply plan.json lut --global              <span class="c"># your own .cube; its source/licence is recorded</span></pre>
+  <div class="note"><b>One look per video.</b> Pick a single grade and vary intensity instead of stacking looks; a Reel that changes colour every cut reads as a mistake, not a style.</div>
+  <div class="foot"><span>Lionstone v0.4.1</span><span class="pn">6</span></div>
+</section>
+
+<!--GALLERY:looks-->
+
+<!-- 7 · EFFECTS / TRANSITIONS / MOTION -->
+<section data-ch="07" class="page">
+  <div class="run"><span><b>07</b> · Effects, transitions, motion</span><span>Lionstone Reel Handbook</span></div>
+  <div class="chapter-no">07</div>
+  <h2>Effects, transitions, motion</h2>
+  <p class="lead">The finishing toolbox. All of it is procedural FFmpeg filter math: no stock overlays, no bundled footage.</p>
+  <h3>Effects: 19 ready</h3>
+  <table>
+    <tr><th>Group</th><th>Presets and what they do</th></tr>
+    <tr><td>Light</td><td><b>Soft Bloom</b> glow around highlights · <b>Light Leak</b> warm drifting washes · <b>Halation</b> red film glow at bright edges · <b>Haze</b> soft atmospheric lift</td></tr>
+    <tr><td>Focus &amp; zoom</td><td><b>Smooth Zoom</b> eased, face-safe · <b>Quick Punch-In</b> emphasis on a key line · <b>Focus Pull</b> rack focus in/out · <b>Directional Blur</b> · <b>Motion Blur</b></td></tr>
+    <tr><td>Texture</td><td><b>Film Grain</b> · <b>VHS Texture</b> · <b>Film Burn</b> · <b>Subtle Glitch</b> (max 3 bursts/s) · <b>Chromatic Shift</b></td></tr>
+    <tr><td>Frame</td><td><b>Soft Vignette</b> · <b>Letterbox</b> · <b>Beat Flash</b> (on beats or every N s)</td></tr>
+    <tr><td>Clean-up</td><td><b>Exposure Balance</b> · <b>Noise Reduction</b> · <b>Stabilization</b> (partial: single-pass deshake)</td></tr>
+  </table>
+  <div class="grid2">
+    <div>
+      <h3>Transitions: 11 ready</h3>
+      <div class="chips"><span class="chip">hard-cut</span><span class="chip">dip-to-black</span><span class="chip">dip-to-white</span><span class="chip">fade-through-color</span><span class="chip">whip-pan</span><span class="chip">zoom-through</span><span class="chip">light-leak-flash</span><span class="chip">film-burn-flash</span><span class="chip">blur-cut</span><span class="chip">glitch-cut</span><span class="chip">rgb-shift-cut</span></div>
+      <p class="small">Transitions sit on a cut: <code>--join N</code> or <code>--all-joins</code>. For Reels, <code>zoom-through</code> and <code>whip-pan</code> keep energy up; <code>blur-cut</code> hides a topic change gently.</p>
+    </div>
+    <div>
+      <h3>Motion: 6 ready</h3>
+      <div class="chips"><span class="chip">gentle-push-in</span><span class="chip">slow-pull-back</span><span class="chip">ken-burns-pan</span><span class="chip">vertical-drift</span><span class="chip">product-hero-reveal</span><span class="chip">keyframe-transform</span></div>
+      <p class="small"><code>keyframe-transform</code> takes your own keyframes for scale, X/Y and rotation, with six easing curves.</p>
+    </div>
+  </div>
+<pre>lionstone fx apply plan.json quick-punch-in --source 12.4-14.0
+lionstone fx apply plan.json zoom-through --join 2
+lionstone fx apply plan.json keyframe-transform --segment 3 \
+  --keyframes '{"zoom":[{"t":0,"v":1},{"t":2,"v":1.2}]}'</pre>
+  <div class="foot"><span>Lionstone v0.4.1</span><span class="pn">7</span></div>
+</section>
+
+<!--GALLERY:effects-->
+
+<!-- 8 · TEXT & CAPTIONS -->
+<section data-ch="08" class="page">
+  <div class="run"><span><b>08</b> · Text &amp; captions</span><span>Lionstone Reel Handbook</span></div>
+  <div class="chapter-no">08</div>
+  <h2>Text &amp; captions</h2>
+  <p class="lead">25 animated text presets for titles, numbers, labels and calls to action, plus 3 caption styles. Text is placed by finished-video time with <code>--at</code>.</p>
+  <table>
+    <tr><th>Use</th><th>Presets</th></tr>
+    <tr><td>Titles</td><td>Editorial Fade · Minimal Rise · Tracking Reveal · Line Reveal · Chapter Card · Mask Reveal · Soft Light Sweep · Depth Title · Film Title</td></tr>
+    <tr><td>Hooks</td><td><b>Word Pop</b> one word at a time · <b>Staggered Words</b> · <b>Phrase Build</b> · <b>Type-On</b></td></tr>
+    <tr><td>Numbers</td><td><b>Counter Up</b> · <b>Price Reveal</b> (optional old price) · <b>Stat Emphasis</b></td></tr>
+    <tr><td>Labels</td><td>Speaker Label · Pin Label · Name &amp; Role · Location Label · Minimal Info Bar</td></tr>
+    <tr><td>Brand &amp; CTA</td><td>Logo Reveal · Brand Lockup (uses the brand kit) · Signature End Card · <b>Call to Action</b></td></tr>
+  </table>
+  <h3>Caption styles</h3>
+  <div class="grid3">
+    <div class="card"><h4>Clean Captions</h4><p class="small">White, outlined, bottom-safe. Works everywhere.</p></div>
+    <div class="card"><h4>Active Word</h4><p class="small">The word being spoken pops in the accent colour. Made for Reels.</p></div>
+    <div class="card"><h4>Karaoke</h4><p class="small">Words fill with colour as they're spoken.</p></div>
+  </div>
+<pre>lionstone fx text plan.json word-pop --text "3 edits that save hours" --at 1.2 --duration 2.5
+lionstone fx text plan.json counter-up --text "hours saved" --at 14.5 --param to=12
+lionstone fx text plan.json price-reveal --text "$249,000" --at 8
+lionstone fx text plan.json cta --text "Follow for part 2" --subtext "New tips every week" --at 26
+lionstone fx apply plan.json caption-active-word --global</pre>
+  <div class="note"><b>Readable by rule.</b> Every text preset stays on screen at least as long as it takes to read, respects a minimum font size and stays inside the safe area. Captions are a separate layer, so titles never fight them. Text needs an FFmpeg build with <code>drawtext</code>; without it Lionstone skips text with a clear message.</div>
+  <div class="foot"><span>Lionstone v0.4.1</span><span class="pn">8</span></div>
+</section>
+
+<!--GALLERY:text-->
+
+<!-- 9 · REEL FX OVERVIEW -->
+<section data-ch="09" class="page dark">
+  <div class="run"><span><b>09</b> · Reel FX Pack</span><span>Lionstone Reel Handbook</span></div>
+  <div class="chapter-no">09</div>
+  <h2>Reel FX Pack <span class="sun">· since 0.3.2</span></h2>
+  <p class="lead">Twelve effects built for vertical video. Each is one command, works on 9:16, 1:1 and 16:9, and renders with the same FFmpeg code in preview and export.</p>
+  <figure class="figure"><img src="img/real-renders.png" alt=""><figcaption><b class="sun">Real render.</b> The same clip through all 12 effects, straight from the export code.</figcaption></figure>
+  <div class="grid2">
+    <div>
+      <h3 class="mt0">Two families</h3>
+      <ul>
+        <li><b>8 creative effects</b> <span class="pill">pro</span>: looks and overlays for hooks, quotes and highlights.</li>
+        <li><b>4 brand-aware effects</b> <span class="pill studio">studio</span>: layouts whose colours come from your brand kit (defaults: ink #14161C, gold #E8A33D).</li>
+      </ul>
+      <p class="small">Every name, look and parameter is original to Lionstone; the licence field reads <code>lionstone-original</code>.</p>
+    </div>
+<pre style="margin-top:0"><span class="c"># 1 browse</span>
+lionstone fx list --category reel-fx
+lionstone fx show stage-light
+<span class="c"># 2 real preview</span>
+lionstone fx preview stage-light --before-after --gif
+<span class="c"># 3 apply, then render</span>
+lionstone fx apply plan.json stage-light --source 0-3.5
+lionstone fx render plan.json</pre>
+  </div>
+  <div class="note mt2"><b>Parameters are validated</b> (type, range, colour format). Invalid values are rejected, never guessed. Effects only act inside their window; outside it the clip is untouched. <code>x</code>, <code>y</code> and <code>radius</code> are fractions of the frame (0 = left/top, 1 = right/bottom).</div>
+  <div class="foot"><span>Lionstone v0.4.1</span><span class="pn">9</span></div>
+</section>
+
+<!--GALLERY:reelfx-->
+
+<!-- 10 · CREATIVE 1-4 -->
+<section class="page">
+  <div class="run"><span><b>09</b> · Reel FX · creative effects</span><span>Lionstone Reel Handbook</span></div>
+  <span class="kicker">Creative effects · 1 of 2</span>
+  <h2>Hooks, quotes and highlights</h2>
+  <figure class="figure"><img src="img/04-reelfx-creative.jpg" alt=""><figcaption>Concept illustration: stage-light, neon-outline, halo-orbit and scan-line.</figcaption></figure>
+  <div class="grid2">
+    <div class="card"><h4><code>stage-light</code><span class="pill cost">low</span></h4>
+      <p class="promise">The room goes dark, you stay lit.</p>
+      <dl><dt>Params</dt><dd><code>intensity</code> 0.7 · <code>x</code> 0.5 · <code>y</code> 0.36 · <code>size</code> 0.5</dd>
+      <dt>Use</dt><dd>Podcast hooks, the sentence that matters, a reveal.</dd>
+      <dt>Set</dt><dd>intensity 0.6–0.8; <code>y</code> on the eye line (≈0.3–0.4 in 9:16).</dd>
+      <dt>Tip</dt><dd>Only on the 3–5 s hook line. Darkness that lasts the whole clip stops being an event.</dd></dl></div>
+    <div class="card"><h4><code>press-mono</code><span class="pill cost">low</span></h4>
+      <p class="promise">You, printed in tomorrow's paper.</p>
+      <dl><dt>Params</dt><dd><code>intensity</code> 0.8 · <code>grain</code> 0.4 · <code>paper</code> #F2EAD8</dd>
+      <dt>Use</dt><dd>Quotes, founder stories, “breaking news” hooks.</dd>
+      <dt>Set</dt><dd>intensity 0.7–0.9, grain 0.3–0.5; warmer paper #EFE2C8 feels archival.</dd>
+      <dt>Tip</dt><dd>Pair with <code>stat-emphasis</code> or <code>word-pop</code> for a stamped headline.</dd></dl></div>
+    <div class="card"><h4><code>frost-panels</code><span class="pill cost">medium</span></h4>
+      <p class="promise">Glass cards float beside you.</p>
+      <dl><dt>Params</dt><dd><code>panels</code> 2 (1–3) · <code>frost</code> 0.6 · <code>tint</code> #FFFFFF</dd>
+      <dt>Use</dt><dd>2–3 takeaways, feature lists, “three things” tutorials.</dd>
+      <dt>Set</dt><dd>2 panels to compare, 3 to list; tint with a brand colour.</dd>
+      <dt>Tip</dt><dd>Put 2–3 words on each card with <code>pin-label</code> or <code>phrase-build</code>.</dd></dl></div>
+    <div class="card"><h4><code>duotone-pop</code><span class="pill cost">low</span></h4>
+      <p class="promise">Two colours, zero noise.</p>
+      <dl><dt>Params</dt><dd><code>intensity</code> 1.0 · <code>shadow</code> #1A1238 · <code>highlight</code> #FF8A3D</dd>
+      <dt>Use</dt><dd>Promos, intros, outros, thumbnails, brand series.</dd>
+      <dt>Set</dt><dd>Strong brightness contrast between the two colours; 0.6 for a softer tint.</dd>
+      <dt>Tip</dt><dd>Use it for the first 1–2 s, then cut to natural. The change is the hook.</dd></dl></div>
+  </div>
+  <div class="foot"><span>Lionstone v0.4.1</span><span class="pn">10</span></div>
+</section>
+
+<!-- 11 · CREATIVE 5-8 -->
+<section class="page">
+  <div class="run"><span><b>09</b> · Reel FX · creative effects</span><span>Lionstone Reel Handbook</span></div>
+  <span class="kicker">Creative effects · 2 of 2</span>
+  <h2>Motion, light and outline</h2>
+  <div class="grid2 mt4">
+    <div class="card"><h4><code>scan-line</code><span class="pill cost">medium</span></h4>
+      <p class="promise">A light beam reads the frame.</p>
+      <dl><dt>Params</dt><dd><code>intensity</code> 0.7 · <code>speed</code> 0.6 sweeps/s (0.2–2) · <code>color</code> #7CF5FF</dd>
+      <dt>Use</dt><dd>AI and tech explainers, “let's analyse this”, before/after.</dd>
+      <dt>Set</dt><dd>speed 0.5–0.8 for one or two calm passes.</dd>
+      <dt>Tip</dt><dd>Window length = 1 / speed gives exactly one deliberate scan.</dd></dl></div>
+    <div class="card"><h4><code>afterimage</code><span class="pill cost">medium</span></h4>
+      <p class="promise">Every move leaves a trail.</p>
+      <dl><dt>Params</dt><dd><code>intensity</code> 0.8 · <code>decay</code> 0.92 (0.5–0.99)</dd>
+      <dt>Use</dt><dd>Energetic hooks, gestures, music, product spins.</dd>
+      <dt>Set</dt><dd>decay 0.88–0.95; higher means longer trails.</dd>
+      <dt>Tip</dt><dd>Trails come from bright areas: lit subject, darker background. A still frame shows nothing.</dd></dl></div>
+    <div class="card"><h4><code>halo-orbit</code><span class="pill cost">medium</span></h4>
+      <p class="promise">A ring of light circles your head.</p>
+      <dl><dt>Params</dt><dd><code>color</code> #FFD27A · <code>x</code> 0.5 · <code>y</code> 0.2 · <code>radius</code> 0.3 · <code>dots</code> 8 (3–12) · <code>speed</code> 0.3 rev/s</dd>
+      <dt>Use</dt><dd>“Big idea” moments, thought leadership, intros.</dd>
+      <dt>Set</dt><dd>y 0.15–0.25, radius 0.25–0.35, dots 6–8, speed 0.2–0.4.</dd>
+      <dt>Tip</dt><dd>It's drawn in front of you; on close-ups keep it above the eyes.</dd></dl></div>
+    <div class="card"><h4><code>neon-outline</code><span class="pill cost">medium</span></h4>
+      <p class="promise">Neon traces your silhouette.</p>
+      <dl><dt>Params</dt><dd><code>intensity</code> 0.75 · <code>detail</code> 0.5 · <code>color</code> #FF4FD8</dd>
+      <dt>Use</dt><dd>Tech, gaming, music, stylised promos, section transitions.</dd>
+      <dt>Set</dt><dd>detail 0.3–0.5 in busy rooms, 0.6+ on clean backdrops.</dd>
+      <dt>Tip</dt><dd>A clean background makes the silhouette the hero.</dd></dl></div>
+  </div>
+  <h3>Typical commands</h3>
+<pre>lionstone fx apply plan.json scan-line  --source 12.0-16.5 --param color=#7CF5FF
+lionstone fx apply plan.json halo-orbit --source 30-34 --param dots=6 --param y=0.18
+lionstone fx apply plan.json afterimage --source 4.0-6.0 --param decay=0.9
+lionstone fx preview halo-orbit --input talk.mp4 --start 12 --param dots=6</pre>
+  <div class="note"><b>Pair, don't pile.</b> One Reel FX effect plus one look plus captions reads as a style. Three effects on the same second reads as noise, and the effect budget won't allow it anyway (see chapter 13).</div>
+  <div class="foot"><span>Lionstone v0.4.1</span><span class="pn">11</span></div>
+</section>
+
+<!-- 12 · BRAND-AWARE -->
+<section class="page">
+  <div class="run"><span><b>09</b> · Reel FX · brand-aware effects</span><span>Lionstone Reel Handbook</span></div>
+  <span class="kicker">Brand-aware effects</span>
+  <h2>Your numbers, your frame, your opener</h2>
+  <p class="lead">These four take their colours as parameters, so a brand kit sets them once for the whole team.</p>
+  <figure class="figure"><img src="img/05-reelfx-brand.jpg" alt=""><figcaption>Concept illustration: insight-split, brand-frame and pixel-resolve.</figcaption></figure>
+  <div class="grid2">
+    <div class="card"><h4><code>insight-split</code><span class="pill cost">medium</span></h4>
+      <p class="promise">Your numbers on top, you below.</p>
+      <dl><dt>Params</dt><dd><code>split</code> 0.38 · <code>bars</code> 5 (2–7) · <code>values</code> · <code>bg</code> · <code>accent</code></dd>
+      <dt>Use</dt><dd>Results, growth, market data, prices.</dd>
+      <dt>Tip</dt><dd>Pass real data: <code>values=0.3,0.55,0.9</code>; add <code>counter-up</code> for the number.</dd></dl></div>
+    <div class="card"><h4><code>brand-frame</code><span class="pill cost">low</span></h4>
+      <p class="promise">Your clip, framed in your brand.</p>
+      <dl><dt>Params</dt><dd><code>inset</code> 0.84 (0.7–0.95) · <code>bg</code> · <code>accent</code></dd>
+      <dt>Use</dt><dd>Series formats, quotes, guest intros, client reels.</dd>
+      <dt>Tip</dt><dd>Inset 0.8–0.88 leaves room for a title and captions. Put it in a team preset.</dd></dl></div>
+    <div class="card"><h4><code>progress-rail</code><span class="pill cost">low</span></h4>
+      <p class="promise">A rail fills as you count the steps.</p>
+      <dl><dt>Params</dt><dd><code>steps</code> 5 (2–8) · <code>side</code> left/right/top · <code>track</code> · <code>accent</code></dd>
+      <dt>Use</dt><dd>Tutorials, listicles, recipes, checklists.</dd>
+      <dt>Tip</dt><dd>Steps = points you make; <code>side=top</code> with captions at the bottom.</dd></dl></div>
+    <div class="card"><h4><code>pixel-resolve</code><span class="pill cost">high</span></h4>
+      <p class="promise">Your shot assembles out of pixels.</p>
+      <dl><dt>Params</dt><dd><code>duration</code> 1.2 s (0.4–3) · <code>tone_a</code> · <code>tone_b</code></dd>
+      <dt>Use</dt><dd>Openers, reveals, scene changes, brand intros.</dd>
+      <dt>Tip</dt><dd>A 1–2 s window after a cut (<code>--source 0-1.5</code>) makes every episode start the same way.</dd></dl></div>
+  </div>
+  <div class="foot"><span>Lionstone v0.4.1</span><span class="pn">12</span></div>
+</section>
+
+<!-- 13 · SHOWCASE -->
+<section class="page dark">
+  <div class="run"><span><b>09</b> · Reel FX · showcase reel</span><span>Lionstone Reel Handbook</span></div>
+  <span class="kicker">FX Showcase Reel</span>
+  <h2>One command, one clip, one effect</h2>
+  <p class="lead"><code>lionstone fx showcase</code> turns any effect into a 6.4-second, 1080×1920, 30 fps vertical reel in Lionstone's console design. It's a ready-made post for “I edited this with one command”.</p>
+<pre>lionstone fx showcase stage-light talk.mp4 -o stage-light-reel.mp4
+lionstone fx showcase halo-orbit talk.mp4 --start 12 --param dots=6</pre>
+  <!--GALLERY:showcase-->
+  <table>
+    <tr><th>Time</th><th>What the viewer sees</th></tr>
+    <tr><td class="mono nowrap">0.00–1.00 s</td><td>Lionstone console, your clip in a card, a blinking cursor</td></tr>
+    <tr><td class="mono nowrap">1.00–2.50 s</td><td><code>lionstone fx apply &lt;effect&gt;</code> types itself; a card shows the effect's name and promise</td></tr>
+    <tr><td class="mono nowrap">2.50–3.80 s</td><td>“Rendering… REAL RENDER” while the clip dissolves through the gold/ink pixel dither</td></tr>
+    <tr><td class="mono nowrap">3.80–6.40 s</td><td>The real render fills the screen with an “Edited with Lionstone” pill; hold</td></tr>
+  </table>
+  <h3>Make it a series</h3>
+  <ul>
+    <li>Keep the input clip identical across posts. The same “before” makes a numbered series comparable.</li>
+    <li>One post per effect gives you 12 posts from one recording.</li>
+    <li>The “after” is rendered by the export builder, so the reel never shows a mock result.</li>
+  </ul>
+  <div class="grid3 mt4">
+    <div class="stat"><b>6.4 s</b><span>fixed length, loops cleanly</span></div>
+    <div class="stat"><b>1080×1920</b><span>vertical, 30 fps</span></div>
+    <div class="stat"><b>1</b><span>command per post</span></div>
+  </div>
+  <div class="foot"><span>Lionstone v0.4.1</span><span class="pn">13</span></div>
+</section>
+
+<!-- 14 · BUILD A REEL 1 -->
+<section data-ch="10" class="page">
+  <div class="run"><span><b>10</b> · Build a Reel</span><span>Lionstone Reel Handbook</span></div>
+  <div class="chapter-no">10</div>
+  <h2>Build a Reel, step by step</h2>
+  <p class="lead">The brief: a 30-second vertical Reel from one talking-head recording, titled “3 edits that save hours”. Hook in the first second, three takeaways, one number, a clear call to action.</p>
+  <figure class="figure"><img src="img/06-storyboard.jpg" alt=""><figcaption>Concept storyboard: pixel opener → stage-light hook → three glass cards → data split → progress rail → call to action.</figcaption></figure>
+  <h3>Beat sheet</h3>
+  <table class="beats">
+    <tr><th>Time</th><th>Beat</th><th>Tool</th><th>Why</th></tr>
+    <tr><td>0.0–1.2</td><td>Opener</td><td><code>pixel-resolve</code></td><td>A branded first frame stops the scroll</td></tr>
+    <tr><td>1.2–3.7</td><td>Hook line</td><td><code>stage-light</code> + <code>word-pop</code></td><td>Light and words land on the promise</td></tr>
+    <tr><td>3.7</td><td>First cut</td><td><code>zoom-through</code></td><td>Keeps momentum into the content</td></tr>
+    <tr><td>8.1–13.4</td><td>Three takeaways</td><td><code>frost-panels</code> (3)</td><td>A list the eye can count</td></tr>
+    <tr><td>13.5–19.8</td><td>Proof</td><td><code>insight-split</code> + <code>counter-up</code></td><td>Numbers make it believable</td></tr>
+    <tr><td>19.8</td><td>Cut</td><td><code>glitch-cut</code></td><td>A beat before the steps</td></tr>
+    <tr><td>19.8–25.1</td><td>Steps</td><td><code>progress-rail</code> (3, top)</td><td>Shows progress, keeps viewers to the end</td></tr>
+    <tr><td>26.0–29.8</td><td>Close</td><td><code>cta</code></td><td>One clear next action</td></tr>
+    <tr><td>all</td><td>Base</td><td><code>look-punchy-social</code> + <code>caption-active-word</code></td><td>Reads on phones; works with sound off</td></tr>
+  </table>
+  <div class="foot"><span>Lionstone v0.4.1</span><span class="pn">14</span></div>
+</section>
+
+<!-- 15 · BUILD A REEL 2 -->
+<section class="page">
+  <div class="run"><span><b>10</b> · Build a Reel</span><span>Lionstone Reel Handbook</span></div>
+  <span class="kicker">The commands</span>
+  <h2>From recording to Reel</h2>
+  <p class="small"><b>Times:</b> <code>--source</code> uses seconds in the original recording; <code>--at</code> uses seconds in the finished Reel. Run <code>lionstone fx segments</code> to see how they line up after the dead air is removed.</p>
+<pre><span class="c"># 1 · edit vertically with face tracking, then see the segments</span>
+lionstone edit talk.mp4 --aspect 9:16 --reframe face --profile social
+lionstone fx segments talk_lionstone/plan.json
+P=talk_lionstone/plan.json
+
+<span class="c"># 2 · base: one look + word-highlight captions</span>
+lionstone fx apply $P look-punchy-social --global --param intensity=0.7
+lionstone fx apply $P caption-active-word --global
+
+<span class="c"># 3 · opener and hook</span>
+lionstone fx apply $P pixel-resolve --source 0-1.2 --param duration=1.0
+lionstone fx apply $P stage-light   --source 1.2-3.7 --param intensity=0.75 --param y=0.34
+lionstone fx text  $P word-pop --text "3 edits that save hours" --at 1.2 --duration 2.5
+lionstone fx apply $P zoom-through --join 0
+
+<span class="c"># 4 · content: takeaways, proof, steps</span>
+lionstone fx apply $P frost-panels  --source 10.4-15.7 --param panels=3
+lionstone fx apply $P insight-split --source 16.9-23.2 --param values=0.25,0.5,0.9
+lionstone fx text  $P counter-up --text "hours saved" --at 14.5 --duration 4 --param to=12
+lionstone fx apply $P glitch-cut --join 3
+lionstone fx apply $P progress-rail --source 24.1-29.4 --param steps=3 --param side=top
+
+<span class="c"># 5 · close, check, render</span>
+lionstone fx text  $P cta --text "Follow for part 2" --subtext "New tips every week" --at 26 --duration 3.8
+lionstone fx applied $P
+lionstone fx render $P</pre>
+  <div class="ok"><b>Verified with v0.4.2.</b> This exact sequence was run on a 35-second 1080×1920 test recording (test pattern and tone, no speech or face): rendered 1080×1920 at 30 fps, 28.9 s long, and QA reported <i>17 checks run, 4 skipped (reported), no issues: deliverable</i>.</div>
+  <h3>Polish passes</h3>
+  <ul class="small">
+    <li><b>Change a value:</b> <code>lionstone fx set $P &lt;instance-id&gt; --param intensity=0.6</code>, then render again.</li>
+    <li><b>Remove one:</b> <code>lionstone fx remove $P &lt;instance-id&gt;</code>. IDs are listed by <code>fx applied</code>.</li>
+    <li><b>Post a teaser:</b> <code>lionstone fx showcase stage-light talk.mp4</code> for a 6.4 s companion clip.</li>
+  </ul>
+  <div class="foot"><span>Lionstone v0.4.1</span><span class="pn">15</span></div>
+</section>
+
+<!--GALLERY:reel-->
+
+<!-- 16 · RECIPES -->
+<section data-ch="11" class="page">
+  <div class="run"><span><b>11</b> · Recipes</span><span>Lionstone Reel Handbook</span></div>
+  <div class="chapter-no">11</div>
+  <h2>Recipes by content type</h2>
+  <p class="lead">Starting points that respect the effect budget. Swap times for your own; keep the structure.</p>
+  <div class="grid2">
+    <div class="card"><h4>Podcast clip</h4><p class="small">Code <span class="mono gold">O1 W1 A2 G2 S2 P2 L1</span> for the episode; for the Reel, cut it with <code>clips</code>.</p>
+<pre>lionstone clips plan.json -n 5 --aspect 9:16 --reframe face
+lionstone fx apply $P stage-light --source 0-3.5</pre></div>
+    <div class="card"><h4>Quote card</h4><p class="small">Documentary feel, one stamped headline.</p>
+<pre>lionstone fx apply $P press-mono --source 41.2-47.0
+lionstone fx text $P word-pop --text "…" --at 1</pre></div>
+    <div class="card"><h4>Real-estate tour</h4><p class="small">Bright rooms, a price, a location.</p>
+<pre>lionstone fx apply $P look-bright-interior --global
+lionstone fx apply $P vertical-drift --segment 2
+lionstone fx text $P price-reveal --text "$249,000" --at 8
+lionstone fx text $P location-label --text "Old Town" --at 3</pre></div>
+    <div class="card"><h4>Product launch</h4><p class="small">Neutral colour, hero move, duotone intro.</p>
+<pre>lionstone fx apply $P look-product-neutral --global
+lionstone fx apply $P duotone-pop --source 0-1.5
+lionstone fx apply $P product-hero-reveal --segment 1</pre></div>
+    <div class="card"><h4>Tutorial / listicle</h4><p class="small">Count the steps, label each one.</p>
+<pre>lionstone fx apply $P progress-rail --source 30-90 --param steps=5
+lionstone fx apply $P frost-panels --source 20-32 --param panels=3</pre></div>
+    <div class="card"><h4>Tech / AI explainer</h4><p class="small">Cool grade, a scanning beam on the reveal.</p>
+<pre>lionstone fx apply $P look-steel-blue --global
+lionstone fx apply $P scan-line --source 12-13.7 --param speed=0.6</pre></div>
+  </div>
+  <p class="cap mt2">Not sure? <code>lionstone fx auto plan.json --content vlog --style social --dry-run</code> proposes a consistent set with a reason for each choice. Content: podcast, interview, talk, lecture, real-estate, product, vlog, music, corporate. Styles: cinematic, minimal, energetic, documentary, social.</p>
+  <div class="foot"><span>Lionstone v0.4.1</span><span class="pn">16</span></div>
+</section>
+
+<!-- 17 · BEYOND -->
+<section data-ch="12" class="page">
+  <div class="run"><span><b>12</b> · Beyond the Reel</span><span>Lionstone Reel Handbook</span></div>
+  <div class="chapter-no">12</div>
+  <h2>Beyond the Reel</h2>
+  <figure class="figure short"><img src="img/07-team.jpg" alt=""><figcaption>Concept illustration: shared brand kit, roles, locked presets and project hand-off.</figcaption></figure>
+  <table>
+    <tr><th>Command</th><th>What it does</th></tr>
+    <tr><td><code>lionstone fx auto</code></td><td>The Lionstone Agent proposes one look, emphasis zooms and transitions on real topic changes, with a reason for each.</td></tr>
+    <tr><td><code>lionstone clips plan.json -n 5</code></td><td>Finds self-contained moments with a strong first line; renders 9:16 with face tracking, a hook title and word-highlight captions. <code>--llm</code> re-ranks with your own Claude API key.</td></tr>
+    <tr><td><code>lionstone multicam</code></td><td>Syncs cameras and mics on audio, catches clock drift, gates mic bleed and cuts to the active speaker.</td></tr>
+    <tr><td><code>lionstone style learn a.mp4 b.mp4</code></td><td>Learns cut rhythm, pauses, loudness and colour from videos you like; reuse it on new edits.</td></tr>
+    <tr><td><code>lionstone variants talk.mp4</code></td><td>Natural, cinematic and dynamic edits side by side.</td></tr>
+    <tr><td><code>lionstone export plan.json</code></td><td>FCPXML 1.10 for DaVinci Resolve and Final Cut Pro, CMX3600 EDL for Premiere Pro, pointing at your original media.</td></tr>
+    <tr><td><code>lionstone brand create kit.json --team</code></td><td>Brand kit: colours, licensed fonts, logo, lower third, CTA, end card, signature look and transition.</td></tr>
+    <tr><td><code>lionstone team init "ACME"</code></td><td>Roles (viewer, editor, admin, owner) in a shared folder or git repo; nothing is uploaded.</td></tr>
+    <tr><td><code>lionstone preset save … --team --locked</code></td><td>Versioned team presets with history and revert; locked ones only admins change.</td></tr>
+    <tr><td><code>lionstone fx batch &lt;id&gt; projects/*/plan.json</code></td><td>One look or transition across a whole season.</td></tr>
+    <tr><td><code>lionstone mcp</code></td><td>MCP server: Claude, Cursor or any MCP client can plan, review and render edits.</td></tr>
+  </table>
+  <div class="foot"><span>Lionstone v0.4.1</span><span class="pn">17</span></div>
+</section>
+
+<!-- 18 · RULES & QA -->
+<section data-ch="13" class="page">
+  <div class="run"><span><b>13</b> · Rules, QA &amp; limits</span><span>Lionstone Reel Handbook</span></div>
+  <div class="chapter-no">13</div>
+  <h2>Rules, QA &amp; honest limits</h2>
+  <div class="grid2">
+    <div>
+      <h3 class="mt0">The effect budget</h3>
+      <ul>
+        <li>At most <b>one main + one helper effect</b> at the same moment.</li>
+        <li>Never two <b>high-cost</b> effects overlapping (<code>pixel-resolve</code> and <code>stabilization</code> are high-cost).</li>
+        <li>Effects ramp in and out inside their window and never animate outside it.</li>
+        <li>Flash limit: no more than <b>3 flashes per second</b>; glitch effects are capped to match.</li>
+      </ul>
+      <h3>QA before delivery</h3>
+      <p class="small">Every render is decoded end to end and checked for A/V sync, black and frozen frames, EBU R128 loudness and true peak, clicks at every join and caption timing. Pro adds stale plans, flashes, exposure, saturation and graphics covering faces (with <code>lionstone[vision]</code>).</p>
+      <div class="note"><b>Skipped is not passed.</b> A check that can't run is reported as skipped, never as passed.</div>
+    </div>
+    <div>
+      <h3 class="mt0">Honest limits</h3>
+      <ul class="small">
+        <li><code>frost-panels</code> and <code>insight-split</code> use fixed, face-safe positions for a centred speaker; they don't track faces.</li>
+        <li><code>halo-orbit</code> is drawn in front of the speaker (no depth sorting).</li>
+        <li><code>afterimage</code> needs movement and bright areas.</li>
+        <li>Brand colours are parameters set by brand kits, not read from the video.</li>
+        <li>Two-clip cross dissolves, particles and subject masking are <b>planned</b>, not shipped.</li>
+        <li>Text presets need FFmpeg with <code>drawtext</code>.</li>
+        <li>Remotion-quality titles P01–P06 need Node.js 18+ and <code>cd remotion &amp;&amp; npm ci</code>; otherwise FFmpeg fallbacks are used.</li>
+      </ul>
+      <h3>Privacy</h3>
+      <p class="small">Lionstone runs locally and works offline. Your footage is not uploaded; team workspaces live in a folder or git repo you control. Only <code>clips --llm</code> calls an API, with your own key.</p>
+    </div>
+  </div>
+  <h3>A real QA report: the chapter 10 Reel</h3>
+<pre><span class="k">QA report: talk.edit.mp4 · Deliverable: yes</span>
+✓ decode_full      every frame and audio packet decoded without errors
+✓ av_length        video/audio length difference 0 ms
+✓ format           1080x1920 @ 30.000 fps (target 1080x1920 @ 30.0)
+✓ loudness         -13.9 LUFS (target -14.0 ±1.0)
+✓ true_peak        -5.6 dBTP (ceiling -1.0)
+✓ join_clicks      inspected 4/4 joins, 0 suspicious
+✓ fx_rendered      12 applied, 0 skipped
+✓ flicker          max 0 strong flashes in any 1 s window (limit 3)
+✓ graphics_rules   3 graphics · overlaps 0 · too short 0 · outside video 0
+<span class="c">- caption_timing   skipped: no transcript (the test clip has no speech)
+- faces_covered    skipped: needs pip install "lionstone[vision]"</span></pre>
+  <p class="cap">Excerpt. The full report is written next to the video as <code>qa.md</code> and <code>qa.json</code>.</p>
+  <div class="foot"><span>Lionstone v0.4.1</span><span class="pn">18</span></div>
+</section>
+
+<!-- 19 · CHEAT SHEET -->
+<section data-ch="14" class="page dark">
+  <div class="run"><span><b>14</b> · Cheat sheet</span><span>Lionstone Reel Handbook</span></div>
+  <span class="kicker">Keep this page open</span>
+  <h2>Command cheat sheet</h2>
+  <div class="grid2 mt4">
+<pre style="margin:0"><span class="k">EDIT</span>
+lionstone edit talk.mp4
+lionstone styles --cmd O6 W3 A3 G5 S4 P3
+lionstone transcript plan.json
+lionstone apply-transcript plan.json
+lionstone cuts plan.json
+lionstone render plan.json
+
+<span class="k">BROWSE</span>
+lionstone fx list --kind look
+lionstone fx list --category reel-fx
+lionstone fx show stage-light
+lionstone fx fav stage-light
+lionstone fx preview ID --before-after --gif
+
+<span class="k">FINISH</span>
+lionstone fx segments $P
+lionstone fx apply $P ID --global
+lionstone fx apply $P ID --source A-B
+lionstone fx apply $P ID --join N
+lionstone fx text  $P ID --text "…" --at S
+lionstone fx auto  $P --content talk --dry-run</pre>
+<pre style="margin:0"><span class="k">MANAGE</span>
+lionstone fx applied $P
+lionstone fx set $P FXID --param k=v
+lionstone fx remove $P FXID
+lionstone fx render $P
+
+<span class="k">REELS</span>
+lionstone reels start
+lionstone reels identity "Acme" --footage t.mp4 …
+lionstone reels setup "Acme" --pick 0 205
+lionstone reels make &lt;reel&gt;
+lionstone clips $P -n 5 --aspect 9:16
+lionstone fx showcase ID talk.mp4
+
+<span class="k">PRO WORKFLOW</span>
+lionstone multicam --cam a=a.mp4 --cam b=b.mp4
+lionstone style learn ref1.mp4 ref2.mp4
+lionstone variants talk.mp4
+lionstone export $P
+
+<span class="k">TEAM</span>
+lionstone team init "ACME"
+lionstone brand apply $P ACME
+lionstone fx batch ID projects/*/plan.json
+
+<span class="k">CHECK</span>
+lionstone doctor · lionstone qa video.mp4</pre>
+  </div>
+  <h3>The 12 Reel FX at a glance</h3>
+  <div class="chips"><span class="chip">stage-light</span><span class="chip">press-mono</span><span class="chip">frost-panels</span><span class="chip">duotone-pop</span><span class="chip">scan-line</span><span class="chip">afterimage</span><span class="chip">halo-orbit</span><span class="chip">neon-outline</span><span class="chip">insight-split</span><span class="chip">brand-frame</span><span class="chip">progress-rail</span><span class="chip">pixel-resolve</span></div>
+  <h3>Pick by goal</h3>
+  <table>
+    <tr><th>You want to…</th><th>Reach for</th></tr>
+    <tr><td>Stop the scroll in the first second</td><td><code>pixel-resolve</code> · <code>duotone-pop</code> · <code>word-pop</code></td></tr>
+    <tr><td>Land the one sentence that matters</td><td><code>stage-light</code> · <code>quick-punch-in</code></td></tr>
+    <tr><td>List takeaways or steps</td><td><code>frost-panels</code> · <code>progress-rail</code> · <code>phrase-build</code></td></tr>
+    <tr><td>Prove it with numbers</td><td><code>insight-split</code> · <code>counter-up</code> · <code>stat-emphasis</code></td></tr>
+    <tr><td>Make it feel techy</td><td><code>scan-line</code> · <code>neon-outline</code> · <code>look-steel-blue</code></td></tr>
+    <tr><td>Quote someone</td><td><code>press-mono</code> · <code>look-classic-bw</code></td></tr>
+    <tr><td>Brand a whole series</td><td><code>brand-frame</code> · brand kit · locked team preset</td></tr>
+    <tr><td>End with an action</td><td><code>cta</code> · <code>end-card</code></td></tr>
+  </table>
+  <div class="foot"><span>Lionstone v0.4.1</span><span class="pn">19</span></div>
+</section>
+
+<!-- 20 · BACK COVER -->
+<section class="page cover">
+  <img class="bg" src="img/01-cover.jpg" alt="" style="filter: blur(2px) brightness(.45)">
+  <div class="inner" style="justify-content:center; align-items:center; text-align:center">
+    <svg viewBox="-130 -130 260 260" style="width:26mm;height:26mm"><g stroke="#E8A33D" stroke-width="10" stroke-linecap="round"><line x1="0" y1="-95" x2="0" y2="-125"/><line x1="67" y1="-67" x2="88" y2="-88"/><line x1="95" y1="0" x2="125" y2="0"/><line x1="67" y1="67" x2="88" y2="88"/><line x1="0" y1="95" x2="0" y2="125"/><line x1="-67" y1="67" x2="-88" y2="88"/><line x1="-95" y1="0" x2="-125" y2="0"/><line x1="-67" y1="-67" x2="-88" y2="-88"/></g><polygon points="0,-78 68,-39 68,39 0,78 -68,39 -68,-39" fill="#16181d" stroke="#E8A33D" stroke-width="8"/><polygon points="-18,-30 32,0 -18,30" fill="#F5C400"/></svg>
+    <h2 style="margin-top:8mm; font-size:24pt">One agent. A complete workflow.</h2>
+    <p class="sub" style="margin:4mm auto 0">Free and open source under Apache-2.0.<br>Local-first · no upload · no license key · no watermark.</p>
+    <p class="mono" style="margin-top:10mm; color:#F5C400; font-size:10pt">github.com/ismailarslantas/lionstone</p>
+    <p class="cap" style="margin-top:14mm; color:#bdb6a6">Third-party product names are trademarks of their owners and are used only to describe file compatibility.<br>Illustrations are concept art; pages marked “real render” show actual Lionstone output.</p>
+  </div>
+</section>
+
+</body>
+</html>

@@ -2,7 +2,7 @@
   "name": "@lionstone/effects",
   "version": "0.1.0",
   "private": true,
-  "description": "Lionstone title & lower-third effects as Remotion compositions (free pack F01–F06).",
+  "description": "Lionstone title & lower-third effects as Remotion compositions (F01–F06 and P01–P06).",
   "license": "Apache-2.0",
   "scripts": {
     "studio": "remotion studio src/index.ts",
@@ -12,14 +12,18 @@
   },
   "dependencies": {
     "@remotion/cli": "4.0.537",
+    "@remotion/zod-types": "4.0.537",
+    "@theatre/core": "0.7.2",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "remotion": "4.0.537",
-    "zod": "4.6.7",
-    "@remotion/zod-types": "4.0.537"
+    "zod": "4.6.7"
   },
   "devDependencies": {
     "@types/react": "19.3.0",
     "typescript": "7.0.2"
+  },
+  "overrides": {
+    "zod": "$zod"
   }
 }

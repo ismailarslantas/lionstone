@@ -103,6 +103,16 @@ def silence_cuts(silences: Iterable[tuple[float, float]], words: list[Word],
     return cuts
 
 
+def is_phantom_segment(words: list[Word]) -> bool:
+    """Whisper invents closing lines over silence ("see you in the next video"): their words
+    collapse to zero length or carry almost no confidence. Real speech does neither."""
+    if not words:
+        return False
+    collapsed = sum(1 for w in words if w.end - w.start < 0.02)
+    mean_conf = sum(w.confidence for w in words) / len(words)
+    return (len(words) >= 2 and collapsed / len(words) >= 0.4) or mean_conf < 0.15
+
+
 def word_cuts(words: list[Word], preset: Intensity, duration: float) -> list[Cut]:
     """Fillers, stutters, repeated phrases, false starts, isolated discourse markers."""
     words = sorted(words, key=lambda w: w.start)
@@ -130,6 +140,19 @@ def word_cuts(words: list[Word], preset: Intensity, duration: float) -> list[Cut
         gap_before = w.start - words[i - 1].end if i > 0 else 9.0
         gap_after = words[i + 1].start - w.end if i + 1 < n else 9.0
 
+        retake = 0
+        if preset.remove_repeats:
+            for k in range(min(8, (n - i) // 2), 2, -1):
+                if ([norm(x.text) for x in words[i:i + k]] ==
+                        [norm(x.text) for x in words[i + k:i + 2 * k]]
+                        and words[i + k].start - words[i + k - 1].end < 3.0):
+                    retake = k
+                    break
+        if retake:  # keep the second take: speakers restart to fix the first
+            span(i, i + retake - 1, "repeat",
+                 f'repeated sentence "{" ".join(x.text for x in words[i:i + retake])}"', 0.8)
+            i += retake
+            continue
         if preset.remove_fillers and is_filler(w.text):
             span(i, i, "filler", f'filler "{w.text}"', 0.95)
         elif preset.remove_repeats and t and t == nxt and len(t) > 0 and gap_after < 0.6:

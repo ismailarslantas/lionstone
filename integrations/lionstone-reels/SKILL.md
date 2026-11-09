@@ -1,0 +1,72 @@
+---
+name: lionstone-reels
+description: Produce brand-specific Instagram Reels end to end with Lionstone — find a topic for the brand's sector, write hooks and a spoken script, then turn the raw footage into a captioned, sound-designed, QA-checked Reel with covers, caption and a calendar slot. Use when the user says "Reels", "reel çıkar", "konu bul", "hook yaz", "script yaz", "write a hook", gives raw footage for a brand, or asks for a content calendar.
+---
+
+# Lionstone Reels
+
+You run the creative steps; Lionstone runs and measures the production steps. Write copy in the
+brand's language (`language` in `brand.json`), talk to the user in theirs, and in the folder that holds `brands/` and `projects/`.
+
+## 0 · Start
+Always run `lionstone reels start --json` first.
+- `state: ready`: a saved brand identity exists. Ask the user which option they want, using its labels:
+  **produce with the saved brand identity** or **prepare with a new brand identity**. Same → go to step 1.
+  New → ask for the footage and examples, then do "Identity" and "Catalogue" below (the old identity is archived).
+- `new`, `needs_identity`, `needs_setup`: do the missing steps below, in order.
+
+**Identity.** Ask for one talking-head video of the user and 3-5 example Reels in the style they want for the brand.
+Run `lionstone reels identity "<brand>" --footage <take> --example <a> --example <b> --example <c>`. Read
+`identity/identity.md`, look at `identity/frames/*.jpg`, and complete `brand.md` with what you see (caption look, text
+placement, framing). Say which measurements were skipped and why; music is an estimate.
+
+**Catalogue.** Before any Reel, ask what to use. Run `lionstone reels catalog "<brand>" --json`, show the user each
+group's `sheet` image and offer to open the page (`lionstone reels catalog "<brand>" --open`). They answer with numbers.
+Every group's first number and `0` mean "decide for me from my brand identity": always offer that. Apply with
+`lionstone reels setup "<brand>" --pick <numbers>`, then show the choices and, for automatic ones, the reasons.
+The man in the catalogue is a fictional example. The Reel is always made from the user's own footage.
+
+## Brand
+`lionstone reels brand list`. If the brand is missing, ask for: name, @handle, sector, audience,
+tone, products, results the brand can honestly claim, audience problems, banned words, CTA,
+colours. Then `lionstone reels brand init … --language <en|tr>` and fill `brands/<slug>/brand.json` + `brand.md`.
+`lionstone reels brand check <name>` must pass. Always read `brand.json` and `brand.md` before writing.
+
+## 1 · Topic (per reel)
+Propose 3-5 topics for the sector and audience. For each, one line on **why it will work for this
+audience** (a pain from `pains`, a question they ask, a seasonal moment). Never invent statistics,
+prices or legal facts; if a claim needs a source, ask the user or search. Create the folder:
+`lionstone reels new "<brand>" "<topic>"`.
+
+## 2 · Hooks
+`lionstone reels hooks "<brand>" "<topic>" --angle <a> --angle <b>` gives filled templates in the
+brand's language; `--lang en|tr|both` picks the English or Turkish library or lists both.
+Use them as raw material, not final copy. Write at least two hooks from **different angles**
+(A/B), each ≤ 14 words and readable in 2 seconds, plus a second hook for second 3-6.
+
+## 3 · Script
+Spoken, not written: short sentences, the brand's tone, opens with the main hook, delivers one
+idea, ends with the CTA. Fit `target_seconds` at ~2.7 words/s in English, ~2.5 in Turkish. Put stage directions in
+[brackets]; they are ignored by timing and by the script check.
+
+Fill `reel.json`: `why`, `angle`, `hooks`, `second_hook`, `script`, `cta`, `caption`,
+`hashtags` (3-5 focused), `cover_text` (1-3 short variants), `status: "script"`.
+Run `lionstone reels lint <folder>` and fix every 🔴 before showing the user.
+
+## 4 · Production
+The user puts footage into `<folder>/raw/` (older reels: `ham/`). Then:
+`lionstone reels make <folder> --identity same` (add `--music <file>` only if the user owns the licence).
+Read `<folder>/delivery/report.md` (older reels: `teslim/`).
+- Only say the Reel is ready if it says **READY TO DELIVER**.
+- Report every "Review"/"Fix" row and every skipped check honestly.
+- Script mismatch → show missing/changed words; ask whether to re-cut or accept.
+- Text overflow → shorten the hook / cover text in `reel.json`, re-run `make`.
+- **NEEDS REVIEW** means a person must look: show the listed script differences and leftover repeats.
+- Spelling of names in captions → point the user to `edit/room.html` (double-click a word),
+  then `lionstone reels room-apply` + `lionstone reels make <folder> --keep-plan`.
+
+## 5 · Calendar
+`lionstone reels schedule <folder> "YYYY-MM-DD HH:MM"`, `lionstone reels calendar --brand <b>`,
+`--ics calendar.ics` to export. Mark published reels with `lionstone reels status <folder> published`.
+
+Never overwrite the user's footage. Never promise virality; promise a clean, on-brand, checked video.
