@@ -12,6 +12,7 @@ import { DepthParallaxTitle } from "./effects/DepthParallaxTitle";
 import { FilmGrainTitle } from "./effects/FilmGrainTitle";
 import { StaggeredKineticTitle } from "./effects/StaggeredKineticTitle";
 import { SignatureBrandReveal } from "./effects/SignatureBrandReveal";
+import { TheatreKeyframedTitle } from "./effects/TheatreKeyframedTitle";
 import { defaults, effectSchema, EffectProps } from "./lib/schema";
 import { totalSeconds } from "./lib/timing";
 
@@ -39,6 +40,8 @@ const PACK: Array<{ id: string; component: React.FC<any>; props: Partial<EffectP
   { id: "StaggeredKineticTitle", component: StaggeredKineticTitle, props: { enter: 1.2, hold: 2.6, exit: 0.5, text: "Kurguyu yapay zekâya bırak" } },
   { id: "SignatureBrandReveal", component: SignatureBrandReveal, props: { enter: 1.6, hold: 1.6, exit: 0.6, text: "Lionstone", subtext: "STUDIO" } },
   { id: "LetterSpacingReveal", component: LetterSpacingReveal, props: { enter: 1.3, hold: 2.5, exit: 0.6 } },
+  // Theatre.js keyframes (see src/lib/theatre.ts and docs/motion-fx-2.md)
+  { id: "TheatreKeyframedTitle", component: TheatreKeyframedTitle, props: { enter: 1.2, hold: 2.4, exit: 0.6, text: "LIONSTONE", subtext: "MOTION FX 2" } },
 ];
 
 export const Root: React.FC = () => (

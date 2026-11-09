@@ -2,10 +2,11 @@
 
 Run after editing: python tools/gen_motion_presets.py
 
-Seventeen motion-design effects for talking-head Reels, Shorts and videos, new in
-Lionstone 1.0. Every name, look and parameter set is original to Lionstone; the
-renderers are FFmpeg filter math in ``features/renderers/motion_fx.py`` plus the
-bundled Poppins / DM Serif Display fonts (SIL OFL). No stock assets are bundled.
+Twenty-five motion-design effects for talking-head Reels, Shorts and videos: the 17 of
+Lionstone 1.0 and the 8 of Motion FX 2 (1.1). Every name, look and parameter set is
+original to Lionstone; the renderers are FFmpeg filter math in
+``features/renderers/motion_fx.py`` and ``motion_fx2.py`` plus the bundled Poppins /
+DM Serif Display fonts (SIL OFL). No stock assets are bundled.
 """
 
 from __future__ import annotations
@@ -171,10 +172,76 @@ MOTION_FX = [
 ]
 
 
+MOTION_FX2 = [
+    fx("split-flap", "Split-flap Board", "studio", "a departures board spells your word",
+       "Mechanical letter tiles flip through random characters and land one after another on "
+       "your word, with a hinge line and an accent rail under the board.",
+       {"text": text("LIONSTONE", 16), "y": num(0.22, 0.08, 0.9), "flips": integer(8, 3, 14),
+        "rate": num(14, 6, 24, "flips/s"), "stagger": num(0.07, 0.0, 0.3, "s"),
+        "tile": color("#16171C"), "ink": color("#FFFFFF"), "accent": color(ACCENT)},
+       tags=["text", "title", "board", "fx2"], text_fx=True),
+    fx("count-up", "Count-up Stat", "studio", "your number counts up on a card",
+       "A brand card counts from zero to your number with an ease-out, while an accent bar "
+       "fills under it. Add a prefix ($), a suffix (+, %, K) and a label.",
+       {"value": num(1240, 0, 1e9), "decimals": integer(0, 0, 2), "prefix": text("", 4),
+        "suffix": text("+", 4), "label": text("New followers", 40), "y": num(0.6, 0.02, 0.8),
+        "draw": num(1.6, 0.4, 6, "s"), "panel": color(INK), "opacity": num(0.9),
+        "accent": color(ACCENT)},
+       cost="low", tags=["data", "number", "stat", "fx2"], text_fx=True),
+    fx("beat-type", "Beat Type", "pro", "words land on the beat",
+       "Kinetic type: one word per beat at your music's tempo, alternating white and accent, "
+       "the downbeat word a size larger, and the whole frame pulses on every hit.",
+       {"text": text("STOP SCROLLING AND WATCH THIS", 200), "bpm": num(120, 60, 200, "bpm"),
+        "offset": num(0.0, 0.0, 2.0, "s"), "y": num(0.7, 0.15, 0.9), "pulse": num(0.035, 0, 0.12),
+        "ink": color("#FFFFFF"), "accent": color(ACCENT)},
+       cost="low", tags=["text", "music", "kinetic", "fx2"], text_fx=True),
+    fx("day-grid", "Day Grid", "studio", "day 17 of 30",
+       "A challenge tracker: a grid of days fills square by square up to today, today's square "
+       "blinks, with the day number and the percentage done.",
+       {"day": integer(17, 1, 366), "total": integer(30, 2, 60), "label": text("30-day challenge", 40),
+        "y": num(0.74, 0.2, 0.85), "fill": num(1.2, 0.3, 4, "s"), "panel": color(INK),
+        "opacity": num(0.88), "accent": color(ACCENT)},
+       cost="low", tags=["challenge", "series", "progress", "fx2"], text_fx=True),
+    fx("particle-reveal", "Particle Reveal", "pro", "sparks gather into your title",
+       "Glowing sparks swirl in from off-screen, lock into a ring, flash, then burst outwards "
+       "as your title and subtitle fade in. Made for intros and logo moments.",
+       {"title": text("LIONSTONE", 20), "subtitle": text("New episode", 40),
+        "count": integer(36, 12, 48), "y": num(0.62, 0.15, 0.85), "converge": num(1.0, 0.4, 3, "s"),
+        "size": num(1.0, 0.5, 2.0), "dim": num(0.35, 0, 0.8), "color": color(ACCENT)},
+       tags=["particles", "intro", "logo", "fx2"], text_fx=True),
+    fx("receipt", "Receipt", "studio", "the receipt for your result",
+       "A paper receipt prints out of a slot line by line: your items with values, a dashed "
+       "rule, the total in your accent colour and a barcode. Write items as 'label=value' "
+       "separated by '|'.",
+       {"title": text("Lionstone Studio", 30), "subtitle": text("Edit receipt · #0001", 40),
+        "items": text("Hook=2 s|Dead air cut=41 s|Captions=auto|Motion FX=25|Watermark=none", 400),
+        "total": text("Total=FREE", 30), "x": num(0.5), "y": num(0.54, 0.0, 0.7),
+        "print": num(1.8, 0.5, 6, "s"), "paper": color("#F7F3EA"), "ink": color("#141414"),
+        "accent": color("#B8761A")},
+       tags=["receipt", "list", "text", "fx2"], text_fx=True),
+    fx("notification-stack", "Notification Stack", "studio", "your phone lights up",
+       "Notification cards drop in with a spring and stack, newest on top, each with an accent "
+       "app icon, a title, a line of text and 'now'. Write cards as 'Title: message' separated "
+       "by '|' (up to 4).",
+       {"items": text("Lionstone: Your Reel is ready to post|New follower: maya.creates followed "
+                      "you|Comment: How did you edit this?|Saved: 1,204 people saved your post", 600),
+        "y": num(0.52, 0.0, 0.7), "interval": num(0.7, 0.2, 2.0, "s"), "panel": color("#1C1D22"),
+        "opacity": num(0.94), "accent": color(ACCENT)},
+       tags=["phone", "social", "text", "fx2"], text_fx=True),
+    fx("before-after", "Before/After", "pro", "slide between before and after",
+       "A vertical slider sweeps across the shot: the flat, ungraded 'before' on the left, your "
+       "punchy 'after' on the right, with a handle and labels.",
+       {"before": text("Before", 16), "after": text("After", 16),
+        "look": enum("flat", ["flat", "mono", "soft"]), "sweeps": num(0.75, 0.25, 3.0),
+        "line": color("#FFFFFF"), "accent": color(ACCENT)},
+       tags=["compare", "grade", "slider", "fx2"], text_fx=True),
+]
+
+
 def main() -> int:
-    ids = [d["id"] for d in MOTION_FX]
-    assert len(ids) == 17 and len(ids) == len(set(ids)), "expected 17 unique ids"
-    OUT.write_text(json.dumps(MOTION_FX, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+    ids = [d["id"] for d in MOTION_FX + MOTION_FX2]
+    assert len(ids) == 25 and len(ids) == len(set(ids)), "expected 25 unique ids"
+    OUT.write_text(json.dumps(MOTION_FX + MOTION_FX2, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     print(f"{len(ids)} motion presets -> {OUT}")
     return 0
 

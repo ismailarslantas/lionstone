@@ -1252,5 +1252,738 @@
    "Text needs an FFmpeg build with drawtext; without it, bars stand in for text."
   ],
   "pipeline": "filter"
+ },
+ {
+  "id": "lionstone.split-flap",
+  "name": "Split-flap Board",
+  "kind": "effect",
+  "category": "motion-fx",
+  "tier": "studio",
+  "implementationStatus": "ready",
+  "version": 1,
+  "parameters": {
+   "text": {
+    "type": "string",
+    "default": "LIONSTONE",
+    "maxLength": 16
+   },
+   "y": {
+    "type": "number",
+    "min": 0.08,
+    "max": 0.9,
+    "default": 0.22
+   },
+   "flips": {
+    "type": "int",
+    "min": 3,
+    "max": 14,
+    "default": 8
+   },
+   "rate": {
+    "type": "number",
+    "min": 6,
+    "max": 24,
+    "default": 14,
+    "unit": "flips/s"
+   },
+   "stagger": {
+    "type": "number",
+    "min": 0.0,
+    "max": 0.3,
+    "default": 0.07,
+    "unit": "s"
+   },
+   "tile": {
+    "type": "color",
+    "default": "#16171C"
+   },
+   "ink": {
+    "type": "color",
+    "default": "#FFFFFF"
+   },
+   "accent": {
+    "type": "color",
+    "default": "#E8A33D"
+   }
+  },
+  "performanceCost": "medium",
+  "license": {
+   "source": "lionstone-original",
+   "verified": true
+  },
+  "description": "a departures board spells your word — Mechanical letter tiles flip through random characters and land one after another on your word, with a hinge line and an accent rail under the board.",
+  "tags": [
+   "motion",
+   "reel",
+   "text",
+   "title",
+   "board",
+   "fx2"
+  ],
+  "styles": [
+   "social"
+  ],
+  "supportedRenderers": [
+   "ffmpeg"
+  ],
+  "compatibleMedia": [
+   "video",
+   "image"
+  ],
+  "duration": {
+   "default": 4.0,
+   "min": 1.0,
+   "max": 60.0
+  },
+  "intensityRange": [
+   0.0,
+   1.0
+  ],
+  "fallbackEffectId": null,
+  "limitations": [
+   "Text needs an FFmpeg build with drawtext; without it, bars stand in for text."
+  ],
+  "pipeline": "filter"
+ },
+ {
+  "id": "lionstone.count-up",
+  "name": "Count-up Stat",
+  "kind": "effect",
+  "category": "motion-fx",
+  "tier": "studio",
+  "implementationStatus": "ready",
+  "version": 1,
+  "parameters": {
+   "value": {
+    "type": "number",
+    "min": 0,
+    "max": 1000000000.0,
+    "default": 1240
+   },
+   "decimals": {
+    "type": "int",
+    "min": 0,
+    "max": 2,
+    "default": 0
+   },
+   "prefix": {
+    "type": "string",
+    "default": "",
+    "maxLength": 4
+   },
+   "suffix": {
+    "type": "string",
+    "default": "+",
+    "maxLength": 4
+   },
+   "label": {
+    "type": "string",
+    "default": "New followers",
+    "maxLength": 40
+   },
+   "y": {
+    "type": "number",
+    "min": 0.02,
+    "max": 0.8,
+    "default": 0.6
+   },
+   "draw": {
+    "type": "number",
+    "min": 0.4,
+    "max": 6,
+    "default": 1.6,
+    "unit": "s"
+   },
+   "panel": {
+    "type": "color",
+    "default": "#14161C"
+   },
+   "opacity": {
+    "type": "number",
+    "min": 0.0,
+    "max": 1.0,
+    "default": 0.9
+   },
+   "accent": {
+    "type": "color",
+    "default": "#E8A33D"
+   }
+  },
+  "performanceCost": "low",
+  "license": {
+   "source": "lionstone-original",
+   "verified": true
+  },
+  "description": "your number counts up on a card — A brand card counts from zero to your number with an ease-out, while an accent bar fills under it. Add a prefix ($), a suffix (+, %, K) and a label.",
+  "tags": [
+   "motion",
+   "reel",
+   "data",
+   "number",
+   "stat",
+   "fx2"
+  ],
+  "styles": [
+   "social"
+  ],
+  "supportedRenderers": [
+   "ffmpeg"
+  ],
+  "compatibleMedia": [
+   "video",
+   "image"
+  ],
+  "duration": {
+   "default": 4.0,
+   "min": 1.0,
+   "max": 60.0
+  },
+  "intensityRange": [
+   0.0,
+   1.0
+  ],
+  "fallbackEffectId": null,
+  "limitations": [
+   "Text needs an FFmpeg build with drawtext; without it, bars stand in for text."
+  ],
+  "pipeline": "filter"
+ },
+ {
+  "id": "lionstone.beat-type",
+  "name": "Beat Type",
+  "kind": "effect",
+  "category": "motion-fx",
+  "tier": "pro",
+  "implementationStatus": "ready",
+  "version": 1,
+  "parameters": {
+   "text": {
+    "type": "string",
+    "default": "STOP SCROLLING AND WATCH THIS",
+    "maxLength": 200
+   },
+   "bpm": {
+    "type": "number",
+    "min": 60,
+    "max": 200,
+    "default": 120,
+    "unit": "bpm"
+   },
+   "offset": {
+    "type": "number",
+    "min": 0.0,
+    "max": 2.0,
+    "default": 0.0,
+    "unit": "s"
+   },
+   "y": {
+    "type": "number",
+    "min": 0.15,
+    "max": 0.9,
+    "default": 0.7
+   },
+   "pulse": {
+    "type": "number",
+    "min": 0,
+    "max": 0.12,
+    "default": 0.035
+   },
+   "ink": {
+    "type": "color",
+    "default": "#FFFFFF"
+   },
+   "accent": {
+    "type": "color",
+    "default": "#E8A33D"
+   }
+  },
+  "performanceCost": "low",
+  "license": {
+   "source": "lionstone-original",
+   "verified": true
+  },
+  "description": "words land on the beat — Kinetic type: one word per beat at your music's tempo, alternating white and accent, the downbeat word a size larger, and the whole frame pulses on every hit.",
+  "tags": [
+   "motion",
+   "reel",
+   "text",
+   "music",
+   "kinetic",
+   "fx2"
+  ],
+  "styles": [
+   "social"
+  ],
+  "supportedRenderers": [
+   "ffmpeg"
+  ],
+  "compatibleMedia": [
+   "video",
+   "image"
+  ],
+  "duration": {
+   "default": 4.0,
+   "min": 1.0,
+   "max": 60.0
+  },
+  "intensityRange": [
+   0.0,
+   1.0
+  ],
+  "fallbackEffectId": null,
+  "limitations": [
+   "Text needs an FFmpeg build with drawtext; without it, bars stand in for text."
+  ],
+  "pipeline": "filter"
+ },
+ {
+  "id": "lionstone.day-grid",
+  "name": "Day Grid",
+  "kind": "effect",
+  "category": "motion-fx",
+  "tier": "studio",
+  "implementationStatus": "ready",
+  "version": 1,
+  "parameters": {
+   "day": {
+    "type": "int",
+    "min": 1,
+    "max": 366,
+    "default": 17
+   },
+   "total": {
+    "type": "int",
+    "min": 2,
+    "max": 60,
+    "default": 30
+   },
+   "label": {
+    "type": "string",
+    "default": "30-day challenge",
+    "maxLength": 40
+   },
+   "y": {
+    "type": "number",
+    "min": 0.2,
+    "max": 0.85,
+    "default": 0.74
+   },
+   "fill": {
+    "type": "number",
+    "min": 0.3,
+    "max": 4,
+    "default": 1.2,
+    "unit": "s"
+   },
+   "panel": {
+    "type": "color",
+    "default": "#14161C"
+   },
+   "opacity": {
+    "type": "number",
+    "min": 0.0,
+    "max": 1.0,
+    "default": 0.88
+   },
+   "accent": {
+    "type": "color",
+    "default": "#E8A33D"
+   }
+  },
+  "performanceCost": "low",
+  "license": {
+   "source": "lionstone-original",
+   "verified": true
+  },
+  "description": "day 17 of 30 — A challenge tracker: a grid of days fills square by square up to today, today's square blinks, with the day number and the percentage done.",
+  "tags": [
+   "motion",
+   "reel",
+   "challenge",
+   "series",
+   "progress",
+   "fx2"
+  ],
+  "styles": [
+   "social"
+  ],
+  "supportedRenderers": [
+   "ffmpeg"
+  ],
+  "compatibleMedia": [
+   "video",
+   "image"
+  ],
+  "duration": {
+   "default": 4.0,
+   "min": 1.0,
+   "max": 60.0
+  },
+  "intensityRange": [
+   0.0,
+   1.0
+  ],
+  "fallbackEffectId": null,
+  "limitations": [
+   "Text needs an FFmpeg build with drawtext; without it, bars stand in for text."
+  ],
+  "pipeline": "filter"
+ },
+ {
+  "id": "lionstone.particle-reveal",
+  "name": "Particle Reveal",
+  "kind": "effect",
+  "category": "motion-fx",
+  "tier": "pro",
+  "implementationStatus": "ready",
+  "version": 1,
+  "parameters": {
+   "title": {
+    "type": "string",
+    "default": "LIONSTONE",
+    "maxLength": 20
+   },
+   "subtitle": {
+    "type": "string",
+    "default": "New episode",
+    "maxLength": 40
+   },
+   "count": {
+    "type": "int",
+    "min": 12,
+    "max": 48,
+    "default": 36
+   },
+   "y": {
+    "type": "number",
+    "min": 0.15,
+    "max": 0.85,
+    "default": 0.62
+   },
+   "converge": {
+    "type": "number",
+    "min": 0.4,
+    "max": 3,
+    "default": 1.0,
+    "unit": "s"
+   },
+   "size": {
+    "type": "number",
+    "min": 0.5,
+    "max": 2.0,
+    "default": 1.0
+   },
+   "dim": {
+    "type": "number",
+    "min": 0,
+    "max": 0.8,
+    "default": 0.35
+   },
+   "color": {
+    "type": "color",
+    "default": "#E8A33D"
+   }
+  },
+  "performanceCost": "medium",
+  "license": {
+   "source": "lionstone-original",
+   "verified": true
+  },
+  "description": "sparks gather into your title — Glowing sparks swirl in from off-screen, lock into a ring, flash, then burst outwards as your title and subtitle fade in. Made for intros and logo moments.",
+  "tags": [
+   "motion",
+   "reel",
+   "particles",
+   "intro",
+   "logo",
+   "fx2"
+  ],
+  "styles": [
+   "social"
+  ],
+  "supportedRenderers": [
+   "ffmpeg"
+  ],
+  "compatibleMedia": [
+   "video",
+   "image"
+  ],
+  "duration": {
+   "default": 4.0,
+   "min": 1.0,
+   "max": 60.0
+  },
+  "intensityRange": [
+   0.0,
+   1.0
+  ],
+  "fallbackEffectId": null,
+  "limitations": [
+   "Text needs an FFmpeg build with drawtext; without it, bars stand in for text."
+  ],
+  "pipeline": "filter"
+ },
+ {
+  "id": "lionstone.receipt",
+  "name": "Receipt",
+  "kind": "effect",
+  "category": "motion-fx",
+  "tier": "studio",
+  "implementationStatus": "ready",
+  "version": 1,
+  "parameters": {
+   "title": {
+    "type": "string",
+    "default": "Lionstone Studio",
+    "maxLength": 30
+   },
+   "subtitle": {
+    "type": "string",
+    "default": "Edit receipt · #0001",
+    "maxLength": 40
+   },
+   "items": {
+    "type": "string",
+    "default": "Hook=2 s|Dead air cut=41 s|Captions=auto|Motion FX=25|Watermark=none",
+    "maxLength": 400
+   },
+   "total": {
+    "type": "string",
+    "default": "Total=FREE",
+    "maxLength": 30
+   },
+   "x": {
+    "type": "number",
+    "min": 0.0,
+    "max": 1.0,
+    "default": 0.5
+   },
+   "y": {
+    "type": "number",
+    "min": 0.0,
+    "max": 0.7,
+    "default": 0.54
+   },
+   "print": {
+    "type": "number",
+    "min": 0.5,
+    "max": 6,
+    "default": 1.8,
+    "unit": "s"
+   },
+   "paper": {
+    "type": "color",
+    "default": "#F7F3EA"
+   },
+   "ink": {
+    "type": "color",
+    "default": "#141414"
+   },
+   "accent": {
+    "type": "color",
+    "default": "#B8761A"
+   }
+  },
+  "performanceCost": "medium",
+  "license": {
+   "source": "lionstone-original",
+   "verified": true
+  },
+  "description": "the receipt for your result — A paper receipt prints out of a slot line by line: your items with values, a dashed rule, the total in your accent colour and a barcode. Write items as 'label=value' separated by '|'.",
+  "tags": [
+   "motion",
+   "reel",
+   "receipt",
+   "list",
+   "text",
+   "fx2"
+  ],
+  "styles": [
+   "social"
+  ],
+  "supportedRenderers": [
+   "ffmpeg"
+  ],
+  "compatibleMedia": [
+   "video",
+   "image"
+  ],
+  "duration": {
+   "default": 4.0,
+   "min": 1.0,
+   "max": 60.0
+  },
+  "intensityRange": [
+   0.0,
+   1.0
+  ],
+  "fallbackEffectId": null,
+  "limitations": [
+   "Text needs an FFmpeg build with drawtext; without it, bars stand in for text."
+  ],
+  "pipeline": "filter"
+ },
+ {
+  "id": "lionstone.notification-stack",
+  "name": "Notification Stack",
+  "kind": "effect",
+  "category": "motion-fx",
+  "tier": "studio",
+  "implementationStatus": "ready",
+  "version": 1,
+  "parameters": {
+   "items": {
+    "type": "string",
+    "default": "Lionstone: Your Reel is ready to post|New follower: maya.creates followed you|Comment: How did you edit this?|Saved: 1,204 people saved your post",
+    "maxLength": 600
+   },
+   "y": {
+    "type": "number",
+    "min": 0.0,
+    "max": 0.7,
+    "default": 0.52
+   },
+   "interval": {
+    "type": "number",
+    "min": 0.2,
+    "max": 2.0,
+    "default": 0.7,
+    "unit": "s"
+   },
+   "panel": {
+    "type": "color",
+    "default": "#1C1D22"
+   },
+   "opacity": {
+    "type": "number",
+    "min": 0.0,
+    "max": 1.0,
+    "default": 0.94
+   },
+   "accent": {
+    "type": "color",
+    "default": "#E8A33D"
+   }
+  },
+  "performanceCost": "medium",
+  "license": {
+   "source": "lionstone-original",
+   "verified": true
+  },
+  "description": "your phone lights up — Notification cards drop in with a spring and stack, newest on top, each with an accent app icon, a title, a line of text and 'now'. Write cards as 'Title: message' separated by '|' (up to 4).",
+  "tags": [
+   "motion",
+   "reel",
+   "phone",
+   "social",
+   "text",
+   "fx2"
+  ],
+  "styles": [
+   "social"
+  ],
+  "supportedRenderers": [
+   "ffmpeg"
+  ],
+  "compatibleMedia": [
+   "video",
+   "image"
+  ],
+  "duration": {
+   "default": 4.0,
+   "min": 1.0,
+   "max": 60.0
+  },
+  "intensityRange": [
+   0.0,
+   1.0
+  ],
+  "fallbackEffectId": null,
+  "limitations": [
+   "Text needs an FFmpeg build with drawtext; without it, bars stand in for text."
+  ],
+  "pipeline": "filter"
+ },
+ {
+  "id": "lionstone.before-after",
+  "name": "Before/After",
+  "kind": "effect",
+  "category": "motion-fx",
+  "tier": "pro",
+  "implementationStatus": "ready",
+  "version": 1,
+  "parameters": {
+   "before": {
+    "type": "string",
+    "default": "Before",
+    "maxLength": 16
+   },
+   "after": {
+    "type": "string",
+    "default": "After",
+    "maxLength": 16
+   },
+   "look": {
+    "type": "enum",
+    "values": [
+     "flat",
+     "mono",
+     "soft"
+    ],
+    "default": "flat"
+   },
+   "sweeps": {
+    "type": "number",
+    "min": 0.25,
+    "max": 3.0,
+    "default": 0.75
+   },
+   "line": {
+    "type": "color",
+    "default": "#FFFFFF"
+   },
+   "accent": {
+    "type": "color",
+    "default": "#E8A33D"
+   }
+  },
+  "performanceCost": "medium",
+  "license": {
+   "source": "lionstone-original",
+   "verified": true
+  },
+  "description": "slide between before and after — A vertical slider sweeps across the shot: the flat, ungraded 'before' on the left, your punchy 'after' on the right, with a handle and labels.",
+  "tags": [
+   "motion",
+   "reel",
+   "compare",
+   "grade",
+   "slider",
+   "fx2"
+  ],
+  "styles": [
+   "social"
+  ],
+  "supportedRenderers": [
+   "ffmpeg"
+  ],
+  "compatibleMedia": [
+   "video",
+   "image"
+  ],
+  "duration": {
+   "default": 4.0,
+   "min": 1.0,
+   "max": 60.0
+  },
+  "intensityRange": [
+   0.0,
+   1.0
+  ],
+  "fallbackEffectId": null,
+  "limitations": [
+   "Text needs an FFmpeg build with drawtext; without it, bars stand in for text."
+  ],
+  "pipeline": "filter"
  }
 ]

@@ -71,7 +71,7 @@ def _textfile(text: str) -> str:
 
 
 def _text(text: str, size: float, color: str, x: str, y: str, *, font: Path = BOLD,
-          alpha: str = "1", enable: str = "1", extra: str = "") -> str:
+          alpha: str = "1", enable: str = "1", extra: str = "", expansion: str = "none") -> str:
     """drawtext with a bundled font; without drawtext, a placeholder bar of similar size."""
     size = max(6, int(size))
     if not has_filter("drawtext"):
@@ -87,7 +87,7 @@ def _text(text: str, size: float, color: str, x: str, y: str, *, font: Path = BO
         return (f"drawbox=x='{box(x)}':y='{box(y)}':w={w}:h={max(2, size // 2)}:"
                 f"color={base}@0.85:t=fill:enable='{enable}'")
     return (f"drawtext=fontfile={_font(font)}:textfile={_textfile(text)}:"
-            f"expansion=none:fontsize={size}:fontcolor={color}:x='{x}':y='{y}':alpha='{alpha}':"
+            f"expansion={expansion}:fontsize={size}:fontcolor={color}:x='{x}':y='{y}':alpha='{alpha}':"
             f"enable='{enable}'" + (f":{extra}" if extra else ""))
 
 
@@ -96,10 +96,10 @@ def _items(s: str, fallback: list[str]) -> list[str]:
     return out or fallback
 
 
-def _still(c, w: int, h: int, r: str, g: str, b: str, a: str) -> str:
-    """A static RGBA picture drawn once with geq and looped for the whole timeline."""
+def _still(c, w: int, h: int, r: str, g: str, b: str, a: str, draw: str = "") -> str:
+    """A static RGBA picture drawn once with geq (+ `draw` filters) and looped for the timeline."""
     return (f"color=c=black@0:s={w}x{h}:r={_f(c.fps)}:d={_f(2 / c.fps)},format=rgba,"
-            f"geq=r='{r}':g='{g}':b='{b}':a='{a}',"
+            f"geq=r='{r}':g='{g}':b='{b}':a='{a}'," + (f"{draw}," if draw else "") +
             f"trim=end_frame=1,loop=loop=-1:size=1:start=0,setpts=N/{_f(c.fps)}/TB,"
             f"trim=duration={_f(c.total + 1)}")
 

@@ -1,4 +1,4 @@
-"""Motion FX pack (Lionstone 1.0): catalog, renderers, person-matte wiring."""
+"""Motion FX pack (Lionstone 1.0 + Motion FX 2): catalog, renderers, person-matte wiring."""
 
 import subprocess
 
@@ -9,23 +9,26 @@ from lionstone.pro import matte
 from lionstone.pro.features.catalog import Catalog
 from lionstone.pro.features.params import resolve
 from lionstone.pro.features.renderers import ffmpeg_adapter as fa
-from lionstone.pro.features.renderers import motion_fx
+from lionstone.pro.features.renderers import motion_fx, motion_fx2
 
 CAT = Catalog()
 MOTION = [p for p in CAT.presets.values() if p.category == "motion-fx"]
 NAMES = {"Orbit", "Couch Wall", "UI World", "Frame Break", "Digital Zoom", "Phone Mockup",
          "Checklist", "Headline Wall", "Zoom-through Cut", "Chart Grow", "Pull-back Reveal",
-         "Green Screen", "Paper Cut", "Doodle Boil", "Vertigo", "Cover Story", "Glass Type"}
+         "Green Screen", "Paper Cut", "Doodle Boil", "Vertigo", "Cover Story", "Glass Type",
+         # Motion FX 2
+         "Split-flap Board", "Count-up Stat", "Beat Type", "Day Grid", "Particle Reveal",
+         "Receipt", "Notification Stack", "Before/After"}
 
 
-def test_pack_is_the_17_effects():
+def test_pack_is_the_25_effects():
     assert {p.name for p in MOTION} == NAMES
     for p in MOTION:
         assert p.usable and p.kind == "effect" and p.pipeline == "filter"
         assert p.license["source"] == "lionstone-original"
         assert fa.implemented(p.id), p.id
         assert " — " in p.description
-    assert set(motion_fx.MOTION_FILTERS) == {p.id for p in MOTION}
+    assert set(motion_fx.MOTION_FILTERS) | set(motion_fx2.MOTION_FILTERS_2) == {p.id for p in MOTION}
     assert {p.id for p in MOTION if "matte" in p.tags} == matte.MATTE_EFFECTS
 
 
@@ -169,7 +172,9 @@ def test_openmontage_installer_copies_only_the_adapter(tmp_path):
 
 
 @pytest.mark.parametrize("pid", ["checklist", "headline-wall", "chart-grow", "cover-story",
-                                 "glass-type"])
+                                 "glass-type", "split-flap", "count-up", "beat-type", "day-grid",
+                                 "particle-reveal", "receipt", "notification-stack",
+                                 "before-after"])
 def test_text_effects_render_without_drawtext(pid, monkeypatch):
     """FFmpeg builds without libfreetype (plain Homebrew) get bars instead of text, never an error."""
     monkeypatch.setattr(motion_fx, "has_filter", lambda name: name != "drawtext")

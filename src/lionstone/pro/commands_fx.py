@@ -147,6 +147,15 @@ def _cfg_fx(p: argparse.ArgumentParser) -> None:
     s.add_argument("--start", type=float, help="effect starts here (s); default: clip start")
     s.add_argument("--end", type=float, help="effect ends here (s); default: clip end")
     s.add_argument("--param", action="append", default=[], metavar="K=V")
+    s = sub.add_parser("synfig", help="render a Synfig animation (.sif) with the optional "
+                                      "`synfig` CLI and composite it over a clip")
+    s.add_argument("sif")
+    s.add_argument("--input", help="clip to composite over; without it, write a PNG sequence")
+    s.add_argument("-o", "--output", required=True, help="video file, or a folder for PNGs")
+    s.add_argument("--start", type=float, default=0.0, help="overlay starts here (s)")
+    s.add_argument("--width", type=int, default=1080, help="PNG mode only")
+    s.add_argument("--height", type=int, default=1920, help="PNG mode only")
+    s.add_argument("--fps", type=float, default=30.0, help="PNG mode only")
     s = sub.add_parser("matte", help="build the person matte Motion FX use (needs "
                                      "lionstone[vision]; cached, built automatically on render)")
     s.add_argument("video")
@@ -390,6 +399,24 @@ def _clip(a, cat, ent):
     return 0
 
 
+def _synfig(a, cat, ent):
+    from . import synfig
+    if synfig.find() is None:
+        print(synfig.INSTALL_HINT, file=sys.stderr)
+        return 2
+    try:
+        if a.input:
+            out = synfig.overlay(a.sif, a.input, a.output, start=a.start)
+        else:
+            frames = synfig.render_frames(Path(a.sif), Path(a.output), a.width, a.height, a.fps)
+            out = f"{len(frames)} PNG frames in {Path(a.output).resolve()}"
+    except synfig.SynfigError as e:
+        print(f"error: {e}", file=sys.stderr)
+        return 1
+    print(f"Synfig overlay → {out}")
+    return 0
+
+
 def _matte(a, cat, ent):
     from . import matte
     if not matte.available():
@@ -428,7 +455,7 @@ def _catalog_doc(a, cat, ent):
 FX = {"list": _list, "show": _show, "apply": _apply, "text": _text, "applied": _applied,
       "set": _set, "remove": _remove, "segments": _segments, "auto": _auto,
       "compile": _compile, "render": _render, "preview": _preview, "batch": _batch,
-      "catalog-doc": _catalog_doc, "showcase": _showcase, "matte": _matte, "clip": _clip,
+      "catalog-doc": _catalog_doc, "showcase": _showcase, "matte": _matte, "clip": _clip, "synfig": _synfig,
       "fav": lambda a, c, e: print("★ added" if cat_mod.toggle_favorite(c.get(a.id).id)
                                    else "removed") or 0}
 
