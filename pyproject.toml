@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "lionstone"
-version = "0.4.2"
+version = "1.0.0"
 description = "Open-source AI editing agent that turns raw podcasts, interviews and talks into publish-ready video — with an edit plan you can read, undo and verify."
 readme = "README.md"
 license = "Apache-2.0"
@@ -15,7 +15,7 @@ keywords = [
   "auto-editor", "silence-removal", "remotion", "mcp", "post-production",
 ]
 classifiers = [
-  "Development Status :: 3 - Alpha",
+  "Development Status :: 5 - Production/Stable",
   "Environment :: Console",
   "Intended Audience :: End Users/Desktop",
   "Intended Audience :: Developers",
@@ -30,7 +30,7 @@ whisper = ["faster-whisper>=1.0", "av<19"]  # faster-whisper 1.2 passes metadata
 mcp = ["mcp>=1.2"]
 rich = ["rich>=13"]
 extras = ["numpy>=1.24"]  # multicam, style learning, clips, creative presets
-vision = ["numpy>=1.24", "opencv-python-headless>=4.8"]  # face-following reframe + vision QA
+vision = ["numpy>=1.24", "opencv-python-headless>=4.8"]  # face reframe, vision QA, Motion FX person matte
 all = ["faster-whisper>=1.0", "av<19", "mcp>=1.2", "rich>=13", "numpy>=1.24", "opencv-python-headless>=4.8"]
 dev = ["pytest>=8", "ruff>=0.5", "numpy>=1.24"]
 

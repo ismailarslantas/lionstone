@@ -1,0 +1,7 @@
+# Changes to these paths need a review from the maintainer.
+*                                   @ismailarslantas
+/.github/                           @ismailarslantas
+/SECURITY.md                        @ismailarslantas
+/pyproject.toml                     @ismailarslantas
+/src/lionstone/pro/matte.py         @ismailarslantas
+/integrations/                      @ismailarslantas

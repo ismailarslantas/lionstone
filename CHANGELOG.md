@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.0.0 — 2026-11-09
+**Lionstone 1.0: the Motion FX Pack. Seventeen motion-design effects, one command each, and a person matte that puts you in front of the frame. Free as ever.**
+
+- **Motion FX Pack** (catalogue category `motion-fx`, 162 presets in total, 122 ready to render): `orbit`, `couch-wall`, `ui-world`, `frame-break`, `digital-zoom`, `phone-mockup`, `checklist`, `headline-wall`, `zoom-through-cut`, `chart-grow`, `pull-back-reveal`, `green-screen`, `paper-cut`, `doodle-boil`, `vertigo`, `cover-story`, `glass-type`. FFmpeg filter math plus the bundled fonts (`pro/features/renderers/motion_fx.py`), relative geometry for 9:16, 1:1 and 16:9, the same builders for preview, showcase and export. Guide: [docs/motion-fx.md](docs/motion-fx.md).
+- **Person matte** (`lionstone/pro/matte.py`): Frame Break, Vertigo, Glass Type, Green Screen and Doodle Boil cut you out of the shot, so your head breaks over the frame, the type sits behind you and any background becomes a brand stage without a green screen. Built automatically when OpenCV is installed (`lionstone[all]` or `lionstone[vision]`) with U²-Net small (4.6 MB, Apache-2.0, downloaded once from GitHub, SHA-256 checked), on the CPU, cached per file. `lionstone fx matte talk.mp4` builds it ahead. Without OpenCV, or with `LIONSTONE_MATTE=0`, the plain FFmpeg versions render and the compile report says so.
+- Renders, previews and showcase reels feed the matte with the same cuts as the video (`render.build_graph(matte_input=…)`).
+- Text in effects is literal: `%` in a label no longer breaks the render (`expansion=none`), and bundled fonts load from Windows user folders with non-ASCII names (FreeType can't open those paths, so fonts are used from a temp copy).
+- **`lionstone fx clip <effect> in.mp4 -o out.mp4`**: one effect on a whole clip at its own size, audio copied ([pro/features/clipfx.py](src/lionstone/pro/features/clipfx.py)).
+- **OpenMontage integration** ([docs/openmontage.md](docs/openmontage.md)): `integrations/openmontage/install.py` adds the `lionstone_motion_fx` tool and skill to an OpenMontage checkout. The tool runs the `lionstone` command, so the Apache-2.0 and AGPL-3.0 projects stay separate programs.
+- **Security on GitHub**: CodeQL code scanning, OpenSSF Scorecard, weekly grouped Dependabot, actions pinned to commit SHAs with read-only default tokens, CODEOWNERS, and a release workflow that tests, builds, writes SHA256SUMS, attests build provenance (Sigstore) and publishes the release. New [SECURITY.md](SECURITY.md) with supported versions, response times, network use and release verification.
+- Launch visuals are real renders: `scripts/build_motionfx_visuals.py` renders every effect on a fictional demo character and builds the carousel slides and `docs/img/motionfx-*.jpg`.
+- Fix: Paper Cut no longer tints grey areas green (chroma rounding).
+- Security: Remotion's transitive `zod` is pinned to the patched 4.6.7 with an npm override (GHSA-mrhx-c7xc-m3w5, memory exhaustion); `npm audit` reports 0 vulnerabilities.
+- `lionstone[vision]` now also powers the person matte. Development status: Production/Stable.
+- Tests: `tests/pro/test_motion_fx.py` renders every effect on 9:16 and 16:9, every matte version with a stand-in matte, a full plan render that feeds the matte through the cuts, and the fallback without OpenCV.
+
 ## 0.4.2 — 2026-11-06
 **Lionstone Reels speaks English. Same features as 0.4.1, free as ever, now documented for everyone.**
 

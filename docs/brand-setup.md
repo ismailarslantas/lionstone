@@ -3,7 +3,7 @@
 **Lionstone is free and open source, and everything in this guide works without paying anyone.**
 You can do all of it yourself with [the Reels guide](reels.md).
 
-Some brands and agencies would rather have it set up for them. **Kreatif Hizmetler** offers that as an optional service,
+Some brands and agencies would rather have it set up for them. **Kreatif Hizmetler** (Creative Services) offers that as an optional service,
 by quote: you fill in a short form and we get back to you.
 
 ## What's included
