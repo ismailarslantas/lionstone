@@ -40,13 +40,14 @@ def _label(ctx_font: str | None, text: str, x: str, y: str, size: int, color="wh
 
 def build_preview_graph(preset_id: str, catalog: Catalog, ent: Entitlement, *,
                         params: dict | None, width: int, height: int, fps: float,
-                        seconds: float, before_after: bool, workdir: Path) -> tuple[str, list[str]]:
+                        seconds: float, before_after: bool, workdir: Path,
+                        matte: bool = False) -> tuple[str, list[str]]:
     p = catalog.get(preset_id)
     if not p.usable:
         raise PreviewError(f"{p.name} is {p.implementationStatus}: {'; '.join(p.limitations)}")
     rid = p.renderer_id
     prm = resolve(p.parameters, params)
-    ctx = fa.RCtx(width, height, fps, seconds)
+    ctx = fa.RCtx(width, height, fps, seconds, matte=matte)
     notes: list[str] = []
     font = font_path()
     win = [(0.4, max(0.8, seconds - 0.4))]
@@ -119,10 +120,13 @@ def render_preview(preset_id: str, out: Path, catalog: Catalog, ent: Entitlement
     height = int(round(width * 9 / 16 / 2) * 2)
     fps = 25.0
     wd = Path(tempfile.mkdtemp(prefix="lsfx-"))
+    from .. import matte as _matte
+    mf = _matte.ensure(input_path) if input_path and _matte.wants([p.id]) else None
     try:
         graph, notes = build_preview_graph(preset_id, catalog, ent, params=params, width=width,
                                            height=height, fps=fps, seconds=seconds,
-                                           before_after=before_after, workdir=wd)
+                                           before_after=before_after, workdir=wd,
+                                           matte=mf is not None)
         (wd / "g.txt").write_text(graph, encoding="utf-8")
         if input_path:
             src = ["-ss", f"{start:.3f}", "-t", f"{seconds:.3f}", "-i",
@@ -148,6 +152,10 @@ def render_preview(preset_id: str, out: Path, catalog: Catalog, ent: Entitlement
             graph = head + graph.replace("[0:v]", "[pvsrc]", 1)
         else:
             graph = f"[0:v]{pre},format=yuv420p[pvsrc];" + graph.replace("[0:v]", "[pvsrc]", 1)
+        if mf is not None and _matte.uses_in(graph):
+            src += ["-ss", f"{start:.3f}", "-t", f"{seconds:.3f}", "-i", str(mf)]
+            graph = _matte.graph_inputs(1, _matte.uses_in(graph), width, height, fps) + ";" + graph
+            notes.append("person matte: on")
         (wd / "g.txt").write_text(graph, encoding="utf-8")
         from lionstone.render import _script_flag
         out = Path(out).resolve()

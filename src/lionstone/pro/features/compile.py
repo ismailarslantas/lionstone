@@ -127,6 +127,22 @@ def compile_plan(plan: EditPlan, catalog: Catalog, ent: Entitlement, *,
     rep.notes += tl.migrate_instances(plan, catalog)
     g = geometry(plan)
     ctx = fa.RCtx(g.W, g.H, g.fps, g.total)
+    matte_file = None
+    if not video_sources(plan):  # person matte for Motion FX (single-camera plans)
+        from .. import matte as _matte
+        ids = []
+        for i in tl.instances(plan):
+            if i.enabled:
+                try:
+                    ids.append(catalog.get(i.preset).id)
+                except Exception:
+                    pass
+        if _matte.wants(ids):
+            matte_file = _matte.ensure(plan.source)
+            ctx.matte = matte_file is not None
+            if not ctx.matte:
+                rep.notes.append('person matte unavailable (pip install "lionstone[vision]"): '
+                                 "Motion FX use their plain FFmpeg versions")
     transforms: list[fa.Transform] = []
     looks, effects, joins_f = [], [], []
     graphics: list[GraphicEvent] = []
@@ -272,6 +288,10 @@ def compile_plan(plan: EditPlan, catalog: Catalog, ent: Entitlement, *,
         plan.color["filter"] = chain + ",null"
     else:
         plan.color.pop("filter", None)
+    if chain and ctx.mattes and matte_file:
+        plan.color["matte"] = {"file": str(matte_file), "uses": ctx.mattes}
+    else:
+        plan.color.pop("matte", None)
     base = [ge for ge in plan.graphics if not ge.id.startswith("fx-")]
     placed: list[GraphicEvent] = []
     for ge in sorted(graphics, key=lambda e: e.at):

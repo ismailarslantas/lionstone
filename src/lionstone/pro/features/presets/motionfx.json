@@ -1,0 +1,1256 @@
+[
+ {
+  "id": "lionstone.orbit",
+  "name": "Orbit",
+  "kind": "effect",
+  "category": "motion-fx",
+  "tier": "pro",
+  "implementationStatus": "ready",
+  "version": 1,
+  "parameters": {
+   "angle": {
+    "type": "number",
+    "min": 5,
+    "max": 60,
+    "default": 28,
+    "unit": "deg"
+   },
+   "speed": {
+    "type": "number",
+    "min": 0.05,
+    "max": 1.0,
+    "default": 0.25,
+    "unit": "swings/s"
+   },
+   "inset": {
+    "type": "number",
+    "min": 0.6,
+    "max": 0.95,
+    "default": 0.8
+   },
+   "bg": {
+    "type": "color",
+    "default": "#14161C"
+   },
+   "accent": {
+    "type": "color",
+    "default": "#E8A33D"
+   }
+  },
+  "performanceCost": "medium",
+  "license": {
+   "source": "lionstone-original",
+   "verified": true
+  },
+  "description": "the camera circles you — Your shot becomes a rounded card that swings left and right in 3D perspective over a brand-lit stage, as if the camera were orbiting you.",
+  "tags": [
+   "motion",
+   "reel",
+   "3d",
+   "camera"
+  ],
+  "styles": [
+   "social"
+  ],
+  "supportedRenderers": [
+   "ffmpeg"
+  ],
+  "compatibleMedia": [
+   "video",
+   "image"
+  ],
+  "duration": {
+   "default": 4.0,
+   "min": 1.0,
+   "max": 60.0
+  },
+  "intensityRange": [
+   0.0,
+   1.0
+  ],
+  "fallbackEffectId": null,
+  "limitations": [],
+  "pipeline": "filter"
+ },
+ {
+  "id": "lionstone.couch-wall",
+  "name": "Couch Wall",
+  "kind": "effect",
+  "category": "motion-fx",
+  "tier": "pro",
+  "implementationStatus": "ready",
+  "version": 1,
+  "parameters": {
+   "direction": {
+    "type": "enum",
+    "values": [
+     "out",
+     "in"
+    ],
+    "default": "out"
+   },
+   "pull": {
+    "type": "number",
+    "min": 0.4,
+    "max": 5,
+    "default": 1.6,
+    "unit": "s"
+   },
+   "dim": {
+    "type": "number",
+    "min": 0,
+    "max": 0.8,
+    "default": 0.35
+   },
+   "bezel": {
+    "type": "color",
+    "default": "#0B0C10"
+   }
+  },
+  "performanceCost": "high",
+  "license": {
+   "source": "lionstone-original",
+   "verified": true
+  },
+  "description": "you, on every screen in the room — A 3x3 wall of monitors all playing your clip. The camera starts on the centre screen and pulls back to reveal the wall (or pushes in with direction=in).",
+  "tags": [
+   "motion",
+   "reel",
+   "wall",
+   "screens",
+   "reveal"
+  ],
+  "styles": [
+   "social"
+  ],
+  "supportedRenderers": [
+   "ffmpeg"
+  ],
+  "compatibleMedia": [
+   "video",
+   "image"
+  ],
+  "duration": {
+   "default": 4.0,
+   "min": 1.0,
+   "max": 60.0
+  },
+  "intensityRange": [
+   0.0,
+   1.0
+  ],
+  "fallbackEffectId": null,
+  "limitations": [],
+  "pipeline": "filter"
+ },
+ {
+  "id": "lionstone.ui-world",
+  "name": "UI World",
+  "kind": "effect",
+  "category": "motion-fx",
+  "tier": "studio",
+  "implementationStatus": "ready",
+  "version": 1,
+  "parameters": {
+   "scale": {
+    "type": "number",
+    "min": 0.5,
+    "max": 0.9,
+    "default": 0.78
+   },
+   "bg": {
+    "type": "color",
+    "default": "#14161C"
+   },
+   "panel": {
+    "type": "color",
+    "default": "#23262F"
+   },
+   "accent": {
+    "type": "color",
+    "default": "#E8A33D"
+   }
+  },
+  "performanceCost": "medium",
+  "license": {
+   "source": "lionstone-original",
+   "verified": true
+  },
+  "description": "you, inside the interface — Your clip plays in an app window that floats up among drifting interface cards, toggles and buttons in your brand colours. Made for tech, SaaS and tutorial creators.",
+  "tags": [
+   "motion",
+   "reel",
+   "ui",
+   "app",
+   "brand"
+  ],
+  "styles": [
+   "social"
+  ],
+  "supportedRenderers": [
+   "ffmpeg"
+  ],
+  "compatibleMedia": [
+   "video",
+   "image"
+  ],
+  "duration": {
+   "default": 4.0,
+   "min": 1.0,
+   "max": 60.0
+  },
+  "intensityRange": [
+   0.0,
+   1.0
+  ],
+  "fallbackEffectId": null,
+  "limitations": [],
+  "pipeline": "filter"
+ },
+ {
+  "id": "lionstone.frame-break",
+  "name": "Frame Break",
+  "kind": "effect",
+  "category": "motion-fx",
+  "tier": "pro",
+  "implementationStatus": "ready",
+  "version": 1,
+  "parameters": {
+   "top": {
+    "type": "number",
+    "min": 0.25,
+    "max": 0.6,
+    "default": 0.46
+   },
+   "width": {
+    "type": "number",
+    "min": 0.3,
+    "max": 0.8,
+    "default": 0.5
+   },
+   "bg": {
+    "type": "color",
+    "default": "#F2EAD8"
+   },
+   "frame": {
+    "type": "color",
+    "default": "#14161C"
+   }
+  },
+  "performanceCost": "medium",
+  "license": {
+   "source": "lionstone-original",
+   "verified": true
+  },
+  "description": "you step out of the frame — You sit inside a picture frame on a flat backdrop, then your head breaks out over the top edge with a soft drop shadow.",
+  "tags": [
+   "motion",
+   "reel",
+   "frame",
+   "pop-out",
+   "matte"
+  ],
+  "styles": [
+   "social"
+  ],
+  "supportedRenderers": [
+   "ffmpeg"
+  ],
+  "compatibleMedia": [
+   "video",
+   "image"
+  ],
+  "duration": {
+   "default": 4.0,
+   "min": 1.0,
+   "max": 60.0
+  },
+  "intensityRange": [
+   0.0,
+   1.0
+  ],
+  "fallbackEffectId": null,
+  "limitations": [
+   "Without the person matte (OpenCV) the break-out is a centred column: keep your head centred above the frame line."
+  ],
+  "pipeline": "filter"
+ },
+ {
+  "id": "lionstone.digital-zoom",
+  "name": "Digital Zoom",
+  "kind": "effect",
+  "category": "motion-fx",
+  "tier": "pro",
+  "implementationStatus": "ready",
+  "version": 1,
+  "parameters": {
+   "steps": {
+    "type": "int",
+    "min": 1,
+    "max": 6,
+    "default": 3
+   },
+   "zoom": {
+    "type": "number",
+    "min": 1.1,
+    "max": 3.0,
+    "default": 1.6
+   },
+   "x": {
+    "type": "number",
+    "min": 0.0,
+    "max": 1.0,
+    "default": 0.5
+   },
+   "y": {
+    "type": "number",
+    "min": 0.0,
+    "max": 1.0,
+    "default": 0.35
+   },
+   "scanlines": {
+    "type": "number",
+    "min": 0.0,
+    "max": 1.0,
+    "default": 0.5
+   },
+   "accent": {
+    "type": "color",
+    "default": "#E8A33D"
+   }
+  },
+  "performanceCost": "low",
+  "license": {
+   "source": "lionstone-original",
+   "verified": true
+  },
+  "description": "punch in, step by step — Stepped punch-ins towards a point you choose. Every step snaps in with an RGB tick, a focus reticle frames the shot and faint scan lines sell the digital look.",
+  "tags": [
+   "motion",
+   "reel",
+   "zoom",
+   "punch-in"
+  ],
+  "styles": [
+   "social"
+  ],
+  "supportedRenderers": [
+   "ffmpeg"
+  ],
+  "compatibleMedia": [
+   "video",
+   "image"
+  ],
+  "duration": {
+   "default": 4.0,
+   "min": 1.0,
+   "max": 60.0
+  },
+  "intensityRange": [
+   0.0,
+   1.0
+  ],
+  "fallbackEffectId": null,
+  "limitations": [],
+  "pipeline": "filter"
+ },
+ {
+  "id": "lionstone.phone-mockup",
+  "name": "Phone Mockup",
+  "kind": "effect",
+  "category": "motion-fx",
+  "tier": "studio",
+  "implementationStatus": "ready",
+  "version": 1,
+  "parameters": {
+   "size": {
+    "type": "number",
+    "min": 0.7,
+    "max": 1.1,
+    "default": 1.0
+   },
+   "body": {
+    "type": "color",
+    "default": "#0E0F13"
+   },
+   "bg": {
+    "type": "color",
+    "default": "#14161C"
+   },
+   "accent": {
+    "type": "color",
+    "default": "#E8A33D"
+   }
+  },
+  "performanceCost": "medium",
+  "license": {
+   "source": "lionstone-original",
+   "verified": true
+  },
+  "description": "your clip, on a phone — A clean phone with a rounded screen and notch rises into the frame and plays your clip, floating gently over a brand backdrop.",
+  "tags": [
+   "motion",
+   "reel",
+   "mockup",
+   "phone",
+   "brand"
+  ],
+  "styles": [
+   "social"
+  ],
+  "supportedRenderers": [
+   "ffmpeg"
+  ],
+  "compatibleMedia": [
+   "video",
+   "image"
+  ],
+  "duration": {
+   "default": 4.0,
+   "min": 1.0,
+   "max": 60.0
+  },
+  "intensityRange": [
+   0.0,
+   1.0
+  ],
+  "fallbackEffectId": null,
+  "limitations": [],
+  "pipeline": "filter"
+ },
+ {
+  "id": "lionstone.checklist",
+  "name": "Checklist",
+  "kind": "effect",
+  "category": "motion-fx",
+  "tier": "studio",
+  "implementationStatus": "ready",
+  "version": 1,
+  "parameters": {
+   "items": {
+    "type": "string",
+    "default": "Hook in 2 seconds|One idea per Reel|Clear call to action",
+    "maxLength": 200
+   },
+   "y": {
+    "type": "number",
+    "min": 0.2,
+    "max": 0.85,
+    "default": 0.7
+   },
+   "panel": {
+    "type": "color",
+    "default": "#14161C"
+   },
+   "opacity": {
+    "type": "number",
+    "min": 0.0,
+    "max": 1.0,
+    "default": 0.85
+   },
+   "accent": {
+    "type": "color",
+    "default": "#E8A33D"
+   }
+  },
+  "performanceCost": "low",
+  "license": {
+   "source": "lionstone-original",
+   "verified": true
+  },
+  "description": "tick, tick, tick — A list card with your items; each one checks off in turn across the window. Separate items with '|'.",
+  "tags": [
+   "motion",
+   "reel",
+   "list",
+   "steps",
+   "text"
+  ],
+  "styles": [
+   "social"
+  ],
+  "supportedRenderers": [
+   "ffmpeg"
+  ],
+  "compatibleMedia": [
+   "video",
+   "image"
+  ],
+  "duration": {
+   "default": 4.0,
+   "min": 1.0,
+   "max": 60.0
+  },
+  "intensityRange": [
+   0.0,
+   1.0
+  ],
+  "fallbackEffectId": null,
+  "limitations": [
+   "Text needs an FFmpeg build with drawtext; without it, bars stand in for text."
+  ],
+  "pipeline": "filter"
+ },
+ {
+  "id": "lionstone.headline-wall",
+  "name": "Headline Wall",
+  "kind": "effect",
+  "category": "motion-fx",
+  "tier": "pro",
+  "implementationStatus": "ready",
+  "version": 1,
+  "parameters": {
+   "headlines": {
+    "type": "string",
+    "default": "WHO IS THIS CREATOR?|THE EDIT EVERYONE SHARES|NEW SERIES STARTS TODAY|SAVE THIS FOR LATER|THE 30-SECOND METHOD|READ THIS BEFORE YOU POST",
+    "maxLength": 600
+   },
+   "scale": {
+    "type": "number",
+    "min": 0.4,
+    "max": 0.8,
+    "default": 0.62
+   },
+   "speed": {
+    "type": "number",
+    "min": 0.2,
+    "max": 3.0,
+    "default": 1.0
+   },
+   "paper": {
+    "type": "color",
+    "default": "#F2EAD8"
+   },
+   "ink": {
+    "type": "color",
+    "default": "#1B1B1B"
+   },
+   "accent": {
+    "type": "color",
+    "default": "#E8A33D"
+   }
+  },
+  "performanceCost": "medium",
+  "license": {
+   "source": "lionstone-original",
+   "verified": true
+  },
+  "description": "the headlines are about you — A wall of paper headlines scrolls behind you while your clip sits in an accent-bordered card in front. Separate headlines with '|'.",
+  "tags": [
+   "motion",
+   "reel",
+   "news",
+   "text",
+   "wall"
+  ],
+  "styles": [
+   "social"
+  ],
+  "supportedRenderers": [
+   "ffmpeg"
+  ],
+  "compatibleMedia": [
+   "video",
+   "image"
+  ],
+  "duration": {
+   "default": 4.0,
+   "min": 1.0,
+   "max": 60.0
+  },
+  "intensityRange": [
+   0.0,
+   1.0
+  ],
+  "fallbackEffectId": null,
+  "limitations": [
+   "Text needs an FFmpeg build with drawtext; without it, bars stand in for text."
+  ],
+  "pipeline": "filter"
+ },
+ {
+  "id": "lionstone.zoom-through-cut",
+  "name": "Zoom-through Cut",
+  "kind": "effect",
+  "category": "motion-fx",
+  "tier": "pro",
+  "implementationStatus": "ready",
+  "version": 1,
+  "parameters": {
+   "zoom": {
+    "type": "number",
+    "min": 1.5,
+    "max": 6.0,
+    "default": 3.0
+   },
+   "flash": {
+    "type": "color",
+    "default": "#FFFFFF"
+   },
+   "flash_opacity": {
+    "type": "number",
+    "min": 0.0,
+    "max": 1.0,
+    "default": 0.6
+   }
+  },
+  "performanceCost": "low",
+  "license": {
+   "source": "lionstone-original",
+   "verified": true
+  },
+  "description": "dive through the frame into the next shot — A fast push in with motion blur, a one-frame flash at the cut and a settle out on the next shot. Centre the window on a cut; 0.6 to 1 s works best.",
+  "tags": [
+   "motion",
+   "reel",
+   "transition",
+   "zoom"
+  ],
+  "styles": [
+   "social"
+  ],
+  "supportedRenderers": [
+   "ffmpeg"
+  ],
+  "compatibleMedia": [
+   "video",
+   "image"
+  ],
+  "duration": {
+   "default": 0.8,
+   "min": 0.3,
+   "max": 3.0
+  },
+  "intensityRange": [
+   0.0,
+   1.0
+  ],
+  "fallbackEffectId": null,
+  "limitations": [],
+  "pipeline": "filter"
+ },
+ {
+  "id": "lionstone.chart-grow",
+  "name": "Chart Grow",
+  "kind": "effect",
+  "category": "motion-fx",
+  "tier": "studio",
+  "implementationStatus": "ready",
+  "version": 1,
+  "parameters": {
+   "values": {
+    "type": "list",
+    "items": {
+     "type": "number",
+     "min": 0,
+     "max": 1
+    },
+    "default": []
+   },
+   "label": {
+    "type": "string",
+    "default": "+240%",
+    "maxLength": 24
+   },
+   "y": {
+    "type": "number",
+    "min": 0.02,
+    "max": 0.7,
+    "default": 0.1
+   },
+   "draw": {
+    "type": "number",
+    "min": 0.4,
+    "max": 6,
+    "default": 1.6,
+    "unit": "s"
+   },
+   "panel": {
+    "type": "color",
+    "default": "#14161C"
+   },
+   "opacity": {
+    "type": "number",
+    "min": 0.0,
+    "max": 1.0,
+    "default": 0.9
+   },
+   "accent": {
+    "type": "color",
+    "default": "#E8A33D"
+   }
+  },
+  "performanceCost": "medium",
+  "license": {
+   "source": "lionstone-original",
+   "verified": true
+  },
+  "description": "your numbers climb while you talk — A line-and-area chart draws itself left to right on a brand card, with an optional label such as '+240%'. Give your own values (0 to 1) or use the rising default.",
+  "tags": [
+   "motion",
+   "reel",
+   "chart",
+   "data",
+   "brand"
+  ],
+  "styles": [
+   "social"
+  ],
+  "supportedRenderers": [
+   "ffmpeg"
+  ],
+  "compatibleMedia": [
+   "video",
+   "image"
+  ],
+  "duration": {
+   "default": 4.0,
+   "min": 1.0,
+   "max": 60.0
+  },
+  "intensityRange": [
+   0.0,
+   1.0
+  ],
+  "fallbackEffectId": null,
+  "limitations": [
+   "Text needs an FFmpeg build with drawtext; without it, bars stand in for text."
+  ],
+  "pipeline": "filter"
+ },
+ {
+  "id": "lionstone.pull-back-reveal",
+  "name": "Pull-back Reveal",
+  "kind": "effect",
+  "category": "motion-fx",
+  "tier": "pro",
+  "implementationStatus": "ready",
+  "version": 1,
+  "parameters": {
+   "zoom": {
+    "type": "number",
+    "min": 1.2,
+    "max": 4.0,
+    "default": 2.2
+   },
+   "x": {
+    "type": "number",
+    "min": 0.0,
+    "max": 1.0,
+    "default": 0.5
+   },
+   "y": {
+    "type": "number",
+    "min": 0.0,
+    "max": 1.0,
+    "default": 0.32
+   },
+   "pull": {
+    "type": "number",
+    "min": 0.4,
+    "max": 6,
+    "default": 1.8,
+    "unit": "s"
+   }
+  },
+  "performanceCost": "low",
+  "license": {
+   "source": "lionstone-original",
+   "verified": true
+  },
+  "description": "start tight, then show the whole scene — Opens tight on a detail you choose and eases back to the full shot while a vignette lifts.",
+  "tags": [
+   "motion",
+   "reel",
+   "zoom",
+   "reveal"
+  ],
+  "styles": [
+   "social"
+  ],
+  "supportedRenderers": [
+   "ffmpeg"
+  ],
+  "compatibleMedia": [
+   "video",
+   "image"
+  ],
+  "duration": {
+   "default": 4.0,
+   "min": 1.0,
+   "max": 60.0
+  },
+  "intensityRange": [
+   0.0,
+   1.0
+  ],
+  "fallbackEffectId": null,
+  "limitations": [],
+  "pipeline": "filter"
+ },
+ {
+  "id": "lionstone.green-screen",
+  "name": "Green Screen",
+  "kind": "effect",
+  "category": "motion-fx",
+  "tier": "studio",
+  "implementationStatus": "ready",
+  "version": 1,
+  "parameters": {
+   "method": {
+    "type": "enum",
+    "values": [
+     "auto",
+     "chroma",
+     "matte"
+    ],
+    "default": "auto"
+   },
+   "key": {
+    "type": "color",
+    "default": "#00B140"
+   },
+   "similarity": {
+    "type": "number",
+    "min": 0.01,
+    "max": 0.4,
+    "default": 0.12
+   },
+   "blend": {
+    "type": "number",
+    "min": 0,
+    "max": 0.3,
+    "default": 0.08
+   },
+   "grid": {
+    "type": "bool",
+    "default": true
+   },
+   "bg": {
+    "type": "color",
+    "default": "#14161C"
+   },
+   "accent": {
+    "type": "color",
+    "default": "#E8A33D"
+   }
+  },
+  "performanceCost": "medium",
+  "license": {
+   "source": "lionstone-original",
+   "verified": true
+  },
+  "description": "swap your backdrop for your brand — Keys out a green (or blue) backdrop, removes the colour spill and puts you on a brand stage with an optional grid.",
+  "tags": [
+   "motion",
+   "reel",
+   "chroma",
+   "key",
+   "brand",
+   "matte"
+  ],
+  "styles": [
+   "social"
+  ],
+  "supportedRenderers": [
+   "ffmpeg"
+  ],
+  "compatibleMedia": [
+   "video",
+   "image"
+  ],
+  "duration": {
+   "default": 4.0,
+   "min": 1.0,
+   "max": 60.0
+  },
+  "intensityRange": [
+   0.0,
+   1.0
+  ],
+  "fallbackEffectId": null,
+  "limitations": [
+   "Without the person matte (OpenCV) it needs footage shot on an evenly lit green or blue backdrop."
+  ],
+  "pipeline": "filter"
+ },
+ {
+  "id": "lionstone.paper-cut",
+  "name": "Paper Cut",
+  "kind": "effect",
+  "category": "motion-fx",
+  "tier": "pro",
+  "implementationStatus": "ready",
+  "version": 1,
+  "parameters": {
+   "levels": {
+    "type": "int",
+    "min": 3,
+    "max": 8,
+    "default": 5
+   },
+   "intensity": {
+    "type": "number",
+    "min": 0.0,
+    "max": 1.0,
+    "default": 0.6
+   },
+   "strip": {
+    "type": "number",
+    "min": 0.06,
+    "max": 0.25,
+    "default": 0.14
+   },
+   "paper": {
+    "type": "color",
+    "default": "#F2EAD8"
+   },
+   "paper2": {
+    "type": "color",
+    "default": "#E8A33D"
+   }
+  },
+  "performanceCost": "medium",
+  "license": {
+   "source": "lionstone-original",
+   "verified": true
+  },
+  "description": "you, cut out of paper — Flattens the shot into a few poster tones with paper grain while two torn paper strips slide in at the top and bottom.",
+  "tags": [
+   "motion",
+   "reel",
+   "paper",
+   "craft"
+  ],
+  "styles": [
+   "social"
+  ],
+  "supportedRenderers": [
+   "ffmpeg"
+  ],
+  "compatibleMedia": [
+   "video",
+   "image"
+  ],
+  "duration": {
+   "default": 4.0,
+   "min": 1.0,
+   "max": 60.0
+  },
+  "intensityRange": [
+   0.0,
+   1.0
+  ],
+  "fallbackEffectId": null,
+  "limitations": [],
+  "pipeline": "filter"
+ },
+ {
+  "id": "lionstone.doodle-boil",
+  "name": "Doodle Boil",
+  "kind": "effect",
+  "category": "motion-fx",
+  "tier": "pro",
+  "implementationStatus": "ready",
+  "version": 1,
+  "parameters": {
+   "mode": {
+    "type": "enum",
+    "values": [
+     "overlay",
+     "sketch"
+    ],
+    "default": "overlay"
+   },
+   "boil": {
+    "type": "number",
+    "min": 4,
+    "max": 15,
+    "default": 8,
+    "unit": "fps"
+   },
+   "wobble": {
+    "type": "number",
+    "min": 0.0,
+    "max": 1.0,
+    "default": 0.6
+   },
+   "detail": {
+    "type": "number",
+    "min": 0.0,
+    "max": 1.0,
+    "default": 0.5
+   },
+   "color": {
+    "type": "color",
+    "default": "#FFFFFF"
+   },
+   "paper": {
+    "type": "color",
+    "default": "#F2EAD8"
+   }
+  },
+  "performanceCost": "medium",
+  "license": {
+   "source": "lionstone-original",
+   "verified": true
+  },
+  "description": "hand-drawn lines that never sit still — Traces the shot as ink lines redrawn a few times a second, with a small wobble on every redraw: the boiling-line look of hand-drawn animation. Sketch mode puts the lines on paper.",
+  "tags": [
+   "motion",
+   "reel",
+   "sketch",
+   "hand-drawn",
+   "matte"
+  ],
+  "styles": [
+   "social"
+  ],
+  "supportedRenderers": [
+   "ffmpeg"
+  ],
+  "compatibleMedia": [
+   "video",
+   "image"
+  ],
+  "duration": {
+   "default": 4.0,
+   "min": 1.0,
+   "max": 60.0
+  },
+  "intensityRange": [
+   0.0,
+   1.0
+  ],
+  "fallbackEffectId": null,
+  "limitations": [],
+  "pipeline": "filter"
+ },
+ {
+  "id": "lionstone.vertigo",
+  "name": "Vertigo",
+  "kind": "effect",
+  "category": "motion-fx",
+  "tier": "pro",
+  "implementationStatus": "ready",
+  "version": 1,
+  "parameters": {
+   "direction": {
+    "type": "enum",
+    "values": [
+     "in",
+     "out"
+    ],
+    "default": "in"
+   },
+   "amount": {
+    "type": "number",
+    "min": 0.1,
+    "max": 1.0,
+    "default": 0.35
+   },
+   "x": {
+    "type": "number",
+    "min": 0.0,
+    "max": 1.0,
+    "default": 0.5
+   },
+   "y": {
+    "type": "number",
+    "min": 0.0,
+    "max": 1.0,
+    "default": 0.4
+   },
+   "size": {
+    "type": "number",
+    "min": 0.3,
+    "max": 0.9,
+    "default": 0.55
+   }
+  },
+  "performanceCost": "medium",
+  "license": {
+   "source": "lionstone-original",
+   "verified": true
+  },
+  "description": "the room stretches, you stay put — A dolly-zoom illusion: the background zooms around you while a soft oval around the subject keeps its size.",
+  "tags": [
+   "motion",
+   "reel",
+   "dolly",
+   "zoom",
+   "cinematic",
+   "matte"
+  ],
+  "styles": [
+   "social",
+   "cinematic"
+  ],
+  "supportedRenderers": [
+   "ffmpeg"
+  ],
+  "compatibleMedia": [
+   "video",
+   "image"
+  ],
+  "duration": {
+   "default": 4.0,
+   "min": 1.0,
+   "max": 60.0
+  },
+  "intensityRange": [
+   0.0,
+   1.0
+  ],
+  "fallbackEffectId": null,
+  "limitations": [
+   "Without the person matte (OpenCV) the subject is a soft oval; keep the subject inside it."
+  ],
+  "pipeline": "filter"
+ },
+ {
+  "id": "lionstone.cover-story",
+  "name": "Cover Story",
+  "kind": "effect",
+  "category": "motion-fx",
+  "tier": "studio",
+  "implementationStatus": "ready",
+  "version": 1,
+  "parameters": {
+   "title": {
+    "type": "string",
+    "default": "LIONSTONE",
+    "maxLength": 24
+   },
+   "issue": {
+    "type": "string",
+    "default": "ISSUE 01 · THE CREATOR EDITION",
+    "maxLength": 60
+   },
+   "lines": {
+    "type": "string",
+    "default": "The 30-second edit|Why your hook fails|5 habits of top creators",
+    "maxLength": 200
+   },
+   "title_color": {
+    "type": "color",
+    "default": "#FFFFFF"
+   },
+   "ink": {
+    "type": "color",
+    "default": "#14161C"
+   },
+   "accent": {
+    "type": "color",
+    "default": "#E8A33D"
+   }
+  },
+  "performanceCost": "medium",
+  "license": {
+   "source": "lionstone-original",
+   "verified": true
+  },
+  "description": "you, on the cover — Turns the shot into a magazine cover: masthead, issue line, staggered cover lines with accent bars and a barcode, over a print-like grade. Separate cover lines with '|'.",
+  "tags": [
+   "motion",
+   "reel",
+   "magazine",
+   "text",
+   "brand"
+  ],
+  "styles": [
+   "social"
+  ],
+  "supportedRenderers": [
+   "ffmpeg"
+  ],
+  "compatibleMedia": [
+   "video",
+   "image"
+  ],
+  "duration": {
+   "default": 4.0,
+   "min": 1.0,
+   "max": 60.0
+  },
+  "intensityRange": [
+   0.0,
+   1.0
+  ],
+  "fallbackEffectId": null,
+  "limitations": [
+   "Text needs an FFmpeg build with drawtext; without it, bars stand in for text."
+  ],
+  "pipeline": "filter"
+ },
+ {
+  "id": "lionstone.glass-type",
+  "name": "Glass Type",
+  "kind": "effect",
+  "category": "motion-fx",
+  "tier": "pro",
+  "implementationStatus": "ready",
+  "version": 1,
+  "parameters": {
+   "text": {
+    "type": "string",
+    "default": "LIONSTONE",
+    "maxLength": 16
+   },
+   "y": {
+    "type": "number",
+    "min": 0.1,
+    "max": 0.9,
+    "default": 0.42
+   },
+   "frost": {
+    "type": "number",
+    "min": 0.0,
+    "max": 1.0,
+    "default": 0.6
+   },
+   "behind": {
+    "type": "bool",
+    "default": true
+   }
+  },
+  "performanceCost": "medium",
+  "license": {
+   "source": "lionstone-original",
+   "verified": true
+  },
+  "description": "big glass letters over your shot — Large frosted-glass type rises over the shot: the letters refract a blurred, brighter copy of the picture and carry a thin light edge.",
+  "tags": [
+   "motion",
+   "reel",
+   "text",
+   "glass",
+   "title",
+   "matte"
+  ],
+  "styles": [
+   "social"
+  ],
+  "supportedRenderers": [
+   "ffmpeg"
+  ],
+  "compatibleMedia": [
+   "video",
+   "image"
+  ],
+  "duration": {
+   "default": 4.0,
+   "min": 1.0,
+   "max": 60.0
+  },
+  "intensityRange": [
+   0.0,
+   1.0
+  ],
+  "fallbackEffectId": null,
+  "limitations": [
+   "Text needs an FFmpeg build with drawtext; without it, bars stand in for text."
+  ],
+  "pipeline": "filter"
+ }
+]

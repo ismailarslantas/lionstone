@@ -142,13 +142,22 @@ def make_showcase(preset: str, clip: str, out: str, *, start: float = 0.0,
         src = Path(clip).resolve()
         seg = ["-ss", f"{start:.3f}", "-t", f"{DUR:.3f}", "-i", str(src)]
         # 1) the real render ("after"), full frame, same builder as the export
-        ctx = fa.RCtx(W, H, FPS, DUR)
+        from .. import matte as _matte
+        mf = _matte.ensure(src) if _matte.wants([p.id]) else None
+        ctx = fa.RCtx(W, H, FPS, DUR, matte=mf is not None)
         frag = fa.FILTERS[p.renderer_id](prm, [(0.0, DUR + 1)], ctx)
+        mg = ""
+        if ctx.mattes:
+            seg_m = ["-ss", f"{start:.3f}", "-t", f"{DUR:.3f}", "-i", str(mf)]
+            mg = _matte.graph_inputs(1, ctx.mattes, W, H, FPS) + ";"
+        else:
+            seg_m = []
         (wd / "fx.txt").write_text(
-            f"[0:v]scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},fps={FPS},"
+            f"{mg}[0:v]scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},fps={FPS},"
             f"setsar=1,format=yuv420p[s];[s]{frag},format=yuv420p[o]", encoding="utf-8")
         from lionstone.render import _script_flag
-        run(["ffmpeg", "-hide_banner", "-y", "-loglevel", "error", *seg, _script_flag(), "fx.txt",
+        run(["ffmpeg", "-hide_banner", "-y", "-loglevel", "error", *seg, *seg_m, _script_flag(),
+             "fx.txt",
              "-map", "[o]", "-t", f"{DUR:.3f}", "-c:v", "libx264", "-crf", "16",
              "-preset", "veryfast", "after.mp4"], cwd=wd)
         # 2) the console reel, with the brand dither dissolve between before and after

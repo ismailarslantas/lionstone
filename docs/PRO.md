@@ -25,12 +25,13 @@ Original Lionstone looks, effects, transitions, motion and animated text — pre
 
 | Command | What it does |
 |---|---|
-| `lionstone fx list --kind look` · `lionstone fx show soft-bloom` | Browse 145 presets with tier, status, cost and licence. Favourites and search included. |
+| `lionstone fx list --kind look` · `lionstone fx show soft-bloom` | Browse 162 presets with tier, status, cost and licence. Favourites and search included. |
 | `lionstone fx preview soft-bloom --before-after --gif` | Real low-res preview with the export builders; every preset previews and renders. |
 | `lionstone fx apply plan.json dip-to-black --join 2` | Put a look, effect, transition or motion preset on the whole video, a segment, a cut or a source range. Keyframes with 6 easing curves. |
 | `lionstone fx text plan.json counter-up --text "Customers" --at 12 --param to=250` | 25 animated text presets — Word Pop, Counter Up, Price Reveal, Stat, Location/Speaker labels, CTA, Type-on, End Card — plus karaoke captions. |
 | `lionstone fx auto plan.json --content vlog --style social` | Lionstone Agent picks one consistent look, emphasis zooms and transitions on real topic changes, within budgets — with a reason for every decision. |
 | `lionstone fx render plan.json` | Compile + render + QA (flash limit ≤ 3/s, exposure, saturation, stale-edit check). |
+| `lionstone fx apply plan.json frame-break --source 0-3` · `lionstone fx matte talk.mp4` | **Motion FX Pack** (1.0): 17 motion-design effects (orbit, couch-wall, ui-world, frame-break, digital-zoom, phone-mockup, checklist, headline-wall, zoom-through-cut, chart-grow, pull-back-reveal, green-screen, paper-cut, doodle-boil, vertigo, cover-story, glass-type) with a person matte for five of them. Guide: [motion-fx.md](motion-fx.md). |
 | `lionstone fx apply plan.json stage-light --source 0-3.5` · `lionstone fx showcase stage-light talk.mp4` | **Reel FX Pack**: 12 one-command effects for Reels & Shorts (stage-light, press-mono, frost-panels, duotone-pop, scan-line, afterimage, halo-orbit, neon-outline, insight-split, brand-frame, progress-rail, pixel-resolve) and 6.4 s showcase reels. Guide: [reel-fx.md](reel-fx.md). |
 
 Features that aren't finished yet (two-clip cross dissolves, particles, subject masking) are listed as **planned** in the catalog — never shipped as buttons that do nothing. Text presets need an FFmpeg build with `drawtext`; on builds without it (e.g. Homebrew's default), Lionstone skips them with a clear message.

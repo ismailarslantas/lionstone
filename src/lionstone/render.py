@@ -124,7 +124,8 @@ def output_geometry(info: MediaInfo, aspect: str | None) -> tuple[int, int, floa
 
 def build_graph(plan: EditPlan, info: MediaInfo, opts: RenderOptions, workdir: Path,
                 *, catalog: Catalog, loudnorm: str, audio_only: bool = False,
-                prerendered: dict[str, int] | None = None) -> tuple[str, dict]:
+                prerendered: dict[str, int] | None = None,
+                matte_input: int | None = None) -> tuple[str, dict]:
     prerendered = prerendered or {}
     reg = registry()
     W, H, fps = output_geometry(info, opts.aspect)
@@ -210,6 +211,10 @@ def build_graph(plan: EditPlan, info: MediaInfo, opts: RenderOptions, workdir: P
             cinfo["style_filter"] = plan.color["filter"]
     vchain += opts.extra_video_filters
     vchain.append("format=yuv420p")
+    if matte_input is not None and plan.color.get("matte"):  # person matte for Motion FX
+        from .pro.matte import graph_inputs
+        parts.append(graph_inputs(matte_input, int(plan.color["matte"]["uses"]), W, H, fps,
+                                  trims=segs))
     parts.append(f"[vc]{','.join(vchain)}[vb]")
     cur = "vb"
 
@@ -344,8 +349,17 @@ def render(plan: EditPlan, output: str | Path, opts: RenderOptions | None = None
     prerendered, extra_inputs, pre_notes = _prerender_graphics(plan, opts, catalog, wd, W, H,
                                                                base=1 + len(cams))
     extra_inputs = cam_inputs + extra_inputs
+    matte_input = None
+    if plan.color.get("matte") and plan.color.get("filter"):
+        from .pro.matte import ensure
+        mf = ensure(plan.source)  # cached; rebuilt if the cache was cleared
+        if mf is None:
+            raise RuntimeError("this plan uses the person matte but it can't be built here: "
+                               'pip install "lionstone[vision]" or recompile with LIONSTONE_MATTE=0')
+        matte_input = 1 + len(extra_inputs) // 2
+        extra_inputs += ["-i", str(mf)]
     graph, meta = build_graph(plan, info, opts, wd, catalog=catalog, loudnorm=ln,
-                              prerendered=prerendered)
+                              prerendered=prerendered, matte_input=matte_input)
     meta["notes"] = pre_notes + meta["notes"]
     script = wd / "graph_render.txt"
     script.write_text(graph, encoding="utf-8")

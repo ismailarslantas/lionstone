@@ -26,7 +26,14 @@ class RCtx:
     fps: float
     total: float  # output duration (seconds)
     brand: dict = field(default_factory=dict)
+    matte: bool = False  # a person-matte stream will be supplied (see lionstone.pro.matte)
+    mattes: int = 0      # how many matte labels the builders used (lsmatte1..N)
     _n: int = 0
+
+    def matte_label(self) -> str:
+        """A fresh label of the grey person matte (W×H, output time); only when `matte`."""
+        self.mattes += 1
+        return f"lsmatte{self.mattes}"
 
     def L(self, prefix: str = "x") -> str:
         self._n += 1
