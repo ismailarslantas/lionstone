@@ -3,7 +3,7 @@
 [OpenMontage](https://github.com/OpenMontageInc/OpenMontage) is an open-source, agent-driven
 video production system (scripts, scene plans, generated footage, Remotion compositions).
 Lionstone 1.0 plugs into it as a tool, so an OpenMontage production can finish a talking-head
-shot with any of the 17 Motion FX or the 12 Reel FX, including the AI person matte.
+shot with any of the 25 Motion FX or the 12 Reel FX, including the AI person matte.
 
 ## Install
 

@@ -1,4 +1,4 @@
-"""Motion FX 2 — eight more motion-design effects for talking-head video (Lionstone 1.1).
+"""Motion FX 2 — eight more motion-design effects for talking-head video (Lionstone 1.0).
 
 Split-flap Board, Count-up Stat, Beat Type, Day Grid, Particle Reveal, Receipt,
 Notification Stack and Before/After.
