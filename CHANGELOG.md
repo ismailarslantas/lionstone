@@ -12,6 +12,7 @@
 - **Security on GitHub**: CodeQL code scanning, OpenSSF Scorecard, weekly grouped Dependabot, actions pinned to commit SHAs with read-only default tokens, CODEOWNERS, and a release workflow that tests, builds, writes SHA256SUMS, attests build provenance (Sigstore) and publishes the release. New [SECURITY.md](SECURITY.md) with supported versions, response times, network use and release verification.
 - Launch visuals are real renders: `scripts/build_motionfx_visuals.py` renders every effect on a fictional demo character and builds the carousel slides and `docs/img/motionfx-*.jpg`.
 - Fix: Paper Cut no longer tints grey areas green (chroma rounding).
+- Security: Remotion's transitive `zod` is pinned to the patched 4.6.7 with an npm override (GHSA-mrhx-c7xc-m3w5, memory exhaustion); `npm audit` reports 0 vulnerabilities.
 - `lionstone[vision]` now also powers the person matte. Development status: Production/Stable.
 - Tests: `tests/pro/test_motion_fx.py` renders every effect on 9:16 and 16:9, every matte version with a stand-in matte, a full plan render that feeds the matte through the cuts, and the fallback without OpenCV.
 
