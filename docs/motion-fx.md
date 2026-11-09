@@ -1,4 +1,4 @@
-# Motion FX Pack: 17 motion-design effects (new in Lionstone 1.0)
+# Motion FX Pack: 25 motion-design effects (new in Lionstone 1.0)
 
 ![Motion FX Pack](img/motionfx-banner.jpg)
 
@@ -58,7 +58,7 @@ to put you in front of the frame, the type or the new backdrop.
   plain FFmpeg versions (a centred column, a soft oval, type over you, chroma key) and the
   compile report says so. Multicam plans use the plain versions.
 
-## The 17 effects
+## The first 17 effects (the other 8 are in [Motion FX 2](motion-fx-2.md))
 
 | # | Effect | Promise | Key parameters (default) | Cost | Matte |
 |---|---|---|---|---|---|

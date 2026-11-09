@@ -14,7 +14,7 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-ROW = ("| Lionstone Motion FX | `core/lionstone-motion-fx.md` | 17 Motion FX + 12 Reel FX "
+ROW = ("| Lionstone Motion FX | `core/lionstone-motion-fx.md` | 25 Motion FX + 12 Reel FX "
        "on talking-head clips, AI person matte | `lionstone_motion_fx` |")
 
 

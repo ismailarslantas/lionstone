@@ -3,7 +3,7 @@
 Run after editing: python tools/gen_motion_presets.py
 
 Twenty-five motion-design effects for talking-head Reels, Shorts and videos: the 17 of
-Lionstone 1.0 and the 8 of Motion FX 2 (1.1). Every name, look and parameter set is
+Lionstone 1.0 and the 8 of Motion FX 2 (also 1.0). Every name, look and parameter set is
 original to Lionstone; the renderers are FFmpeg filter math in
 ``features/renderers/motion_fx.py`` and ``motion_fx2.py`` plus the bundled Poppins /
 DM Serif Display fonts (SIL OFL). No stock assets are bundled.

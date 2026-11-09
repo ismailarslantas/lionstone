@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/ismailarslantas/lionstone/releases/latest"><img src="docs/img/motionfx-banner.jpg" alt="Lionstone v1.0.0 Motion FX Pack: 17 effects, one command each, an AI person matte puts you in front of the frame. 100% free, open source, runs on your computer" width="100%"></a>
+  <a href="https://github.com/ismailarslantas/lionstone/releases/latest"><img src="docs/img/motionfx-banner.jpg" alt="Lionstone v1.0.0 Motion FX Pack: 25 effects, one command each, an AI person matte puts you in front of the frame. 100% free, open source, runs on your computer" width="100%"></a>
 </p>
 
 <p align="center">
@@ -15,7 +15,7 @@
 </p>
 
 <p align="center">
-  <b>Lionstone v1.0.0 is 100% free: the complete AI video editor, now with 17 Motion FX.</b><br>
+  <b>Lionstone v1.0.0 is 100% free: the complete AI video editor, now with 25 Motion FX.</b><br>
   Motion FX Pack with a person matte, brand-specific Reels workflow, brand identity, visual catalogue, multicam, Creative Suite, Shorts generator, NLE export, team tools and Lionstone Styles, all in one open-source package.<br>
   Local-first · no upload · no license key · no watermark · works offline<br>
   <a href="https://github.com/ismailarslantas/lionstone/releases/latest">Latest release</a> · <a href="docs/motion-fx.md">Motion FX</a> · <a href="docs/reels.md">Reels guide</a> · <a href="docs/handbook/README.md">Reel Handbook (free PDF)</a> · <a href="docs/brand-setup.md">Brand setup</a>
@@ -26,7 +26,7 @@ pip install "lionstone[all] @ git+https://github.com/ismailarslantas/lionstone"
 lionstone doctor
 ```
 
-<img src="assets/launch/00-whats-new-v1.jpg" alt="What's in Lionstone v1.0.0: Motion FX Pack with 17 new one-command effects, AI person matte, Reel FX Pack with 12 effects, Lionstone Reels, Lionstone Styles, Creative Suite with 133 looks, effects and motion presets, Pro and Studio free in the core, OpenMontage tool for AI agents, signed releases with SHA256SUMS and build provenance. Everything from v0.3 and v0.4 in one free release, Apache-2.0" width="100%">
+<img src="assets/launch/00-whats-new-v1.jpg" alt="What's in Lionstone v1.0.0: Motion FX Pack with 25 new one-command effects, AI person matte, Reel FX Pack with 12 effects, Lionstone Reels, Lionstone Styles, Creative Suite with 133 looks, effects and motion presets, Pro and Studio free in the core, OpenMontage tool for AI agents, signed releases with SHA256SUMS and build provenance. Everything from v0.3 and v0.4 in one free release, Apache-2.0" width="100%">
 
 ---
 
@@ -36,11 +36,11 @@ lionstone doctor
 
 There is no paid tier to find out about later. Every feature on this page ships in this repository under Apache-2.0: no license key, no account, no watermark, no per-video fee, and nothing leaves your computer. The one cost outside Lionstone: writing hooks and scripts with Claude uses your own Claude plan. Editing, QA and rendering run on your machine.
 
-<img src="assets/launch/15-everything.jpg" alt="Everything in one free package: speech-aware editing, Lionstone Reels, brand identity, AI person matte, Creative Suite, Reel FX and Motion FX with 29 one-command effects, Shorts generator, multicam, style learning, NLE export, team tools, QA and MCP" width="100%">
+<img src="assets/launch/15-everything.jpg" alt="Everything in one free package: speech-aware editing, Lionstone Reels, brand identity, AI person matte, Creative Suite, Reel FX and Motion FX with 37 one-command effects, Shorts generator, multicam, style learning, NLE export, team tools, QA and MCP" width="100%">
 
-### 🎬 New in v1.0.0: Motion FX Pack, 17 effects with a person matte
+### 🎬 New in v1.0.0: Motion FX Pack, 25 effects with a person matte
 
-<img src="docs/img/motionfx-banner.jpg" alt="Lionstone 1.0 Motion FX Pack: 17 motion-design effects for talking-head video, one command each" width="100%">
+<img src="docs/img/motionfx-banner.jpg" alt="Lionstone 1.0 Motion FX Pack: 25 motion-design effects for talking-head video, one command each" width="100%">
 
 Orbit, Couch Wall, UI World, Frame Break, Digital Zoom, Phone Mockup, Checklist, Headline Wall, Zoom-through Cut, Chart Grow, Pull-back Reveal, Green Screen, Paper Cut, Doodle Boil, Vertigo, Cover Story and Glass Type. One command each, on 9:16, 1:1 and 16:9:
 
@@ -56,7 +56,7 @@ Five of them know where you are in the shot: a small AI model (U²-Net, CPU, cac
 
 Full guide with every parameter: [docs/motion-fx.md](docs/motion-fx.md). Apply one effect to any clip with `lionstone fx clip glass-type talk.mp4 -o out.mp4`, or use them from [OpenMontage](docs/openmontage.md).
 
-#### Motion FX 2: 8 more effects
+#### Also in v1.0.0: Motion FX 2, 8 more effects
 
 <img src="docs/img/motionfx2-real-renders.jpg" alt="Real Lionstone renders of the 8 Motion FX 2 effects: split-flap board, count-up stat, beat type, day grid, particle reveal, receipt, notification stack and before/after" width="100%">
 
@@ -404,7 +404,7 @@ Every feature is free and open source (Apache-2.0): no license key, no account, 
 | **Multicam**: audio sync with drift check, active-speaker switching | `lionstone multicam` |
 | **Style learning** from 1-3 reference videos | `lionstone style learn` |
 | **Shorts/Reels generator**: best moments → 9:16, face-tracked reframe, hook titles | `lionstone clips` |
-| **Motion FX Pack** (1.0): 17 motion-design effects, person matte for 5 of them | `lionstone fx list --category motion-fx` · `fx matte` |
+| **Motion FX Pack** (1.0): 25 motion-design effects (17 + Motion FX 2), person matte for 5 of them, Theatre.js keyframes, Synfig backend | `lionstone fx list --category motion-fx` · `fx matte` |
 | **Reel FX Pack**: 12 one-command Reels/Shorts effects + 6.4 s showcase reels | `lionstone fx list --category reel-fx` · `fx showcase` |
 | **Project export**: FCPXML (Resolve / Final Cut) + EDL (Premiere) | `lionstone export` |
 | **Team tools**: brand kits, roles, versioned and locked presets, batch apply | `lionstone team` · `brand` · `preset` · `fx batch` |

@@ -52,7 +52,7 @@ FX = [
     ("glass-type", "Glass Type", "Big glass letters behind you.", (0, 8), 2.0, {"text": "FOCUS"}),
 ]
 
-# Motion FX 2 (1.1)
+# Motion FX 2 (1.0)
 FX2 = [
     ("split-flap", "Split-flap Board", "A departures board spells your word.", (0, 8), 2.2, {}),
     ("count-up", "Count-up Stat", "Your number counts up on a card.", (0, 8), 2.4, {}),
@@ -302,7 +302,7 @@ def banner(cover: Path, frames, path: Path) -> None:
     im.paste(hd, (40, 30), hd)
     d = ImageDraw.Draw(im)
     d.text((60, 190), "Motion FX Pack", font=font(BOLD, 64), fill="white")
-    d.text((60, 270), "17 effects", font=font(BOLD, 64), fill=GOLD)
+    d.text((60, 270), "25 effects", font=font(BOLD, 64), fill=GOLD)
     for i, line in enumerate(("One command each. An AI person matte", "puts you in front of the frame.")):
         d.text((60, 380 + i * 38), line, font=font(MED, 26), fill=(225, 225, 230))
     d.text((60, 560), "100% free · open source · runs on your computer", font=font(BOLD, 24),
