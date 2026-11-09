@@ -20,6 +20,7 @@ from __future__ import annotations
 import atexit
 import hashlib
 import math
+import re
 import shutil
 import tempfile
 from collections.abc import Callable
@@ -74,11 +75,17 @@ def _text(text: str, size: float, color: str, x: str, y: str, *, font: Path = BO
     """drawtext with a bundled font; without drawtext, a placeholder bar of similar size."""
     size = max(6, int(size))
     if not has_filter("drawtext"):
+        base, _, alpha_ = color.partition("@")
+        if alpha_ and float(alpha_) == 0:  # an invisible layer (e.g. glass edges): draw nothing
+            return "null"
         w = max(4, int(size * 0.55 * len(text)))
-        bx = x.replace("tw", str(w)).replace("th", str(size))
-        by = y.replace("tw", str(w)).replace("th", str(size))
-        return (f"drawbox=x='{bx}':y='{by}':w={w}:h={max(2, size // 2)}:"
-                f"color={color}@0.85:t=fill:enable='{enable}'")
+
+        def box(e: str) -> str:  # drawtext's w/h/tw/th → drawbox's iw/ih and the bar size
+            e = re.sub(r"\btw\b", str(w), re.sub(r"\bth\b", str(size), e))
+            e = re.sub(r"\bt\b", "0", e)  # drawbox can't place by time; the bar stays put
+            return re.sub(r"\bh\b", "ih", re.sub(r"\bw\b", "iw", e))
+        return (f"drawbox=x='{box(x)}':y='{box(y)}':w={w}:h={max(2, size // 2)}:"
+                f"color={base}@0.85:t=fill:enable='{enable}'")
     return (f"drawtext=fontfile={_font(font)}:textfile={_textfile(text)}:"
             f"expansion=none:fontsize={size}:fontcolor={color}:x='{x}':y='{y}':alpha='{alpha}':"
             f"enable='{enable}'" + (f":{extra}" if extra else ""))

@@ -166,3 +166,13 @@ def test_openmontage_installer_copies_only_the_adapter(tmp_path):
     assert (om / "skills" / "INDEX.md").read_text(encoding="utf-8").count("lionstone-motion-fx") == 1
     with pytest.raises(SystemExit):
         mod.install(tmp_path / "not-openmontage")
+
+
+@pytest.mark.parametrize("pid", ["checklist", "headline-wall", "chart-grow", "cover-story",
+                                 "glass-type"])
+def test_text_effects_render_without_drawtext(pid, monkeypatch):
+    """FFmpeg builds without libfreetype (plain Homebrew) get bars instead of text, never an error."""
+    monkeypatch.setattr(motion_fx, "has_filter", lambda name: name != "drawtext")
+    frag, _ = _frag(pid, 108, 192)
+    assert "drawtext" not in frag
+    _ff(f"[0:v]format=yuv420p[s];[s]{frag},format=yuv420p[o]", 108, 192)
