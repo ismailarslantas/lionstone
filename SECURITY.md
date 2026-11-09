@@ -46,8 +46,8 @@ parser bugs are fixed there.
   when Lionstone exits.
 * Effect parameters are typed and range-checked; unknown parameters and invalid values are
   rejected, never guessed.
-* The OpenMontage integration calls the `lionstone` command as a separate process; no code
-  from either project is loaded into the other.
+* Programs under other licences (for example Synfig) run as separate processes and are never
+  bundled.
 
 ## Supply chain
 

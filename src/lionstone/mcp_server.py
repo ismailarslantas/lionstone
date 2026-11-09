@@ -33,7 +33,8 @@ from .speech import segments_from_cuts
 INSTRUCTIONS = (
     "Lionstone edits spoken-word video (podcasts, interviews, talks). Typical loop: "
     "plan_edit → review cuts/transcript → restore_cuts or edit_transcript → render_plan → "
-    "read the QA result. Never claim a video is ready unless render_plan returned "
+    "read the QA result. For a whole production (brief → checked video) use editing_init "
+    "and editing_run. Never claim a video is ready unless render_plan or editing_run returned "
     "deliverable=true."
 )
 
@@ -158,6 +159,39 @@ def build():
                             "description": e.description}
                            for e in cat.filter(category=category or None, style=style or None,
                                                tier=tier)])
+
+    @app.tool()
+    def editing_init(folder: str, footage: str = "", brief: dict | None = None) -> str:
+        """Lionstone Editing: write or update brief.json in a production folder.
+
+        brief keys: goal, platform (reels|shorts|tiktok|youtube|podcast), language, asr,
+        intensity, content, style, title, subtitle, speakers, chapters, captions, look,
+        review, fx ([{"effect", "start", "end", "params"}]). Write all copy yourself."""
+        from . import editing
+        path = editing.init(folder, footage, **(brief or {}))
+        return json.dumps({"brief_path": str(path),
+                           "problems": editing.validate(editing.load_brief(folder), folder)},
+                          ensure_ascii=False)
+
+    @app.tool()
+    def editing_run(folder: str, from_stage: str = "") -> str:
+        """Lionstone Editing: run brief → plan → review → look → render → fx → qa → report.
+
+        Stops at review when the brief asks for it (run again to continue). Returns each
+        stage's status, the next stage and deliverable."""
+        from . import editing
+        try:
+            st, log = _quiet(editing.run, folder, from_stage or None, log=print)
+        except Exception as e:  # the failed stage is recorded in production.json
+            return json.dumps({"error": f"{type(e).__name__}: {e}",
+                               **editing.status(folder)}, ensure_ascii=False)
+        return json.dumps({**st, "log": log[-1500:]}, ensure_ascii=False)
+
+    @app.tool()
+    def editing_status(folder: str) -> str:
+        """Lionstone Editing: read the stages of a production (production.json)."""
+        from . import editing
+        return json.dumps(editing.status(folder), ensure_ascii=False)
 
     return app
 
