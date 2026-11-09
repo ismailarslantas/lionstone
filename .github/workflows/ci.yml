@@ -40,7 +40,9 @@ jobs:
               fi ;;
             Windows) choco install ffmpeg -y --no-progress ;;
           esac
-      - run: pip install -e ".[dev,mcp]"
+      # dependencies are hash-pinned (regenerate: see .github/requirements/README.md)
+      - run: pip install --require-hashes -r .github/requirements/ci.txt
+      - run: pip install --no-deps -e .
       - run: ruff check src tests tools integrations
       - name: FFmpeg filters the Reels workflow relies on
         shell: bash

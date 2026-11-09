@@ -31,7 +31,7 @@ def _args(**kw):
 def test_missing_synfig_prints_install_hint(monkeypatch, capsys):
     monkeypatch.setattr(synfig, "find", lambda: None)
     assert commands_fx._synfig(_args(), None, None) == 2
-    assert "synfig.org" in capsys.readouterr().err
+    assert synfig.INSTALL_HINT in capsys.readouterr().err
     with pytest.raises(synfig.SynfigError):
         synfig.render_frames(Path("x.sif"), Path("out"), 64, 96, 10)
 
