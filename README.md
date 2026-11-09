@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://github.com/ismailarslantas/lionstone/actions"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/ismailarslantas/lionstone/ci.yml?branch=main&label=tests&style=flat-square"></a>
-  <a href="https://github.com/ismailarslantas/lionstone/actions/workflows/codeql.yml"><img alt="CodeQL" src="https://img.shields.io/github/actions/workflow/status/ismailarslantas/lionstone/codeql.yml?branch=main&label=CodeQL&style=flat-square"></a>
+  <a href="SECURITY.md"><img alt="CodeQL" src="https://img.shields.io/badge/CodeQL-code%20scanning-2ea44f?style=flat-square"></a>
   <a href="https://scorecard.dev/viewer/?uri=github.com/ismailarslantas/lionstone"><img alt="OpenSSF Scorecard" src="https://api.scorecard.dev/projects/github.com/ismailarslantas/lionstone/badge"></a>
   <a href="SECURITY.md"><img alt="Signed releases" src="https://img.shields.io/badge/releases-attested%20%2B%20SHA256-E8B04B?style=flat-square"></a>
   <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/license-Apache--2.0-E8B04B?style=flat-square"></a>

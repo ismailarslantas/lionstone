@@ -51,7 +51,7 @@ parser bugs are fixed there.
 
 ## Supply chain
 
-* **CodeQL** (security-extended queries) on every push, pull request and weekly.
+* **CodeQL code scanning** (GitHub default setup: Python, JavaScript/TypeScript and Actions) on every push and pull request.
 * **OpenSSF Scorecard** weekly, results in the Security tab and the README badge.
 * **Dependabot** for Python, npm (Remotion) and GitHub Actions.
 * GitHub Actions are **pinned to commit SHAs** and run with **read-only tokens** by default.
