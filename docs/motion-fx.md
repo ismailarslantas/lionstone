@@ -10,6 +10,10 @@ render with the same FFmpeg code in the preview, the showcase reel and the final
 Like everything in Lionstone, the pack is free and open source (Apache-2.0): no key, no
 watermark, no upload. *Pro* and *Studio* are only catalogue labels.
 
+> **New: [Motion FX 2](motion-fx-2.md)** adds 8 more effects (split-flap board, count-up
+> stat, beat type, day grid, particle reveal, receipt, notification stack, before/after),
+> Theatre.js keyframes for Remotion titles and an optional Synfig backend.
+
 ![Real renders of all 17 effects](img/motionfx-real-renders.jpg)
 
 *Above: real Lionstone renders on a fictional example character. Use `lionstone fx preview`

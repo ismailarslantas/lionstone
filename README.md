@@ -56,6 +56,12 @@ Five of them know where you are in the shot: a small AI model (U²-Net, CPU, cac
 
 Full guide with every parameter: [docs/motion-fx.md](docs/motion-fx.md). Apply one effect to any clip with `lionstone fx clip glass-type talk.mp4 -o out.mp4`, or use them from [OpenMontage](docs/openmontage.md).
 
+#### Motion FX 2: 8 more effects
+
+<img src="docs/img/motionfx2-real-renders.jpg" alt="Real Lionstone renders of the 8 Motion FX 2 effects: split-flap board, count-up stat, beat type, day grid, particle reveal, receipt, notification stack and before/after" width="100%">
+
+Split-flap Board, Count-up Stat, Beat Type, Day Grid, Particle Reveal, Receipt, Notification Stack and Before/After, plus Theatre.js keyframes for Remotion titles and an optional Synfig backend (`lionstone fx synfig overlay.sif --input talk.mp4 -o out.mp4`). Guide: [docs/motion-fx-2.md](docs/motion-fx-2.md).
+
 **Security:** CodeQL and OpenSSF Scorecard on every change, pinned and read-only CI, and releases built by GitHub Actions with SHA256SUMS and a signed provenance attestation. See [SECURITY.md](SECURITY.md) to verify a download or report a problem privately.
 
 ### 🌍 Since v0.4.2: Lionstone Reels speaks English

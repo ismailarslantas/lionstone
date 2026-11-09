@@ -1,6 +1,7 @@
 """Build the Motion FX launch visuals from REAL Lionstone renders.
 
     python scripts/build_motionfx_visuals.py portrait.png cover.png --out build/motionfx
+    python scripts/build_motionfx_visuals.py portrait.png logo.png --fx2   # Motion FX 2 sheet
 
 portrait.png: a fictional demo character (9:16 or 3:4). cover.png: a slide in the brand
 design (its top bar, the lion logo + "LIONSTONE | v1.0.0", is reused on every slide).
@@ -51,6 +52,18 @@ FX = [
     ("glass-type", "Glass Type", "Big glass letters behind you.", (0, 8), 2.0, {"text": "FOCUS"}),
 ]
 
+# Motion FX 2 (1.1)
+FX2 = [
+    ("split-flap", "Split-flap Board", "A departures board spells your word.", (0, 8), 2.2, {}),
+    ("count-up", "Count-up Stat", "Your number counts up on a card.", (0, 8), 2.4, {}),
+    ("beat-type", "Beat Type", "Words land on the beat.", (0, 8), 2.1, {}),
+    ("day-grid", "Day Grid", "Day 17 of 30.", (0, 8), 2.5, {}),
+    ("particle-reveal", "Particle Reveal", "Sparks gather into your title.", (0, 8), 0.9, {}),
+    ("receipt", "Receipt", "The receipt for your result.", (0, 8), 2.6, {}),
+    ("notification-stack", "Notification Stack", "Your phone lights up.", (0, 8), 2.8, {}),
+    ("before-after", "Before/After", "Slide between before and after.", (0, 8), 1.4, {}),
+]
+
 
 def ff(*args: str) -> None:
     subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", *args], check=True)
@@ -72,10 +85,10 @@ def demo_clip(portrait: Path, wd: Path) -> Path:
     return out
 
 
-def renders(clip: Path, wd: Path) -> dict[str, Image.Image]:
+def renders(clip: Path, wd: Path, fx=FX, extras: bool = True) -> dict[str, Image.Image]:
     from lionstone.pro.features.clipfx import apply_to_clip
     frames = {}
-    for slug, *_, (a, b), t, prm in FX:
+    for slug, *_, (a, b), t, prm in fx:
         mp4 = wd / f"{slug}.mp4"
         if not mp4.exists():
             apply_to_clip(slug, clip, mp4, params=prm, start=a, end=b)
@@ -83,6 +96,8 @@ def renders(clip: Path, wd: Path) -> dict[str, Image.Image]:
         ff("-ss", f"{t:.3f}", "-i", str(mp4), "-frames:v", "1", str(png))
         frames[slug] = Image.open(png).convert("RGB")
         print("rendered", slug)
+    if not extras:
+        return frames
     ff("-ss", "2", "-i", str(clip), "-frames:v", "1", str(wd / "original.png"))
     frames["original"] = Image.open(wd / "original.png").convert("RGB")
     from lionstone.pro import matte
@@ -319,14 +334,50 @@ def matte_compare(frames, path: Path) -> None:
     im.convert("RGB").save(path, quality=90)
 
 
+def sheet2(logo: Path, frames, path: Path) -> None:
+    """Docs image: the 8 Motion FX 2 real renders, lion logo on top (1600 wide)."""
+    cols, tw = 4, 340
+    th = int(tw * 16 / 9)
+    W = 60 + cols * (tw + 20) - 20 + 60
+    H = 230 + 2 * (th + 70) + 30
+    im = background(W, H)
+    lg = Image.open(logo).convert("RGB")
+    lg = lg.crop((0, 0, int(lg.width * 0.71), lg.height))  # lion + wordmark, no version tag
+    lg = lg.resize((int(lg.width * 70 / lg.height), 70), Image.LANCZOS).convert("RGBA")
+    lg.putalpha(lg.convert("L").point(lambda v: max(0, min(255, (v - 28) * 4))))
+    im.paste(lg, (60, 30), lg)
+    d = ImageDraw.Draw(im)
+    f = font(BOLD, 56)
+    d.text((60, 115), "Motion FX 2", font=f, fill="white")
+    d.text((60 + text_w(d, "Motion FX 2 ", f), 115), "8 new effects", font=f, fill=GOLD)
+    d.text((W - 60 - text_w(d, "Real renders · fictional demo character", font(MED, 22)), 150),
+           "Real renders · fictional demo character", font=font(MED, 22), fill=GREY)
+    for i, (slug, name, *_rest) in enumerate(FX2):
+        r, c = divmod(i, cols)
+        x, y = 60 + c * (tw + 20), 230 + r * (th + 70)
+        pic = rounded(frames[slug].resize((tw, th), Image.LANCZOS), 16)
+        d.rounded_rectangle((x - 3, y - 3, x + tw + 3, y + th + 3), 19, outline=GOLD2, width=2)
+        im.paste(pic, (x, y), pic)
+        d.text((x, y + th + 12), f"{18 + i:02d}  {name}", font=font(BOLD, 26), fill="white")
+    im.convert("RGB").save(path, quality=90)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("portrait", type=Path)
-    ap.add_argument("cover", type=Path)
+    ap.add_argument("cover", type=Path, help="v1 cover slide, or the logo PNG with --fx2")
     ap.add_argument("--out", type=Path, default=ROOT / "build" / "motionfx")
+    ap.add_argument("--fx2", action="store_true", help="only the Motion FX 2 docs sheet")
     a = ap.parse_args()
     wd = a.out / "work"
     wd.mkdir(parents=True, exist_ok=True)
+    if a.fx2:
+        frames = renders(demo_clip(a.portrait, wd), wd, FX2, extras=False)
+        sheet2(a.cover, frames, ROOT / "docs" / "img" / "motionfx2-real-renders.jpg")
+        for slug in ("split-flap", "particle-reveal"):
+            shutil.copyfile(wd / f"{slug}.mp4", a.out / f"{slug}-demo.mp4")
+        print("Motion FX 2 sheet written to", ROOT / "docs" / "img")
+        return 0
     frames = renders(demo_clip(a.portrait, wd), wd)
     groups = [FX[0:3], FX[3:6], FX[6:9], FX[9:12], FX[12:15], FX[15:17]]
     slides = {"02": matte_slide(a.cover, frames, "02/10"), "09": command_slide(a.cover, "09/10")}
