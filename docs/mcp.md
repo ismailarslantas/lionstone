@@ -20,5 +20,8 @@ lionstone mcp   # stdio
 | `restore_cuts(plan_path, cut_ids, restore)` | undo / redo cuts |
 | `render_plan(plan_path, captions, aspect)` | render + QA → `deliverable` + QA markdown |
 | `list_effects(category, style, tier)` | effect catalog with lock state |
+| `editing_init(folder, footage, brief)` | [Lionstone Editing](editing.md): write or update `brief.json` |
+| `editing_run(folder, from_stage)` | run the production loop → stage states, next stage, `deliverable` |
+| `editing_status(folder)` | read `production.json` |
 
 Example prompt: *"Plan an edit of ~/Videos/ep12.mp4 in Turkish, natural intensity. Show me cuts under 0.7 confidence, restore the ones that remove meaning, then render for YouTube and summarise the QA."*

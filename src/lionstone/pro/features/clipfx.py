@@ -1,7 +1,7 @@
 """Apply one effect to a whole clip at its own size: `lionstone fx clip glass-type in.mp4 -o out.mp4`.
 
 The same builders as the export, preview and showcase (and the person matte when
-the effect uses it). Audio is copied. Used by the OpenMontage integration.
+the effect uses it). Audio is copied. Used by the fx stage of Lionstone Editing.
 """
 
 from __future__ import annotations

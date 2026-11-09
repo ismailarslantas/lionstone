@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+- **Lionstone Editing** ([docs/editing.md](docs/editing.md)): Lionstone's own production loop for AI assistants. A `brief.json` goes in; `lionstone editing run` plans the edit, stops for review if asked, applies the Studio look, renders, applies the Motion FX / Reel FX from the brief, runs QA on the final file and writes `report.md`. Every stage is recorded in `production.json` (`done`, `skipped` with a reason, `partial`, `waiting`, `failed`); finished stages are not repeated and `--from STAGE` redoes from a stage. New MCP tools `editing_init`, `editing_run`, `editing_status`, and a skill in `integrations/lionstone-editing/`. Creative copy comes only from the brief.
+- **Removed the OpenMontage adapter** (`integrations/openmontage/`, `docs/openmontage.md`): Lionstone Editing covers the same brief-to-video loop with Lionstone's own tools. `lionstone fx clip` is unchanged.
+
 ## 1.0.0 — 2026-11-09
 **Lionstone 1.0: the Motion FX Pack. Twenty-five motion-design effects, one command each, and a person matte that puts you in front of the frame. Free as ever.**
 

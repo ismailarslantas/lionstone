@@ -151,26 +151,6 @@ def test_fx_clip_renders_at_the_clip_size(tmp_path):
     assert "video,180,320" in probe and "audio" in probe
 
 
-def test_openmontage_installer_copies_only_the_adapter(tmp_path):
-    import importlib.util
-    from pathlib import Path
-    root = Path(__file__).resolve().parents[2] / "integrations" / "openmontage"
-    spec = importlib.util.spec_from_file_location("om_install", root / "install.py")
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-    om = tmp_path / "OpenMontage"
-    (om / "tools").mkdir(parents=True)
-    (om / "tools" / "base_tool.py").write_text("", encoding="utf-8")
-    (om / "skills").mkdir()
-    (om / "skills" / "INDEX.md").write_text("| Skill | File |\n", encoding="utf-8")
-    mod.install(om)
-    mod.install(om)  # idempotent
-    assert (om / "tools" / "video" / "lionstone_motion_fx.py").is_file()
-    assert (om / "skills" / "INDEX.md").read_text(encoding="utf-8").count("lionstone-motion-fx") == 1
-    with pytest.raises(SystemExit):
-        mod.install(tmp_path / "not-openmontage")
-
-
 @pytest.mark.parametrize("pid", ["checklist", "headline-wall", "chart-grow", "cover-story",
                                  "glass-type", "split-flap", "count-up", "beat-type", "day-grid",
                                  "particle-reveal", "receipt", "notification-stack",

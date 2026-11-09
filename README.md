@@ -54,7 +54,7 @@ Five of them know where you are in the shot: a small AI model (U²-Net, CPU, cac
 
 <img src="docs/img/motionfx-real-renders.jpg" alt="Real Lionstone renders of the 17 Motion FX effects on a fictional example character" width="100%">
 
-Full guide with every parameter: [docs/motion-fx.md](docs/motion-fx.md). Apply one effect to any clip with `lionstone fx clip glass-type talk.mp4 -o out.mp4`, or use them from [OpenMontage](docs/openmontage.md).
+Full guide with every parameter: [docs/motion-fx.md](docs/motion-fx.md). Apply one effect to any clip with `lionstone fx clip glass-type talk.mp4 -o out.mp4`, or let an AI assistant run a whole production with [Lionstone Editing](docs/editing.md).
 
 #### Also in v1.0.0: Motion FX 2, 8 more effects
 
@@ -390,6 +390,8 @@ pip install "lionstone[mcp,whisper] @ git+https://github.com/ismailarslantas/lio
 ```
 
 Then just ask: *"Edit ~/Videos/ep12.mp4 for YouTube, keep it natural, introduce Ayşe as Founder, and show me any cut you're unsure about."* The agent gets tools to `plan_edit`, read/`edit_transcript`, `restore_cuts`, `render_plan` and read the QA verdict — it can't claim success unless QA says `deliverable: true`.
+
+For a whole production, use **Lionstone Editing**: the assistant writes a short `brief.json` (goal, platform, title, effects) and Lionstone runs plan → review → look → render → effects → QA → report in one folder (`lionstone editing run my-video`, or the `editing_init` / `editing_run` MCP tools). Guide: [docs/editing.md](docs/editing.md).
 
 ## 💎 Feature reference — everything is free
 
