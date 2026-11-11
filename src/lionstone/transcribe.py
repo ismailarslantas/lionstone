@@ -31,6 +31,17 @@ def transcribe(path: str | Path, *, model: str = "small", language: str | None =
             "or pass --transcript words.json / --no-asr"
         ) from e
 
+    try:
+        return _run(WhisperModel, path, model, language, device)
+    except RuntimeError as e:
+        # "auto" picks CUDA when a GPU exists, but cuBLAS/cuDNN are often missing on
+        # Windows; the error only surfaces on the first decode. Retry on the CPU.
+        if device == "cpu" or not any(k in str(e).lower() for k in ("cublas", "cudnn", "cuda")):
+            raise
+        return _run(WhisperModel, path, model, language, "cpu")
+
+
+def _run(WhisperModel, path, model: str, language: str | None, device: str) -> list[Word]:
     compute = "int8" if device in ("cpu", "auto") else "float16"
     wm = WhisperModel(model, device=device, compute_type=compute)
     # Keep disfluencies: the default prompt makes Whisper "clean up" fillers,
