@@ -99,8 +99,44 @@ def _overlay(inp: str, layer: str, out: str, x: str = "0", y: str = "0") -> str:
     return f"[{inp}][{layer}]overlay=x='{x}':y='{y}':eof_action=pass:format=auto[{out}]"
 
 
+CHAR_W = 0.56   # average glyph width / font size for the bundled sans fonts
+MAX_LINES = 3
+
+
+def fit_lines(text: str, size: int, max_w: float) -> tuple[list[str], int]:
+    """Wrap `text` to fit `max_w` px; shrink the size when it needs more than MAX_LINES
+    lines or a single word is still too wide (long titles on 9:16 used to run off-frame)."""
+    words = text.split()
+    while True:
+        per_line = max(1, int(max_w / (CHAR_W * size)))
+        lines: list[str] = []
+        for w in words:
+            if lines and len(lines[-1]) + 1 + len(w) <= per_line:
+                lines[-1] += " " + w
+            else:
+                lines.append(w)
+        if size <= 12 or (len(lines) <= MAX_LINES and all(len(l) <= per_line for l in lines)):
+            return lines or [text], size
+        size = int(size * 0.9)
+
+
 def _drawtext(ctx: FxContext, inp: str, out: str, text: str, size: int, x: str, y: str,
               alpha: str, color: str | None = None, extra: str = "") -> str:
+    lines, size = fit_lines(text, size, ctx.width * 0.88)
+    if len(lines) > 1 and x == "(w-tw)/2":
+        lh = size * 1.15
+        parts, cur = [], inp
+        for i, line in enumerate(lines):
+            nxt = out if i == len(lines) - 1 else ctx.label()
+            dy = int(round((i - (len(lines) - 1) / 2) * lh))
+            parts.append(_drawtext_one(ctx, cur, nxt, line, size, x, f"({y})+({dy})", alpha, color, extra))
+            cur = nxt
+        return ";".join(parts)
+    return _drawtext_one(ctx, inp, out, " ".join(lines), size, x, y, alpha, color, extra)
+
+
+def _drawtext_one(ctx: FxContext, inp: str, out: str, text: str, size: int, x: str, y: str,
+                  alpha: str, color: str | None = None, extra: str = "") -> str:
     return (f"[{inp}]drawtext={ctx.fontopt()}textfile='{ctx.textfile(text)}':expansion=none:"
             f"fontsize={size}:fontcolor={color or ctx.text_color}:x='{x}':y='{y}':"
             f"alpha='{alpha}'{(':' + extra) if extra else ''}[{out}]")
